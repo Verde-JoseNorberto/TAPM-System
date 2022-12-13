@@ -7,25 +7,29 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body class="bg-gray-700 text-white">
-    <header>
+    <header class="top">
         <div id="navbar">
-            <div class="">
+            <div>
                 <input type="search" name="search" placeholder="Search Something">
             </div>
             <div class="right">
-            <button class="button">
-                <strong>LOGIN</strong>
-            </button>
-            <button class="button">
-                <strong>SIGN UP</strong>
-            </button>
+                <a href="{{ route('login') }}">
+                <button class="button">
+                    <strong>LOGIN</strong>
+                </button>
+                </a>
+                <a href="{{ route('signup') }}">
+                <button class="button">
+                    <strong>SIGN UP</strong>
+                </button>
+                </a>
             </div>
         </div>
     </header>
     <main>
         @yield('page-content')
     </main>
-    <footer>
+    <footer class="bottom">
         Footer
     </footer>
 </body>
