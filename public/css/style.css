@@ -1,0 +1,79 @@
+body{
+  margin: 0px;
+  font-family: 'Courier new', Courier, monospace;
+  color: rgb(12, 41, 59);
+  background-image: url('photos/apc-building.png');
+}
+
+.log-form{
+  margin: 5% auto;
+  width: 20%;
+  border-radius: 5px;
+  background-color: rgb(27, 28, 31);
+  padding: 20px;
+}
+
+input[type=email],
+input[type=password], 
+input[type=date], 
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgb(204, 204, 204);
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: none;
+}
+input[type=search] {
+  width: 30%;
+  padding: 12px;
+  border: 1px solid rgb(204, 204, 204);
+  border-radius: 4px;
+  resize: none;
+  float: left;
+}
+
+input[type=submit] {
+  background-color: rgb(61, 59, 66);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 1s;
+}
+
+.center{
+    display: block;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.right{
+  float: right;
+}
+
+.left{
+  float: left;
+}
+
+.logo{
+  width: 400px;
+  height: 400px; 
+  padding-top: 30px;
+}
+
+#navbar{
+  padding: 30px;
+  background-color: #164771;
+}
+
+.button{
+  font-family: 'Courier New', monospace;
+  font-size: 25px;
+  border: none;
+  background-color: transparent;
+}
