@@ -25,6 +25,10 @@ Route::get('/register', function () {
     return view('register');
 })->name('register');
 
+Route::get('/logout', function () {
+    return view('logout');
+})->name('logout');
+
 Auth::routes();
 Route::get('/home', 
     [App\Http\Controllers\HomeController::class, 'index'
