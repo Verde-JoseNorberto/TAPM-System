@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TAPM</title>
+    <title>{{ config('app.name', 'TAPM') }}</title>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
@@ -11,7 +11,7 @@
         <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color: #164771;">
             <div class="container">
                 <a class="navbar-brand fw-bold" href="{{ url('/') }}">
-                    TAPM
+                    {{ config('app.name', 'TAPM') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
