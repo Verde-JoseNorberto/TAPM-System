@@ -13,12 +13,11 @@
 <body>
 <div class="container">
     <div class="position-absolute top-50 start-50 translate-middle">
-        <img src = "/storage/logo.png">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">{{ __('Login') }}</div>
-
+                    <img src = "/storage/logo.png">
                     <div class="card-body">
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
@@ -68,13 +67,16 @@
                                     <button type="submit" class="btn btn-primary">
                                         {{ __('Login') }}
                                     </button>
-
+                                </div>
                                     @if (Route::has('password.request'))
                                         <a class="btn btn-link" href="{{ route('password.request') }}">
                                             {{ __('Forgot Your Password?') }}
                                         </a>
                                     @endif
-                                </div>
+                                    @if (Route::has('register'))
+                                        <a class="btn btn-link" href="{{ route('register') }}">
+                                            {{ __('Create Account?') }}
+                                    @endif
                             </div>
                         </form>
                     </div>
