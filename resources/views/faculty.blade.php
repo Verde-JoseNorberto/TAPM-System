@@ -1,4 +1,4 @@
-@extends('layout.layout')
+@extends('layFac.layout')
 
 @section('page-content')
 <div class="container">
