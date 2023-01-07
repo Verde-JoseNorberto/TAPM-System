@@ -14,23 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
-})->name('/home');
-
-Route::get('/login', function () {
-    return view('login');
+    return view('auth.login');
 })->name('/login');
 
-Route::get('/register', function () {
-    return view('register');
-})->name('/register');
-
-Route::get('/logout', function () {
-    return view('logout');
-})->name('/logout');
-
 Auth::routes();
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/faculty', [App\Http\Controllers\FacultyController::class, 'index'])->name('faculty');
-Route::get('/client', [App\Http\Controllers\ClientController::class, 'index'])->name('client');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('student.home');
+Route::get('/faculty', [App\Http\Controllers\FacultyController::class, 'index'])->name('faculty.home');
+Route::get('/client', [App\Http\Controllers\ClientController::class, 'index'])->name('client.home');
 Auth::routes();
