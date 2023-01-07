@@ -23,6 +23,6 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return view('client');
+        return view('client.home');
     }
 }
