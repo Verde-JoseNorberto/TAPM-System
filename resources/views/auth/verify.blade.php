@@ -1,6 +1,16 @@
-@extends('layout.layout')
-
-@section('page-content')
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ config('app.name', 'TAPM') }}</title>
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <style>
+        body{ background-image: url('/storage/apc-building.png');
+        background-size: cover;}
+    </style>
+</head>
+<body>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -25,4 +35,5 @@
         </div>
     </div>
 </div>
-@endsection
+</body>
+</html>
