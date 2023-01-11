@@ -23,6 +23,6 @@ class FacultyController extends Controller
      */
     public function index()
     {
-        return view('faculty.home');
+        return view('faculty/home');
     }
 }
