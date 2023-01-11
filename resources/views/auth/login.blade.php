@@ -14,10 +14,16 @@
 <div class="container">
     <div class="position-absolute top-50 start-50 translate-middle">
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">{{ __('Login') }}</div>
-                    <img src = "/storage/logo.png">
+            <div class="col-md-12">
+                <div class="card" style="background-color:rgba(245, 245, 220, 0.562)">
+                    <div class="card-header">
+                    <div class="d-flex justify-content-center p-3">
+                        <img src = "/storage/tapm-logo.png" alt="TAPM Logo" width="180px">
+                    </div>
+                    <div class="d-flex justify-content-center">                    
+                        <h5>Login with <img src="/storage/365-logo.png" width="82"> Account</h5>
+                    </div>
+                    </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
@@ -44,12 +50,23 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-0">
-                                <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('Login') }}
-                                    </button>
+                            <div class="row mb-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="form-check mb-0">
+                                        <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="remember">
+                                            {{ __('Remember Me') }}
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="btn btn-primary">
+                                            {{ __('Login') }}
+                                        </button>
+                                    </div>
                                 </div>
+                            </div>
+
+                            <div class="row mb-0">
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
                                         {{ __('Forgot Your Password?') }}
@@ -57,8 +74,10 @@
                                 @endif
                                 @if (Route::has('register'))
                                     <a class="btn btn-link" href="{{ route('register') }}">
-                                        {{ __('Create Account?') }}
+                                        {{ __('Create Account') }}
+                                    </a>
                                 @endif
+                                </div>
                             </div>
                         </form>
                     </div>

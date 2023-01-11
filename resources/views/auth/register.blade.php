@@ -12,10 +12,10 @@
 </head>
 <body>
 <div class="container">
-    <div class="top-50 start-50">
+    <div class="position-absolute top-50 start-50 translate-middle">
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
+            <div class="col-md-12">
+                <div class="card" style="background-color:rgba(245, 245, 220, 0.562)">
                     <div class="card-header">{{ __('Register') }}</div>
 
                     <div class="card-body">
@@ -87,4 +87,4 @@
     </div>
 </div>
 </body>
-</html>>
+</html>
