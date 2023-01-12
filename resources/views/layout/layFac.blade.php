@@ -26,7 +26,7 @@
                 <ul class="navbar-nav ms-auto">
 
                     <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Add Project
+                      {{__('Add Project')}}
                     </button>
 
                     <li class="nav-item dropdown">
@@ -58,18 +58,19 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <form method="POST" action="{{ route('home') }}">
+              <form method="POST" action="{{ route('faculty/project') }}">
+                @csrf 
                 <div class="row mb-4">
                   <div class="col">
                     <div class="form-outline">
                       <label class="form-label">{{ __('Project Title') }}</label>
-                      <input type="text" class="form-control" />
+                      <input id="project_title" type="text" class="form-control" name="project_title">
                     </div>
                   </div>
                   <div class="col">
                     <div class="form-outline">
                       <label class="form-label">{{ __('Project Category') }}</label>
-                      <input type="text" class="form-control" />
+                      <input id="project_category" type="text" class="form-control" name="project_category">
                     </div>
                   </div>
                 </div>
@@ -78,13 +79,13 @@
                   <div class="col">
                     <div class="form-outline">
                       <label class="form-label">{{ __('Progress Phase') }}</label>
-                      <input type="text" class="form-control" />
+                      <input id="project_phase" type="text" class="form-control" name="project_phase">
                     </div>
                   </div>
                   <div class="col">
                     <div class="form-outline">
-                      <label class="form-label">{{ __('Term & Year') }}</label>
-                      <input type="text" class="form-control" />
+                      <label class="form-label">{{ __('Year & Term') }}</label>
+                      <input id="year_term" type="text" class="form-control" name="year_term">
                     </div>
                   </div>
                 </div>
@@ -92,13 +93,13 @@
                   <div class="col">
                     <div class="form-outline">
                       <label class="form-label">{{ __('Section') }}</label>
-                      <input type="text" class="form-control" />
+                      <input id="section" type="text" class="form-control" name="section">
                     </div>
                   </div>
                   <div class="col">
                     <div class="form-outline">
                       <label class="form-label">{{ __('Due Date') }}</label>
-                      <input type="date" class="form-control" />
+                      <input id="due_date" type="date" class="form-control" name="due_date">
                     </div>
                   </div>
                 </div>
@@ -107,26 +108,28 @@
                   <div class="col">
                     <div class="form-outline">
                       <label class="form-label">{{ __('Team') }}</label>
-                      <input type="text" class="form-control" />
+                      <input id="team" type="text" class="form-control" name="team">
                     </div>
                   </div>
                   <div class="col">
                     <div class="form-outline">
                       <label class="form-label">{{ __('Advisor') }}</label>
-                      <input type="text" class="form-control" />
+                      <input id="advisor" type="text" class="form-control" name="advisor">
                     </div>
                   </div>
                 </div>
       
                 <div class="form-outline mb-4">
                   <label class="form-label">{{ __('Additional information') }}</label>
-                  <textarea class="form-control" rows="4"></textarea>
+                  <textarea id="notes" class="form-control" rows="4" name="notes"></textarea>
                 </div>
-              </form>
+              
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary">{{ __('Add Project') }}</button>
+              <button type="submit" class="btn btn-primary">{{ __('Create Project') }}</button>
             </div>
+
+                </form>
           </div>
         </div>
     </div>

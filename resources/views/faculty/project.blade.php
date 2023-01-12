@@ -1,9 +1,7 @@
 @extends('layout.layFac')
 
 @section('page-content')
-<div class="container">
-    <div class="row-md-4">
-        
+    <div class="container">
+
     </div>
-</div>
 @endsection
