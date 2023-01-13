@@ -15,14 +15,27 @@ use App\Http\Controllers\GroupProjectController;
 */
 
 Route::get('/', function () {
+    // return view('student.home') or view('faculty.home') or view('client.home');
     return view('auth.login');
+// })->middleware('auth');
 })->name('login');
+
+Auth::routes();
+  
+Route::middleware(['auth', 'user-access:student'])->group(function () {
+  
+    Route::get('/home', [UserController::class, 'studentHome'])->name('student/home');
+});
+  
+Route::middleware(['auth', 'user-access:faculty'])->group(function () {
+  
+    Route::get('/faculty/home', [UserController::class, 'facultyHome'])->name('faculty/home');
+});
+  
+Route::middleware(['auth', 'user-access:client'])->group(function () {
+  
+    Route::get('/client/home', [UserController::class, 'clientHome'])->name('client/home');
+});
 
 Route::get('/project', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('faculty/project');
 Route::post('/project', [App\Http\Controllers\GroupProjectController::class, 'store'])->name('faculty/project');
-
-Auth::routes();
-// Route::get('/home', [App\Http\Controllers\StudentController::class, 'index'])->name('student/home');
-Route::get('/home', [App\Http\Controllers\FacultyController::class, 'index'])->name('faculty/home');
-// Route::get('/home', [App\Http\Controllers\ClientController::class, 'index'])->name('clienthome');
-Auth::routes();
