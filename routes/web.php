@@ -42,6 +42,7 @@ Route::middleware(['auth', 'user-access:client'])->group(function () {
     Route::get('/client/home', [App\Http\Controllers\UserController::class, 'clientHome'])->name('client/home');
 });
 
-Route::get('/project', [App\Http\Controllers\GroupProjectController::class, 'index'])
-    ->name('student/project') or name('student/project') or name('student/project');
+Route::get('/project', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('student/project') or name('faculty/project') or name('faculty/project');
 Route::post('/project', [App\Http\Controllers\GroupProjectController::class, 'store'])->name('faculty/project');
+
+Route::get('/group', [App\Http\Controllers\GroupController::class, 'index'])->name('faculty/group');
