@@ -5,12 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name', 'TAPM') }}</title>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    <style>
-        body{ background-image: url('/storage/apc-building.png');
-        background-size: cover;}
-    </style>
 </head>
 <body>
+<div class="bg-image" style="background-image: url('/storage/apc-building.png'); height: 100vh"></div>
 <div class="container">
     <div class="position-absolute top-50 start-50 translate-middle">
         <div class="row justify-content-center">

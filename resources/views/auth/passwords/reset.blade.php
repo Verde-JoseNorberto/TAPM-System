@@ -5,16 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name', 'TAPM') }}</title>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    <style>
-        body{ background-image: url('/storage/apc-building.png');
-        background-size: cover;}
-    </style>
 </head>
 <body>
+<div class="bg-image" style="background-image: url('/storage/apc-building.png'); height: 100vh"></div>
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
+    <div class="position-absolute top-50 start-50 translate-middle">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+            <div class="card" style="background-color:rgba(245, 245, 220, 0.562)">
                 <div class="card-header">{{ __('Reset Password') }}</div>
 
                 <div class="card-body">
@@ -68,6 +66,7 @@
                         </div>
                     </form>
                 </div>
+            </div>
             </div>
         </div>
     </div>
