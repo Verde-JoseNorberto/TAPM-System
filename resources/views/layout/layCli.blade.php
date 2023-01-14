@@ -16,7 +16,7 @@
     <div id='app'>    
         <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color: #FFD700;">
             <div class="container">
-                <a class="navbar-brand fw-bold" href="{{ url('/') }}">
+                <a class="navbar-brand fw-bold" href="{{ url('client/home') }}">
                     {{ config('app.name', 'TAPM') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
