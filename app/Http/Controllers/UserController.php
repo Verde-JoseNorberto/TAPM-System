@@ -23,16 +23,26 @@ class UserController extends Controller
      */
     public function studentHome()
     {
-        return view('student.home');
+        return view('student/home');
     }
 
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function facultyHome()
     {
-        return view('faculty.home');
+        return view('faculty/home');
     }
 
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function clientHome()
     {
-        return view('client.home');
+        return view('client/home');
     }
 }

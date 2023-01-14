@@ -14,7 +14,13 @@ class GroupProjectController extends Controller
      */
     public function index()
     {
-        return view('faculty/project');
+        if (auth()->user()->type == 'faculty') {
+            return redirect()->route('faculty/project');
+        }else if (auth()->user()->type == 'client') {
+            return redirect()->route('client/project');
+        }else{
+            return redirect()->route('student/project');
+        }
     }
 
     /**
