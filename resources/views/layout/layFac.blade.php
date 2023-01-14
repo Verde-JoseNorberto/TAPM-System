@@ -19,16 +19,17 @@
                 <a class="navbar-brand fw-bold" href="{{ url('faculty/home') }}">
                     {{ config('app.name', 'TAPM') }}
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                
+
                 <ul class="navbar-nav ms-auto">
+                  <div>
+                    <a class="btn btn-outline-secondary" href="{{ url('faculty/group') }}">
+                        {{__('View Groups')}}
+                    </a>
 
                     <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                       {{__('Add Project')}}
                     </button>
-
+                  </div>
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ Auth::user()->name }}
