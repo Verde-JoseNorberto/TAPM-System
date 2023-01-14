@@ -18,21 +18,21 @@ class DatabaseSeeder extends Seeder
         $users = [
             [
                'name'=>'Student User',
-               'email'=>'jtverde@student.apc.edu.ph',
+               'email'=>'user@student.com',
                'type'=>0,
-               'password'=> bcrypt('admin123'),
+               'password'=> bcrypt('student123'),
             ],
             [
                'name'=>'Faculty User',
-               'email'=>'jnverde.pogi@gmail.com',
+               'email'=>'user@faculty.com',
                'type'=> 1,
-               'password'=> bcrypt('admin123'),
+               'password'=> bcrypt('faculty123'),
             ],
             [
                'name'=>'Client User',
-               'email'=>'user@itsolutionstuff.com',
+               'email'=>'user@client.com',
                'type'=>2,
-               'password'=> bcrypt('123456'),
+               'password'=> bcrypt('client123'),
             ],
         ];
     
