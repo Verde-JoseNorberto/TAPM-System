@@ -14,12 +14,14 @@ class GroupProjectController extends Controller
      */
     public function index()
     {
+        $groupProject = GroupProject::all();
+
         if (auth()->user()->type == 'faculty') {
-            return redirect()->route('faculty/project');
+            return view('faculty/home')->with('group_projects', $groupProject);
         }else if (auth()->user()->type == 'client') {
-            return redirect()->route('client/project');
+            return view('client/home')->with('group_projects', $groupProject);
         }else{
-            return redirect()->route('student/project');
+            return view('student/home')->with('group_projects', $groupProject);
         }
     }
 
@@ -52,7 +54,7 @@ class GroupProjectController extends Controller
         $add->advisor = $request->advisor;
         $add->notes = $request->notes;
         $add->save();
-        return redirect('faculty/project')->with('status', 'Project is Made');
+        return view('faculty/project')->with('group_projects', $add);
     }
 
     /**
@@ -61,9 +63,16 @@ class GroupProjectController extends Controller
      * @param  \App\Models\GroupProject  $groupProject
      * @return \Illuminate\Http\Response
      */
-    public function show(GroupProject $groupProject)
+    public function show(GroupProject $groupProject, $id)
     {
-        //
+        $groupProject == GroupProject::find($id);
+        if (auth()->user()->type == 'faculty') {
+            return view('faculty/project')->with('group_projects', $groupProject);
+        }else if (auth()->user()->type == 'client') {
+            return view('client/project')->with('group_projects', $groupProject);
+        }else{
+            return view('student/project')->with('group_projects', $groupProject);
+        }
     }
 
     /**
@@ -97,6 +106,6 @@ class GroupProjectController extends Controller
      */
     public function destroy(GroupProject $groupProject)
     {
-        //
+
     }
 }

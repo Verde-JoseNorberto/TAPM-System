@@ -8,4 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Group extends Model
 {
     use HasFactory;
+
+    protected $table = 'groups';
+    protected $primaryKay = 'id';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'group_name',
+        'group_leader',
+        'group_member',
+    ];
 }

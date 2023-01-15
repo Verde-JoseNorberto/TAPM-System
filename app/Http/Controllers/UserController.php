@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GroupProject;
 use Illuminate\Http\Request;
 
 class UserController extends Controller

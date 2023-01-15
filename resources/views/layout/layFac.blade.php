@@ -22,7 +22,7 @@
 
                 <ul class="navbar-nav ms-auto">
                   <div>
-                    <a class="btn btn-outline-secondary" href="{{ url('faculty/group') }}">
+                    <a class="btn btn-outline-secondary" href="{{ route('faculty/group') }}">
                         {{__('View Groups')}}
                     </a>
 
@@ -90,7 +90,8 @@
                     </div>
                   </div>
                 </div>
-                          <div class="row mb-4">
+                
+                <div class="row mb-4">
                   <div class="col">
                     <div class="form-outline">
                       <label class="form-label">{{ __('Section') }}</label>
@@ -125,12 +126,11 @@
                   <textarea id="notes" class="form-control" rows="4" name="notes"></textarea>
                 </div>
               
-            </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-primary">{{ __('Create Project') }}</button>
-            </div>
-
-                </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">{{ __('Create Project') }}</button>
+                </div>
+              </form>
           </div>
         </div>
     </div>
