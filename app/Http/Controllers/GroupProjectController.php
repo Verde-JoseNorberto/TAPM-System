@@ -14,17 +14,16 @@ class GroupProjectController extends Controller
      */
     public function index()
     {
-        $groupProject = GroupProject::all();
+        $group_projects = GroupProject::all();
 
         if (auth()->user()->type == 'faculty') {
-            return view('faculty/home')->with('group_projects', $groupProject);
+            return view('faculty/home', compact('group_projects'));
         }else if (auth()->user()->type == 'client') {
-            return view('client/home')->with('group_projects', $groupProject);
+            return view('client/home', compact('group_projects'));
         }else{
-            return view('student/home')->with('group_projects', $groupProject);
+            return view('student/home', compact('group_projects'));
         }
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -63,15 +62,15 @@ class GroupProjectController extends Controller
      * @param  \App\Models\GroupProject  $groupProject
      * @return \Illuminate\Http\Response
      */
-    public function show(GroupProject $groupProject, $id)
+    public function show(GroupProject $group_projects, $id)
     {
-        $groupProject == GroupProject::find($id);
+        $group_projects = GroupProject::find($id);
         if (auth()->user()->type == 'faculty') {
-            return view('faculty/project')->with('group_projects', $groupProject);
+            return view('faculty.project', compact('group_projects'));
         }else if (auth()->user()->type == 'client') {
-            return view('client/project')->with('group_projects', $groupProject);
+            return view('client.project', compact('group_projects'));
         }else{
-            return view('student/project')->with('group_projects', $groupProject);
+            return view('student.project', compact('group_projects'));  
         }
     }
 

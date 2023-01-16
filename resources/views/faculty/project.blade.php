@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-right">
-                <a class="btn btn-outline-secondary" href="{{ route('faculty/home') }}"> Back</a>
+                <a class="btn btn-outline-secondary" href="{{ route('faculty/home') }}">Back</a>
             </div>
         </div>
     </div>
@@ -28,7 +28,6 @@
                 </div>
             </div> 
         </div>
-
     </div>
 </div>
 @endsection 
