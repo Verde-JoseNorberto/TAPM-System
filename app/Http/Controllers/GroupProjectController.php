@@ -20,6 +20,8 @@ class GroupProjectController extends Controller
             return view('faculty/home', compact('group_projects'));
         }else if (auth()->user()->type == 'client') {
             return view('client/home', compact('group_projects'));
+        }else if (auth()->user()->type == 'director') {
+            return view('director/home', compact('group_projects'));
         }else{
             return view('student/home', compact('group_projects'));
         }
@@ -69,6 +71,8 @@ class GroupProjectController extends Controller
             return view('faculty.project', compact('group_projects'));
         }else if (auth()->user()->type == 'client') {
             return view('client.project', compact('group_projects'));
+        }else if (auth()->user()->type == 'director') {
+            return view('director.project', compact('group_projects'));
         }else{
             return view('student.project', compact('group_projects'));  
         }
@@ -103,8 +107,13 @@ class GroupProjectController extends Controller
      * @param  \App\Models\GroupProject  $groupProject
      * @return \Illuminate\Http\Response
      */
-    public function destroy(GroupProject $groupProject)
+    public function destroy(GroupProject $group_projects)
     {
+        // $group_projects = GroupProject::find($id);
+        // $group_projects->delete();
 
+        // // redirect
+        // Session::flash('message', 'Successfully deleted the shark!');
+        // return Redirect::to('/');
     }
 }

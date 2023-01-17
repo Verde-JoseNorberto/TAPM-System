@@ -18,7 +18,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show the Student dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -28,7 +28,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show the Faculty dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -38,12 +38,21 @@ class UserController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show the Client dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function clientHome()
     {
         return view('client/home');
+    }
+    /**
+     * Show the Project Development Director dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function directorHome()
+    {
+        return view('director/home');
     }
 }
