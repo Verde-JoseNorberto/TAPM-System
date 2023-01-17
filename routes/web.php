@@ -19,6 +19,8 @@ Route::get('/', function () {
         return redirect()->route('faculty/home');
     }else if (auth()->user()->type == 'client') {
         return redirect()->route('client/home');
+    }else if (auth()->user()->type == 'director') {
+        return redirect()->route('director/home');
     }else{
         return redirect()->route('student/home');
     }
@@ -37,10 +39,16 @@ Route::middleware(['auth', 'user-access:client'])->group(function () {
     Route::get('/client/home', [App\Http\Controllers\UserController::class, 'clientHome'])->name('client/home');
     Route::get('/client/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('client/home');
 });
+Route::middleware(['auth', 'user-access:director'])->group(function () {
+    Route::get('/client/home', [App\Http\Controllers\UserController::class, 'directorHome'])->name('director/home');
+    Route::get('/client/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('director/home');
+});
 
 Route::controller(GroupProjectController::class)-> group(function() {
     Route::post('/project', 'store')->name('faculty/project');
     Route::get('/project/{id}', 'show');
 });
 
-Route::get('/group', [App\Http\Controllers\GroupController::class, 'index'])->name('faculty/group');
+Route::controller(GroupController::class)-> group(function() {
+Route::get('/group', 'index')->name('faculty/group');
+});
