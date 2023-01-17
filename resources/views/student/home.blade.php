@@ -28,7 +28,11 @@
                     <td>{{ $groupProject->advisor }}</td>
 
                     <td>       
-                        <a class="btn btn-small btn-success" href="{{ URL::to('project/' . $groupProject->id) }}">Show</a>        
+                        <a class="btn btn-small btn-success" href="{{ URL::to('project/' . $groupProject->id) }}">Show</a>
+                        {{-- {{ Form::open(array('url' => 'project/' . $groupProject->id, 'class' => 'pull-right')) }}
+                            {{ Form::hidden('_method', 'DELETE') }}
+                            {{ Form::submit('Delete', array('class' => 'btn btn-warning')) }}
+                        {{ Form::close() }}  --}}
                     </td>
                 </tr>
             @endforeach

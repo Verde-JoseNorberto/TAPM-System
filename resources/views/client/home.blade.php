@@ -28,7 +28,8 @@
                     <td>{{ $groupProject->advisor }}</td>
         
                     <td>       
-                        <a class="btn btn-small btn-success" href="{{ URL::to('project/' . $groupProject->id) }}">Show</a>        
+                        <a class="btn btn-small btn-success" href="{{ URL::to('project/' . $groupProject->id) }}">Show</a>
+                        
                     </td>
                 </tr>
             @endforeach
