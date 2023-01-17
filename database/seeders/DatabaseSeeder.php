@@ -20,20 +20,26 @@ class DatabaseSeeder extends Seeder
                'name'=>'Student User',
                'email'=>'user@student.com',
                'type'=>0,
-               'password'=> bcrypt('student123'),
+               'password'=> bcrypt('admin123'),
             ],
             [
                'name'=>'Faculty User',
                'email'=>'user@faculty.com',
                'type'=> 1,
-               'password'=> bcrypt('faculty123'),
+               'password'=> bcrypt('admin123'),
             ],
             [
                'name'=>'Client User',
                'email'=>'user@client.com',
                'type'=>2,
-               'password'=> bcrypt('client123'),
+               'password'=> bcrypt('admin123'),
             ],
+            [
+                'name'=>'Project Development Director',
+                'email'=>'director@client.com',
+                'type'=>2,
+                'password'=> bcrypt('admin123'),
+             ],
         ];
     
         foreach ($users as $key => $user) {
