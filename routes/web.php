@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GroupProjectController;
+use App\Http\Controllers\GroupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,15 +41,20 @@ Route::middleware(['auth', 'user-access:client'])->group(function () {
     Route::get('/client/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('client/home');
 });
 Route::middleware(['auth', 'user-access:director'])->group(function () {
-    Route::get('/client/home', [App\Http\Controllers\UserController::class, 'directorHome'])->name('director/home');
-    Route::get('/client/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('director/home');
+    Route::get('/director/home', [App\Http\Controllers\UserController::class, 'directorHome'])->name('director/home');
+    Route::get('/director/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('director/home');
 });
 
-Route::controller(GroupProjectController::class)-> group(function() {
+Route::controller(GroupProjectController::class)->group(function() {
     Route::post('/project', 'store')->name('faculty/project');
     Route::get('/project/{id}', 'show');
 });
 
-Route::controller(GroupController::class)-> group(function() {
-Route::get('/group', 'index')->name('faculty/group');
+Route::controller(GroupController::class)->group(function() {
+    Route::get('/group', 'index')->name('faculty/group');
+});
+
+Route::controller(ProjectController::class)->group(function() {
+    Route::get('/project/{id}', 'index');
+    Route::get('/project/{id}', 'show');
 });
