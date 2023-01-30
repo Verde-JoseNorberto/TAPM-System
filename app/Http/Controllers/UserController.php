@@ -51,8 +51,8 @@ class UserController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function directorHome()
+    public function officeHome()
     {
-        return view('director/home');
+        return view('office/home');
     }
 }

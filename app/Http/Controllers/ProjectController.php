@@ -20,8 +20,8 @@ class ProjectController extends Controller
             return view('faculty/project', compact('projects'));
         }else if (auth()->user()->type == 'client') {
             return view('client/project', compact('projects'));
-        }else if (auth()->user()->type == 'director') {
-            return view('director/project', compact('projects'));
+        }else if (auth()->user()->type == 'office') {
+            return view('office/project', compact('projects'));
         }else{
             return view('student/project', compact('projects'));
         }
@@ -45,7 +45,12 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $add = new Project;
+        $add->title = $request->title;
+        $add->file = $request->file;
+        $add->description = $request->description;
+        $add->save();
+        return view('student/project')->with('projects', $add);
     }
 
     /**
@@ -54,9 +59,18 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function show(Project $project)
+    public function show(Project $projects, $id)
     {
-        //
+        $projects = Project::find($id);
+        if (auth()->user()->type == 'faculty') {
+            return view('faculty/project', compact('projects'));
+        }else if (auth()->user()->type == 'client') {
+            return view('client/project', compact('projects'));
+        }else if (auth()->user()->type == 'office') {
+            return view('office/project', compact('projects'));
+        }else{
+            return view('student/project', compact('projects'));  
+        }   
     }
 
     /**
@@ -65,7 +79,7 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function edit(Project $project)
+    public function edit(Project $projects)
     {
         //
     }
@@ -77,7 +91,7 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, Project $projects)
     {
         //
     }
@@ -88,7 +102,7 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Project $project)
+    public function destroy(Project $projects)
     {
         //
     }

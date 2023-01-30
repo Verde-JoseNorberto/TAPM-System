@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use App\Models\GroupProject;
 use Illuminate\Http\Request;
 
@@ -15,15 +16,16 @@ class GroupProjectController extends Controller
     public function index()
     {
         $group_projects = GroupProject::all();
+        $projects = Project::all();
 
         if (auth()->user()->type == 'faculty') {
-            return view('faculty/home', compact('group_projects'));
+            return view('faculty/home', compact(['group_projects', 'projects']));
         }else if (auth()->user()->type == 'client') {
-            return view('client/home', compact('group_projects'));
-        }else if (auth()->user()->type == 'director') {
-            return view('director/home', compact('group_projects'));
+            return view('client/home', compact(['group_projects', 'projects']));
+        }else if (auth()->user()->type == 'office') {
+            return view('office/home', compact(['group_projects', 'projects']));
         }else{
-            return view('student/home', compact('group_projects'));
+            return view('student/home', compact(['group_projects', 'projects']));
         }
     }
     /**
@@ -42,7 +44,7 @@ class GroupProjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function groupStore(Request $request)
     {
         $add = new GroupProject;
         $add->project_title = $request->project_title;
@@ -58,23 +60,35 @@ class GroupProjectController extends Controller
         return view('faculty/project')->with('group_projects', $add);
     }
 
+    public function projectStore(Request $request)
+    {
+        $add = new Project;
+        $add->title = $request->title;
+        $add->file = $request->file;
+        $add->description = $request->description;
+        $add->save();
+        return view('student/project')->with('projects', $add);
+    }
+
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\GroupProject  $groupProject
      * @return \Illuminate\Http\Response
      */
-    public function show(GroupProject $group_projects, $id)
+    public function show(GroupProject $group_projects, Project $projects, $id)
     {
         $group_projects = GroupProject::find($id);
+        $projects = Project::find($id);
+        
         if (auth()->user()->type == 'faculty') {
-            return view('faculty.project', compact('group_projects'));
+            return view('faculty/project', compact(['group_projects', 'projects']));
         }else if (auth()->user()->type == 'client') {
-            return view('client.project', compact('group_projects'));
-        }else if (auth()->user()->type == 'director') {
-            return view('director.project', compact('group_projects'));
+            return view('client/project', compact(['group_projects', 'projects']));
+        }else if (auth()->user()->type == 'office') {
+            return view('office/project', compact(['group_projects', 'projects']));
         }else{
-            return view('student.project', compact('group_projects'));  
+            return view('student/project', compact(['group_projects', 'projects']));  
         }
     }
 
