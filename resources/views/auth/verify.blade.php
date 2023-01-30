@@ -9,9 +9,9 @@
 <body>
 <div class="bg-image" style="background-image: url('/storage/apc-building.png'); height: 100vh"></div>
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center align-items-center h-100">
         <div class="col-md-8">
-            <div class="card">
+            <div class="card" style="background-color:rgba(245, 245, 220, 0.562)">
                 <div class="card-header">{{ __('Verify Your Email Address') }}</div>
 
                 <div class="card-body">

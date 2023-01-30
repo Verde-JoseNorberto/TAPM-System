@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
-                <h2>{{ $group_projects->project_title }}</h2>
+                <br><h2>{{ $group_projects->project_title }}</h2>
                 <strong>Team:</strong> {{ $group_projects->team }}<br>
                 <strong>Advisor:</strong> {{ $group_projects->advisor }}
             </div>

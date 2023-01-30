@@ -12,7 +12,7 @@
                     <h6>{{ $groupProject->year_term }}</h6>
                     <h6>{{ $groupProject->team }}</h6>
                     <h6>{{ $groupProject->advisor }}</h6>
-                    <a class="btn btn-small btn-success streched-link" href="{{ URL::to('project/' . $groupProject->id) }}">Show</a>
+                    <a class="btn btn-small btn-success streched-link" href="{{ URL::to('director/project/' . $groupProject->id) }}">Show</a>
                 </div>
             </div>
         </div>
