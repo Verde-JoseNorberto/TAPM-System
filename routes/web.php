@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GroupProjectController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\ProjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,14 +21,14 @@ Route::get('/', function () {
         return redirect()->route('faculty/home');
     }else if (auth()->user()->type == 'client') {
         return redirect()->route('client/home');
-    }else if (auth()->user()->type == 'director') {
-        return redirect()->route('director/home');
+    }else if (auth()->user()->type == 'office') {
+        return redirect()->route('office/home');
     }else{
         return redirect()->route('student/home');
     }
 })->middleware('auth');
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 Route::middleware(['auth', 'user-access:student'])->group(function () {
     Route::get('/home', [App\Http\Controllers\UserController::class, 'studentHome'])->name('student/home');
     Route::get('/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('student/home');
@@ -40,21 +41,29 @@ Route::middleware(['auth', 'user-access:client'])->group(function () {
     Route::get('/client/home', [App\Http\Controllers\UserController::class, 'clientHome'])->name('client/home');
     Route::get('/client/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('client/home');
 });
-Route::middleware(['auth', 'user-access:director'])->group(function () {
-    Route::get('/director/home', [App\Http\Controllers\UserController::class, 'directorHome'])->name('director/home');
-    Route::get('/director/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('director/home');
+Route::middleware(['auth', 'user-access:office'])->group(function () {
+    Route::get('/office/home', [App\Http\Controllers\UserController::class, 'officeHome'])->name('office/home');
+    Route::get('/office/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('office/home');
 });
 
+// Route::controller(ProjectController::class)->group(function() {
+//     Route::get('/project/{id}', 'index');
+//     Route::post('/project', 'store')->name('student/project');
+//     Route::get('/project/{id}', 'show');
+//     Route::get('/faculty/project/{id}', 'show');
+//     Route::get('/client/project/{id}', 'show');
+//     Route::get('/office/project/{id}', 'show');
+// });
+
 Route::controller(GroupProjectController::class)->group(function() {
-    Route::post('/project', 'store')->name('faculty/project');
+    Route::post('faculty/project', 'groupStore')->name('faculty/project');
+    Route::post('/project', 'projectStore')->name('student/project');
     Route::get('/project/{id}', 'show');
+    Route::get('/faculty/project/{id}', 'show');
+    Route::get('/client/project/{id}', 'show');
+    Route::get('/office/project/{id}', 'show');
 });
 
 Route::controller(GroupController::class)->group(function() {
     Route::get('/group', 'index')->name('faculty/group');
-});
-
-Route::controller(ProjectController::class)->group(function() {
-    Route::get('/project/{id}', 'index');
-    Route::get('/project/{id}', 'show');
 });
