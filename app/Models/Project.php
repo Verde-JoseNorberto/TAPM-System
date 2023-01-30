@@ -20,7 +20,6 @@ class Project extends Model
     protected $fillable = [
         'title',
         'file',
-        'description',
-        'comment'
+        'description'
     ];
 }
