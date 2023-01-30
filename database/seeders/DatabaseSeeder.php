@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\GroupProject;
 
 class DatabaseSeeder extends Seeder
 {
@@ -35,15 +36,44 @@ class DatabaseSeeder extends Seeder
                'password'=> bcrypt('admin123'),
             ],
             [
-                'name'=>'Project Development Director',
-                'email'=>'director@client.com',
-                'type'=>2,
+                'name'=>'Project Development Office',
+                'email'=>'user@office.com',
+                'type'=>3,
                 'password'=> bcrypt('admin123'),
              ],
         ];
     
         foreach ($users as $key => $user) {
             User::create($user);
+        }
+
+        $group_projects = [
+            [
+                'project_title'=>'Test Title 1',
+                'project_category'=>'Test Category 1',
+                'project_phase'=>'Test Phase 1',
+                'year_term'=>'2nd Year 3rd Term',
+                'section'=>'SS201',
+                'due_date'=>'2023-03-16',
+                'team'=>'Abyss',
+                'advisor'=>'Jayvee Cabardo',
+                'notes'=>'Test Notes',
+            ],
+            [
+                'project_title'=>'Test Title 2',
+                'project_category'=>'Test Category 2',
+                'project_phase'=>'Test Phase 2',
+                'year_term'=>'2nd Year 3rd Term',
+                'section'=>'SS201',
+                'due_date'=>'2023-03-16',
+                'team'=>'Abyss',
+                'advisor'=>'Jayvee Cabardo',
+                'notes'=>'Test Notes',
+            ],
+        ];
+
+        foreach ($group_projects as $key => $group_projects) {
+            GroupProject::create($group_projects);
         }
     }
 }

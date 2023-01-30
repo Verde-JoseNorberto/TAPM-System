@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->tinyInteger('type')->default(2);
-            /* Users: 0=>Student, 1=>Faculty, 2=>Client, 3=>Director */
+            /* Users: 0=>Student, 1=>Faculty, 2=>Client, 3=>Office */
             $table->rememberToken();
             $table->timestamps();
         });
