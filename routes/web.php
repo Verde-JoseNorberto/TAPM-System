@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GroupProjectController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,24 +47,24 @@ Route::middleware(['auth', 'user-access:office'])->group(function () {
     Route::get('/office/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('office/home');
 });
 
-// Route::controller(ProjectController::class)->group(function() {
-//     Route::get('/project/{id}', 'index');
-//     Route::post('/project', 'store')->name('student/project');
-//     Route::get('/project/{id}', 'show');
-//     Route::get('/faculty/project/{id}', 'show');
-//     Route::get('/client/project/{id}', 'show');
-//     Route::get('/office/project/{id}', 'show');
-// });
-
 Route::controller(GroupProjectController::class)->group(function() {
     Route::post('faculty/project', 'groupStore')->name('faculty/project');
     Route::post('/project', 'projectStore')->name('student/project');
+    // Route::post('/project', 'taskStore')->name('student/project');
+
+    Route::get('faculty/project/{id}/edit', 'edit')->name('faculty/edit');
+    Route::put('faculty/project/{id}', 'update');
+
     Route::get('/project/{id}', 'show');
     Route::get('/faculty/project/{id}', 'show');
     Route::get('/client/project/{id}', 'show');
     Route::get('/office/project/{id}', 'show');
+
+    Route::delete('faculty/project', 'destroy');
+    Route::delete('student/project', 'destroy');
 });
 
 Route::controller(GroupController::class)->group(function() {
-    Route::get('/group', 'index')->name('faculty/group');
+    Route::get('faculty/group', 'index')->name('faculty/group');
+    Route::get('office/group', 'index')->name('office/group');
 });
