@@ -6,35 +6,27 @@
         <div class="row">
             <div class="card h-100">
                 <div class="card-body">
-                  <div>
-                  <a class="btn btn-outline-dark text-decoration-none" href="{{ URL::to('task/' . $group_projects->id) }}">
-                    {{ __('Taskboard') }}</a>
-                  </div>
-                  <div>
-                    
-                  </div>
-                  <div>
+                  <a class="btn btn-outline-dark text-decoration-none" href="{{ URL::to('project/' . $group_projects->id) }}">
+                    {{ __('Project Page') }}</a>
                   <a class="btn btn-outline-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    {{ __('Add Updates') }}</a>
-                  </div>
+                    {{ __('Add Task') }}</a>
                 </div>
+
             </div>
         </div>
     </div>
-    <div class="row row-cols-1 row-cols-md-2 g-4">
-    @if (is_array($projects) || is_object($projects))
-    @foreach($projects as $key => $project)
+    @foreach($tasks as $key => $task)
     <div class="col flex my-4">
+      <div class="row row-cols-1 row-cols-md-2 g-4">
       <div class="card">
         <div class="card-body">
-          <h3 class="card-title">{{ $projects->title }}</h3>
-          <h6>{{ $projects->file }}</h6>
-          <h6>{{ $projects->description }}</h6>
+          <h3 class="card-title">{{ $task->title }}</h3>
+          <h6>{{ $task->content }}</h6>
+          <h6>{{ $task->date }}</h6>
         </div>
       </div>
     </div>
     @endforeach
-    @endif
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -43,7 +35,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <form method="POST" action="{{ route('student/project') }}">
+              <form method="POST" action="{{ route('student/task') }}">
                 @csrf 
                 <div class="row mb-4">
                   <div class="col">
@@ -56,20 +48,18 @@
                 <div class="row mb-4">
                   <div class="col">
                     <div class="form-outline">
-                      <label class="form-label">{{ __('File') }}</label>
-                      <input id="file" type="file" class="form-control" name="file">
+                      <label class="form-label">{{ __('Content') }}</label>
+                      <textarea id="content" class="form-control" rows="4" name="content"></textarea>
                     </div>
                   </div>
                 </div>
-                
                 <div class="row mb-4">
                   <div class="col">
                     <div class="form-outline">
-                      <label class="form-label">{{ __('Description') }}</label>
-                      <textarea id="description" class="form-control" rows="4" name="description"></textarea>
+                      <label class="form-label">{{ __('Due Date') }}</label>
+                      <input id="due_date" type="date" class="form-control" name="due_date">
                     </div>
                   </div>
-
                 </div>
                 <div class="modal-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Create Project') }}</button>
