@@ -57,7 +57,6 @@ class DatabaseSeeder extends Seeder
                 'due_date'=>'2023-03-16',
                 'team'=>'Abyss',
                 'advisor'=>'Jayvee Cabardo',
-                'notes'=>'Test Notes',
             ],
             [
                 'project_title'=>'Test Title 2',
@@ -67,8 +66,7 @@ class DatabaseSeeder extends Seeder
                 'section'=>'SS201',
                 'due_date'=>'2023-03-16',
                 'team'=>'Abyss',
-                'advisor'=>'Jayvee Cabardo',
-                'notes'=>'Test Notes',
+                'advisor'=>'Jayvee Cabardo'
             ],
         ];
 
