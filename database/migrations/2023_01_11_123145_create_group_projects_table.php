@@ -23,7 +23,6 @@ return new class extends Migration
             $table->date('due_date');
             $table->string('team');
             $table->string('advisor');
-            $table->text('notes');
             $table->timestamps();
         });
     }
