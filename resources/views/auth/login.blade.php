@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name', 'TAPM') }}</title>
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/css/app.css','resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
 <div class="bg-image" style="background-image: url('/storage/apc-building.png'); height: 100vh">

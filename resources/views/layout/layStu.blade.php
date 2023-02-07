@@ -10,12 +10,13 @@
     <title>{{ config('app.name', 'TAPM') }}</title>
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/css/app.css','resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
+<div class="bg-image" style="background-image: url('/storage/test-bg.png'); height: 100vh">
     <div id='app'>    
         <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color: #FFD700;">
-            <div class="container">
+            <div class="container-fluid">
                 <a class="navbar-brand fw-bold" href="{{ url('/home') }}">
                     {{ config('app.name', 'TAPM') }}
                 </a>
@@ -45,6 +46,6 @@
     <main class="py-20">
         @yield('page-content')
     </main>
-    
+</div>
 </body>
 </html>

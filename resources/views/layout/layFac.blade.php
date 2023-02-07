@@ -10,12 +10,18 @@
     <title>{{ config('app.name', 'TAPM-Faculty') }}</title>
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/css/app.css','resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
+<div class="bg-image" style="background-image: url('/storage/test-bg.png'); height: 100vh">
     <div id='app'>    
         <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color: #FFD700;">
-            <div class="container">
+            <div class="container-fluid">
+              {{-- <div>
+              <button class="fa fa-bell">
+
+              </button>
+              </div> --}}
                 <a class="navbar-brand fw-bold" href="{{ url('faculty/home') }}">
                     {{ config('app.name', 'TAPM') }}
                 </a>
@@ -59,7 +65,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <form method="POST" action="{{ route('faculty/project') }}">
+              <form method="POST" action="{{ route('faculty/home') }}">
                 @csrf 
                 <div class="row mb-4">
                   <div class="col">
@@ -121,11 +127,6 @@
                   </div>
                 </div>
       
-                <div class="form-outline mb-4">
-                  <label class="form-label">{{ __('Additional information') }}</label>
-                  <textarea id="notes" class="form-control" rows="4" name="notes"></textarea>
-                </div>
-              
                 </div>
                 <div class="modal-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Create Project') }}</button>
@@ -137,5 +138,6 @@
     <main class="py-20">
         @yield('page-content')
     </main>
+  </div>
 </body>
 </html>
