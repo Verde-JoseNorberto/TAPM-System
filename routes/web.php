@@ -48,19 +48,25 @@ Route::middleware(['auth', 'user-access:office'])->group(function () {
 });
 
 Route::controller(GroupProjectController::class)->group(function() {
-    Route::post('faculty/project', 'groupStore')->name('faculty/project');
+    Route::post('faculty/home', 'groupStore')->name('faculty/project');
     Route::post('/project', 'projectStore')->name('student/project');
-    // Route::post('/project', 'taskStore')->name('student/project');
+    Route::post('/task', 'taskStore')->name('student/task');
 
     Route::get('faculty/project/{id}/edit', 'edit')->name('faculty/edit');
-    Route::put('faculty/project/{id}', 'update');
+    Route::put('faculty/home', 'update');
 
     Route::get('/project/{id}', 'show');
     Route::get('/faculty/project/{id}', 'show');
     Route::get('/client/project/{id}', 'show');
     Route::get('/office/project/{id}', 'show');
 
-    Route::delete('faculty/project', 'destroy');
+    Route::get('/project/{id}/task', 'taskShow');
+    Route::get('/faculty/project/{id}/task', 'taskShow');
+    Route::get('/client/project/{id}/task', 'taskShow');
+    Route::get('/office/project/{id}/task', 'taskShow');
+
+
+    Route::delete('faculty/home', 'destroy');
     Route::delete('student/project', 'destroy');
 });
 
