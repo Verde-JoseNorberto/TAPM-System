@@ -17,10 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('project_title');
             $table->string('project_category');
-            $table->string('project_phase');
+            $table->string('subject');
             $table->string('year_term');
             $table->string('section');
-            $table->date('due_date');
             $table->string('team');
             $table->string('advisor');
             $table->timestamps();
