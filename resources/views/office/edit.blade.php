@@ -1,4 +1,5 @@
-@extends('layout.layFac')
+@extends('layout.layDir')
+
 @section('page-content')
 <div class="container my-4">
   <div class="row-cols-md-2 d-flex justify-content-center">
@@ -7,7 +8,7 @@
         {{ __('Edit Project') }}
       </div>
       <div class="card-body">
-        <form method="PATCH" action="{{ route('faculty/home') }}">
+        <form method="PATCH" action="{{ route('office/home') }}">
           @csrf
             <div class="row mb-4">
               <div class="col">

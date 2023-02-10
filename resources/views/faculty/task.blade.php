@@ -1,4 +1,4 @@
-@extends('layout.layStu')
+@extends('layout.layFac')
 
 @section('page-content')
 <div class="container my-4">
@@ -6,10 +6,8 @@
         <div class="row">
             <div class="card h-100">
                 <div class="card-body">
-                  <a class="btn btn-outline-dark text-decoration-none" href="{{ URL::to('project/' . $group_projects->id) }}">
+                  <a class="btn btn-outline-dark text-decoration-none" href="{{ URL::to('faculty/project/' . $group_projects->id) }}">
                     {{ __('Project Page') }}</a>
-                  <a class="btn btn-outline-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    {{ __('Add Task') }}</a>
                 </div>
 
             </div>
@@ -35,7 +33,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <form method="POST" action="{{ route('student/task') }}">
+              <form method="POST" action="{{ route('faculty/task') }}">
                 @csrf 
                 <div class="row mb-4">
                   <div class="col">

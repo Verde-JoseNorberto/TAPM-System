@@ -69,40 +69,34 @@
                       <input id="project_title" type="text" class="form-control" name="project_title">
                     </div>
                   </div>
+                </div>
+                
+                <div class="row mb-4">
                   <div class="col">
                     <div class="form-outline">
                       <label class="form-label">{{ __('Project Category') }}</label>
                       <input id="project_category" type="text" class="form-control" name="project_category">
                     </div>
                   </div>
-                </div>
-                
-                <div class="row mb-4">
                   <div class="col">
                     <div class="form-outline">
                       <label class="form-label">{{ __('Progress Phase') }}</label>
                       <input id="project_phase" type="text" class="form-control" name="project_phase">
                     </div>
                   </div>
+                </div>
+                
+                <div class="row mb-4">
                   <div class="col">
                     <div class="form-outline">
                       <label class="form-label">{{ __('Year & Term') }}</label>
                       <input id="year_term" type="text" class="form-control" name="year_term">
                     </div>
                   </div>
-                </div>
-                
-                <div class="row mb-4">
                   <div class="col">
                     <div class="form-outline">
                       <label class="form-label">{{ __('Section') }}</label>
                       <input id="section" type="text" class="form-control" name="section">
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-outline">
-                      <label class="form-label">{{ __('Due Date') }}</label>
-                      <input id="due_date" type="date" class="form-control" name="due_date">
                     </div>
                   </div>
                 </div>
@@ -120,11 +114,6 @@
                       <input id="advisor" type="text" class="form-control" name="advisor">
                     </div>
                   </div>
-                </div>
-      
-                <div class="form-outline mb-4">
-                  <label class="form-label">{{ __('Additional information') }}</label>
-                  <textarea id="notes" class="form-control" rows="4" name="notes"></textarea>
                 </div>
               
                 </div>

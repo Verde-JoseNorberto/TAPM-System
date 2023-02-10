@@ -74,40 +74,34 @@
                       <input id="project_title" type="text" class="form-control" name="project_title">
                     </div>
                   </div>
+                </div>
+                
+                <div class="row mb-4">
                   <div class="col">
                     <div class="form-outline">
                       <label class="form-label">{{ __('Project Category') }}</label>
                       <input id="project_category" type="text" class="form-control" name="project_category">
                     </div>
                   </div>
-                </div>
-                
-                <div class="row mb-4">
                   <div class="col">
                     <div class="form-outline">
                       <label class="form-label">{{ __('Progress Phase') }}</label>
                       <input id="project_phase" type="text" class="form-control" name="project_phase">
                     </div>
                   </div>
+                </div>
+                
+                <div class="row mb-4">
                   <div class="col">
                     <div class="form-outline">
                       <label class="form-label">{{ __('Year & Term') }}</label>
                       <input id="year_term" type="text" class="form-control" name="year_term">
                     </div>
                   </div>
-                </div>
-                
-                <div class="row mb-4">
                   <div class="col">
                     <div class="form-outline">
                       <label class="form-label">{{ __('Section') }}</label>
                       <input id="section" type="text" class="form-control" name="section">
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-outline">
-                      <label class="form-label">{{ __('Due Date') }}</label>
-                      <input id="due_date" type="date" class="form-control" name="due_date">
                     </div>
                   </div>
                 </div>
@@ -126,7 +120,7 @@
                     </div>
                   </div>
                 </div>
-      
+                
                 </div>
                 <div class="modal-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Create Project') }}</button>

@@ -5,19 +5,18 @@
   <div class="col my-4">
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <br><h2>{{ $group_projects->project_title }}</h2>
-                <strong>Team:</strong> {{ $group_projects->team }}<br>
-                <strong>Advisor:</strong> {{ $group_projects->advisor }}
-            </div>
+          <h2>{{ $group_projects->project_title }}</h2>
+          <strong>Team:</strong> {{ $group_projects->team }}<br>
+          <strong>Advisor:</strong> {{ $group_projects->advisor }}
         </div>
     </div>
   </div>
     <div class="row">
       <div class="card h-100">
           <div class="card-body">
-            <a class="btn btn-outline-dark text-decoration-none" href="{{ URL::to('facuulty/project/' . $group_projects->id) }}">
+            <a class="btn btn-outline-dark text-decoration-none" href="{{ URL::to('faculty/project/' . $group_projects->id) }}">
               {{ __('Taskboard') }}</a>
+              
           </div>
       </div>
     </div>
