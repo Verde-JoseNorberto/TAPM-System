@@ -20,8 +20,6 @@ use App\Http\Controllers\TaskController;
 Route::get('/', function () {
     if (auth()->user()->type == 'faculty') {
         return redirect()->route('faculty/home');
-    }else if (auth()->user()->type == 'client') {
-        return redirect()->route('client/home');
     }else if (auth()->user()->type == 'office') {
         return redirect()->route('office/home');
     }else{
@@ -38,10 +36,6 @@ Route::middleware(['auth', 'user-access:faculty'])->group(function () {
     Route::get('/faculty/home', [App\Http\Controllers\UserController::class, 'facultyHome'])->name('faculty/home');
     Route::get('/faculty/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('faculty/home');
 });
-Route::middleware(['auth', 'user-access:client'])->group(function () {
-    Route::get('/client/home', [App\Http\Controllers\UserController::class, 'clientHome'])->name('client/home');
-    Route::get('/client/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('client/home');
-});
 Route::middleware(['auth', 'user-access:office'])->group(function () {
     Route::get('/office/home', [App\Http\Controllers\UserController::class, 'officeHome'])->name('office/home');
     Route::get('/office/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('office/home');
@@ -57,12 +51,10 @@ Route::controller(GroupProjectController::class)->group(function() {
 
     Route::get('/project/{id}', 'show');
     Route::get('/faculty/project/{id}', 'show');
-    Route::get('/client/project/{id}', 'show');
     Route::get('/office/project/{id}', 'show');
 
     Route::get('/project/{id}/task', 'taskShow');
     Route::get('/faculty/project/{id}/task', 'taskShow');
-    Route::get('/client/project/{id}/task', 'taskShow');
     Route::get('/office/project/{id}/task', 'taskShow');
 
 
