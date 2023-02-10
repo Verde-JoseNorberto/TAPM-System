@@ -64,19 +64,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="row mb-0">
-                                    {{-- @if (Route::has('password.request'))
-                                        <a class="fw-bold text-center" href="{{ route('password.request') }}">
-                                            {{ __('Forgot Your Password?') }}
-                                        </a>
-                                    @endif --}}
-                                    @if (Route::has('register'))
-                                        <a class="fw-bold text-center" href="{{ route('register') }}">
-                                            {{ __('Create Account') }}
-                                        </a>
-                                    @endif
-                                </div>
                             </form>
                         </div>
                     </div>
