@@ -23,9 +23,6 @@ class GroupProjectController extends Controller
         if (auth()->user()->type == 'faculty') {
             return view('faculty/home', compact(['group_projects']));
             return view('faculty/project', compact(['group_projects', 'projects', 'tasks']));
-        }else if (auth()->user()->type == 'client') {
-            return view('client/home', compact(['group_projects']));
-            return view('client/project', compact(['group_projects', 'projects', 'tasks']));
         }else if (auth()->user()->type == 'office') {
             return view('office/home', compact(['group_projects']));
             return view('office/project', compact(['group_projects', 'projects', 'tasks']));
@@ -33,15 +30,6 @@ class GroupProjectController extends Controller
             return view('student/home', compact(['group_projects']));
             return view('student/project', compact(['group_projects', 'projects', 'tasks']));
         }
-    }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -55,25 +43,15 @@ class GroupProjectController extends Controller
         $request->validate([
             'project_title'=>'required',
             'project_category'=>'required',
-            'project_phase'=>'required',
+            'subject'=>'required',
             'year_term'=>'required',
             'section'=>'required',
-            'due_date'=>'required',
             'team'=>'required',
             'advisor'=>'required',
         ]);
 
-        $add = new GroupProject;
-        $add->project_title = $request->project_title;
-        $add->project_category = $request->project_category;
-        $add->project_phase = $request->project_phase;
-        $add->year_term = $request->year_term;
-        $add->section = $request->section;
-        $add->due_date = $request->due_date;
-        $add->team = $request->team;
-        $add->advisor = $request->advisor;
-        $add->save();
-        return view('faculty/project')->with('group_projects', $add);
+        GroupProject::create($request->all());
+        return redirect()->route('faculty/home')->with('success', 'Created Project Successfully.');
     }
 
     public function projectStore(Request $request)
@@ -84,12 +62,8 @@ class GroupProjectController extends Controller
             'description'=>'required',
         ]);
 
-        $post = new Project;
-        $post->title = $request->title;
-        $post->file = $request->file;
-        $post->description = $request->description;
-        $post->save();
-        return view('student/project')->with('projects', $add);
+        Project::create($request->all());
+        return redirect()->route('student/project')->with('success', 'Posted Project Successfully.');
     }
 
     public function taskStore(Request $request)
@@ -100,12 +74,8 @@ class GroupProjectController extends Controller
             'due_date'=>'required',
         ]);
 
-        $tell = new Task;
-        $tell->title = $request->title;
-        $tell->content = $request->content;
-        $tell->due_date = $request->due_date;
-        $tell->save();
-        return view('student/project')->with('tasks', $add);
+        Task::create($request->all());
+        return redirect()->route('student/task')->with('success', 'Posted Project Successfully.');
     }
 
     /**
@@ -122,12 +92,23 @@ class GroupProjectController extends Controller
         
         if (auth()->user()->type == 'faculty') {
             return view('faculty/project', compact(['group_projects', 'projects', 'tasks']));
-        }else if (auth()->user()->type == 'client') {
-            return view('client/project', compact(['group_projects', 'projects', 'tasks']));
         }else if (auth()->user()->type == 'office') {
             return view('office/project', compact(['group_projects', 'projects', 'tasks']));
         }else{
             return view('student/project', compact(['group_projects', 'projects', 'tasks']));
+        }
+    }
+
+    public function taskShow(GroupProject $group_projects, Project $projects, Task $tasks, $id)
+    {
+        $tasks = Task::find($id);
+        
+        if (auth()->user()->type == 'faculty') {
+            return view('faculty/task', compact(['group_projects', 'projects', 'tasks']));
+        }else if (auth()->user()->type == 'office') {
+            return view('office/task', compact(['group_projects', 'projects', 'tasks']));
+        }else{
+            return view('student/task', compact(['group_projects', 'projects', 'tasks']));
         }
     }
 
@@ -151,7 +132,7 @@ class GroupProjectController extends Controller
      * @param  \App\Models\GroupProject  $groupProject
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, GroupProject $group_projects, $id)
+    public function update(Request $request, GroupProject $group_projects)
     {
         $group_projects = GroupProject::find($id);
 
@@ -161,23 +142,13 @@ class GroupProjectController extends Controller
             'project_phase'=>'required',
             'year_term'=>'required',
             'section'=>'required',
-            'due_date'=>'required',
             'team'=>'required',
             'advisor'=>'required'
         ]);
         
-        $group_projects = GroupProject::find($id);
+        $group_projects->update($request->all());
 
-        $group_projects->project_title = $request->project_title;
-        $group_projects->project_category = $request->project_category;
-        $group_projects->project_phase = $request->project_phase;
-        $group_projects->year_term = $request->year_term;
-        $group_projects->section = $request->section;
-        $group_projects->due_date = $request->due_date;
-        $group_projects->team = $request->team;
-        $group_projects->advisor = $request->advisor;
-        $group_projects->save();
-        return view('faculty/project')->with('group_projects', $group_projects);
+        return view('faculty/home');
     }
 
     /**
@@ -191,16 +162,16 @@ class GroupProjectController extends Controller
         $group_projects = GroupProject::find($id);
         $group_projects->delete();
 
-        return Redirect::to('/');
+        return redirect()->route('faculty.home');
 
         $projects = Project::find($id);
         $projects->delete();
 
-        return Redirect::to('/project/{id}');
+        return redirect()->route('student.project');
 
         $tasks = Tasks::find($id);
         $tasks->delete();
 
-        return Redirect::to('/project/{id}');
+        return redirect()->route('student.project');
     }
 }
