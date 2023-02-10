@@ -30,15 +30,9 @@ class DatabaseSeeder extends Seeder
                'password'=> bcrypt('admin123'),
             ],
             [
-               'name'=>'Client User',
-               'email'=>'user@client.com',
-               'type'=>2,
-               'password'=> bcrypt('admin123'),
-            ],
-            [
                 'name'=>'Project Development Office',
                 'email'=>'user@office.com',
-                'type'=>3,
+                'type'=>2,
                 'password'=> bcrypt('admin123'),
              ],
         ];
@@ -51,20 +45,18 @@ class DatabaseSeeder extends Seeder
             [
                 'project_title'=>'Test Title 1',
                 'project_category'=>'Test Category 1',
-                'project_phase'=>'Test Phase 1',
+                'subject'=>'SNTSDEV',
                 'year_term'=>'2nd Year 3rd Term',
                 'section'=>'SS201',
-                'due_date'=>'2023-03-16',
                 'team'=>'Abyss',
                 'advisor'=>'Jayvee Cabardo',
             ],
             [
                 'project_title'=>'Test Title 2',
                 'project_category'=>'Test Category 2',
-                'project_phase'=>'Test Phase 2',
+                'subject'=>'SCSPROG',
                 'year_term'=>'2nd Year 3rd Term',
                 'section'=>'SS201',
-                'due_date'=>'2023-03-16',
                 'team'=>'Abyss',
                 'advisor'=>'Jayvee Cabardo'
             ],
