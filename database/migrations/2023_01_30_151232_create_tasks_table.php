@@ -14,10 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('tasks', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('group_project_id')->unsigned();
+            $table->integer('parent_id')->unsigned()->nullable();
             $table->string('title');
             $table->string('content');
             $table->string('due_date');
+            $table->string('status');
             $table->timestamps();
         });
     }
