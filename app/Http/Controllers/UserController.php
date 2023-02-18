@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\GroupProject;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -35,16 +35,6 @@ class UserController extends Controller
     public function facultyHome()
     {
         return view('faculty/home');
-    }
-
-    /**
-     * Show the Client dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function clientHome()
-    {
-        return view('client/home');
     }
     /**
      * Show the Project Development Director dashboard.
