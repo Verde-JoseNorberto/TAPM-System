@@ -3,30 +3,29 @@
 @section('page-content')
 <div class="container my-4">
     <div class="col my-4">
-        <div class="row">
-            <div class="card h-100">
-                <div class="card-body">
-                  <a class="btn btn-outline-dark text-decoration-none" href="{{ URL::to('project/' . $group_projects->id) }}">
-                    {{ __('Project Page') }}</a>
-                  <a class="btn btn-outline-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    {{ __('Add Task') }}</a>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    @foreach($tasks as $key => $task)
-    <div class="col flex my-4">
-      <div class="row row-cols-1 row-cols-md-2 g-4">
-      <div class="card">
-        <div class="card-body">
-          <h3 class="card-title">{{ $tasks->title }}</h3>
-          <h6>{{ $tasks->content }}</h6>
-          <h6>{{ $tasks->due_date }}</h6>
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+            <br><h2>{{ $group_projects->title }}</h2>
+            <strong>Team:</strong> {{ $group_projects->team }}<br>
+            <strong>Advisor:</strong> {{ $group_projects->advisor }}
         </div>
       </div>
     </div>
-    @endforeach
+    <div class="col my-4">
+      <div class="card h-100">
+          <div class="card-body">
+            <a class="btn btn-outline-dark text-decoration-none" href="{{ URL::to('project/' . $group_projects->id) }}">
+              {{ __('Project Page') }}</a>
+            <a class="btn btn-outline-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              {{ __('Add Task') }}</a>
+          </div>
+
+      </div>
+    </div>
+    <div class="row">
+      @include('student.board', ['tasks' => $group_projects->tasks, 'group_project_id' => $group_projects->id])
+    </div>
+
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -45,6 +44,7 @@
                     </div>
                   </div>
                 </div>
+
                 <div class="row mb-4">
                   <div class="col">
                     <div class="form-outline">
@@ -53,6 +53,7 @@
                     </div>
                   </div>
                 </div>
+
                 <div class="row mb-4">
                   <div class="col">
                     <div class="form-outline">
@@ -61,6 +62,22 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="row mb-4">
+                  <div class="col">
+                    <div class="form-outline">
+                      <select id="status" type="date" class="form-select" name="status">
+                        <option selected>{{ __('Select Status') }}</option>
+                        <option value="To Do">{{ __('To Do') }}</option>
+                        <option value="In Progress">{{ __('In Progress') }}</option>
+                        <option value="Finished ">{{ __('Finished') }}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <input id="group_project_id" type="hidden" name="group_project_id" value="{{ $group_projects->id }}">
+
                 <div class="modal-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Create Task') }}</button>
                 </div>

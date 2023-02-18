@@ -7,10 +7,8 @@
         <div class="col flex">
             <div class="card h-100">
                 <div class="card-body">
-                    <h3 class="card-title">{{ $groupProject->project_title }}</h3>
-                    <h6>{{ $groupProject->project_category }}</h6>
+                    <h3 class="card-title">{{ $groupProject->title }}</h3>
                     <h6>{{ $groupProject->subject }}</h6>
-                    <h6>{{ $groupProject->year_term }}</h6>
                     <h6>{{ $groupProject->section }}</h6>
                     <h6>{{ $groupProject->team }}</h6>
                     <h6>{{ $groupProject->advisor }}</h6>

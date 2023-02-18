@@ -1,53 +1,50 @@
 @extends('layout.layStu')
 
 @section('page-content')
-<div class="row no-gutters fixed-bottom col-3">
+<div >
   @if ($message = Session::get('success'))
-  <div class="alert alert-success">
+  <div class="alert alert-success alert-dismissible fade show position-fixed" role="alert">
     <strong>{{ $message }}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
+  @endif
+  @if($errors->any())
+    <div class="alert alert-danger alert-dismissible fade show position-fixed" role="alert">
+      @foreach($errors->all() as $error)
+          <p>{{ $error }}</p>
+      @endforeach
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
   @endif
 </div>
 <div class="container my-4">
     <div class="col my-4">
-      <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <br><h2>{{ $group_projects->project_title }}</h2>
-                <strong>Team:</strong> {{ $group_projects->team }}<br>
-                <strong>Advisor:</strong> {{ $group_projects->advisor }}
-            </div>
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+            <br><h2>{{ $group_projects->title }}</h2>
+            <strong>Team:</strong> {{ $group_projects->team }}<br>
+            <strong>Advisor:</strong> {{ $group_projects->advisor }}
         </div>
       </div>
     </div>
-    <div class="row my-4">
-        <div class="card h-100">
-            <div class="card-body">
-              <div class="col-sm">
-              <a class="btn btn-outline-dark text-decoration-none" href="{{ URL::to('project/' . $group_projects->id . '/task') }}">
-                {{ __('Taskboard') }}</a>
-              <a class="btn btn-outline-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                {{ __('Add Updates') }}</a>
-              </div>
-              <div class="progress col-sm">
-                  <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
+    <div class="col my-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="col-sm">
+          <a class="btn btn-outline-dark text-decoration-none" href="{{ URL::to('project/' . $group_projects->id . '/task') }}">
+            {{ __('Taskboard') }}</a>
+          <a class="btn btn-outline-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#updateModal">
+            {{ __('Add Updates') }}</a>
+          </div>
+          
         </div>
+      </div>
     </div>
     <div class="row row-cols-1 row-cols-md-2 g-4">
-    @foreach($projects as $key => $project)
-    <div class="col flex my-2">
-      <div class="card">
-        <div class="card-body">
-          <h3 class="card-title">{{ $projects->title }}</h3>
-          <img src="{{ $projects->file }}">
-          <h6>{{ $projects->description }}</h6>
-        </div>
-      </div>
+      @include('student.post', ['projects' => $group_projects->projects, 'group_project_id' => $group_projects->id])
     </div>
-    @endforeach
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -55,7 +52,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <form method="POST" action="{{ route('student/project') }}">
+              <form method="POST" action="{{ route('student/project') }}" enctype="multipart/form-data">
                 @csrf 
                 <div class="row mb-4">
                   <div class="col">
@@ -65,6 +62,7 @@
                     </div>
                   </div>
                 </div>
+                
                 <div class="row mb-4">
                   <div class="col">
                     <div class="form-outline">
@@ -81,8 +79,10 @@
                       <textarea id="description" class="form-control" rows="4" name="description"></textarea>
                     </div>
                   </div>
-
                 </div>
+
+                <input id="group_project_id" type="hidden" name="group_project_id" value="{{ $group_projects->id }}">
+
                 <div class="modal-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Create Project') }}</button>
                 </div>

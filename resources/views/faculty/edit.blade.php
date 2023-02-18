@@ -1,5 +1,15 @@
 @extends('layout.layFac')
 @section('page-content')
+<div class="col-3">
+  @if($errors->any())
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      @foreach($errors->all() as $error)
+          <p>{{ $error }}</p>
+      @endforeach
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  @endif
+</div>
 <div class="container my-4">
   <div class="row-cols-md-2 d-flex justify-content-center">
     <div class="card">
@@ -7,37 +17,23 @@
         {{ __('Edit Project') }}
       </div>
       <div class="card-body">
-        <form method="PATCH" action="{{ route('faculty/home') }}">
+        <form method="POST" action="{{ route('faculty/home') }}">
           @csrf
+          @method('PUT')
             <div class="row mb-4">
               <div class="col">
                 <div class="form-outline">
                   <label class="form-label">{{ __('Project Title') }}</label>
-                  <input id="project_title" type="text" class="form-control" name="project_title" value="{{ $group_projects->project_title }}">
+                  <input id="title" type="text" class="form-control" name="title" value="{{ $group_projects->title }}">
                 </div>
               </div>
             </div>
             
             <div class="row mb-4">
-              <div class="col">
-                <div class="form-outline">
-                  <label class="form-label">{{ __('Project Category') }}</label>
-                  <input id="project_category" type="text" class="form-control" name="project_category" value="{{ $group_projects->project_category }}">
-                </div>
-              </div>
               <div class="col">
                 <div class="form-outline">
                   <label class="form-label">{{ __('Subject') }}</label>
-                  <input id="subject" type="text" class="form-control" name="subject" value="{{ $group_projects->project_phase }}">
-                </div>
-              </div>
-            </div>
-            
-            <div class="row mb-4">
-              <div class="col">
-                <div class="form-outline">
-                  <label class="form-label">{{ __('Year & Term') }}</label>
-                  <input id="year_term" type="text" class="form-control" name="year_term" value="{{ $group_projects->year_term }}">
+                  <input id="subject" type="text" class="form-control" name="subject" value="{{ $group_projects->subject }}">
                 </div>
               </div>
               <div class="col">
