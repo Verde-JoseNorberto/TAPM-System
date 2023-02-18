@@ -18,23 +18,23 @@ class DatabaseSeeder extends Seeder
     {
         $users = [
             [
-               'name'=>'Student User',
-               'email'=>'user@student.com',
-               'type'=>0,
-               'password'=> bcrypt('admin123'),
-            ],
-            [
-               'name'=>'Faculty User',
-               'email'=>'user@faculty.com',
-               'type'=> 1,
-               'password'=> bcrypt('admin123'),
-            ],
-            [
                 'name'=>'Project Development Office',
                 'email'=>'user@office.com',
+                'type'=>0,
+                'password'=> bcrypt('admin123'),
+            ],
+            [
+                'name'=>'Faculty User',
+                'email'=>'user@faculty.com',
+                'type'=> 1,
+                'password'=> bcrypt('admin123'),
+            ],
+            [
+                'name'=>'Student User',
+                'email'=>'user@student.com',
                 'type'=>2,
                 'password'=> bcrypt('admin123'),
-             ],
+            ],
         ];
     
         foreach ($users as $key => $user) {
@@ -43,19 +43,17 @@ class DatabaseSeeder extends Seeder
 
         $group_projects = [
             [
-                'project_title'=>'Test Title 1',
-                'project_category'=>'Test Category 1',
+                'user_id'=>'1',
+                'title'=>'Test Title 1',
                 'subject'=>'SNTSDEV',
-                'year_term'=>'2nd Year 3rd Term',
                 'section'=>'SS201',
                 'team'=>'Abyss',
                 'advisor'=>'Jayvee Cabardo',
             ],
             [
-                'project_title'=>'Test Title 2',
-                'project_category'=>'Test Category 2',
+                'user_id'=>'1',
+                'title'=>'Test Title 2',
                 'subject'=>'SCSPROG',
-                'year_term'=>'2nd Year 3rd Term',
                 'section'=>'SS201',
                 'team'=>'Abyss',
                 'advisor'=>'Jayvee Cabardo'
