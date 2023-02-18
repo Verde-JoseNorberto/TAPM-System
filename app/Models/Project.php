@@ -18,8 +18,33 @@ class Project extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_id', 
+        'group_project_id', 
+        'parent_id',
         'title',
         'file',
         'description'
     ];
+
+    /**
+     * The belongs to Relationship
+     *
+     * @var array
+     */
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
+    /**
+     * The has Many Relationship
+     *
+     * @var array
+     */
+
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class)->whereNull('parent_id');
+    }
 }

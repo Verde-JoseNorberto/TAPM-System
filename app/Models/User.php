@@ -39,17 +39,15 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * The attributes that should be cast.
+     * The value of attributes that should have user access.
      *
-     * @var array<string, string>
+     * 
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+
     protected function type(): Attribute
     {
         return new Attribute(
-            get: fn ($value) =>  ["student", "faculty", "office"][$value],
+            get: fn ($value) =>  ["office", "faculty", "student"][$value],
         );
     }
 }

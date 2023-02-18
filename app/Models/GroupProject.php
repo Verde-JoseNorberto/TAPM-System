@@ -18,14 +18,36 @@ class GroupProject extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'project_title',
-        'project_category',
-        'project_phase',
-        'year_term',
+        'user_id',
+        'title',
+        'subject',
         'section',
-        'due_date',
         'team',
-        'advisor',
-        'notes'
+        'advisor'
     ];
+
+     /**
+     * The belongs to Relationship
+     *
+     * @var array
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * The has Many Relationship
+     *
+     * @var array
+     */
+    
+    public function projects()
+    {
+        return $this->hasMany(Project::class)->whereNull('parent_id');
+    }
+    public function tasks()
+    {
+        return $this->hasMany(Task::class)->whereNull('parent_id');
+    }
 }

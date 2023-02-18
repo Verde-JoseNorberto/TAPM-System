@@ -18,8 +18,23 @@ class Task extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_id', 
+        'group_project_id', 
+        'parent_id',
         'title',
         'content',
         'due_date',
+        'status',
     ];
+
+    /**
+     * The belongs to Relationship
+     *
+     * @var array
+     */
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
