@@ -28,10 +28,6 @@
 
                 <ul class="navbar-nav ms-auto">
                   <div>
-                    <a class="btn btn-outline-secondary" href="{{ route('faculty/group') }}">
-                        {{__('View Groups')}}
-                    </a>
-
                     <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                       {{__('Add Project')}}
                     </button>
@@ -71,7 +67,7 @@
                   <div class="col">
                     <div class="form-outline">
                       <label class="form-label">{{ __('Project Title') }}</label>
-                      <input id="project_title" type="text" class="form-control" name="project_title">
+                      <input id="title" type="text" class="form-control" name="title">
                     </div>
                   </div>
                 </div>
@@ -79,23 +75,8 @@
                 <div class="row mb-4">
                   <div class="col">
                     <div class="form-outline">
-                      <label class="form-label">{{ __('Project Category') }}</label>
-                      <input id="project_category" type="text" class="form-control" name="project_category">
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-outline">
-                      <label class="form-label">{{ __('Progress Phase') }}</label>
-                      <input id="project_phase" type="text" class="form-control" name="project_phase">
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="row mb-4">
-                  <div class="col">
-                    <div class="form-outline">
-                      <label class="form-label">{{ __('Year & Term') }}</label>
-                      <input id="year_term" type="text" class="form-control" name="year_term">
+                      <label class="form-label">{{ __('Subject') }}</label>
+                      <input id="subject" type="text" class="form-control" name="subject">
                     </div>
                   </div>
                   <div class="col">
