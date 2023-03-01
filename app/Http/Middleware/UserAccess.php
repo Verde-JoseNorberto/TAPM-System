@@ -20,6 +20,6 @@ class UserAccess
             return $next($request);
         }
           
-        return response()->json(['You do not have permission to access for this page.']);
+        return abort(403, 'You do not have permission to access this page.');
     }
 }
