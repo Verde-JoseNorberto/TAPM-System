@@ -13,17 +13,17 @@
     @vite(['resources/css/app.css','resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
-<div class="bg-image" style="background-image: url('/storage/test-bg.png'); height: 100vh">
+<div class="bg-image" style="background-image: url('/storage/test.png'); height: 100vh">
     <div id='app'>    
-        <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color: #FFD700;">
+        <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color: #043877;">
             <div class="container-fluid">
-                <a class="navbar-brand fw-bold" href="{{ url('/home') }}">
+                <a class="navbar-brand fw-bold text-white" href="{{ url('/home') }}">
                     {{ config('app.name', 'TAPM') }}
                 </a>
                 
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ Auth::user()->name }}
                         </a>
 

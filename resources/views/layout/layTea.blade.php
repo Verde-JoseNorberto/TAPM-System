@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'TAPM-Faculty') }}</title>
+    <title>{{ config('app.name', 'TAPM-Teacher') }}</title>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css','resources/sass/app.scss', 'resources/js/app.js'])
@@ -17,7 +17,7 @@
   <div id='app'>    
       <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color: #043877;">
           <div class="container-fluid">
-              <a class="navbar-brand fw-bold text-white" href="{{ url('faculty/home') }}" >
+              <a class="navbar-brand fw-bold text-white" href="{{ url('teacher/home') }}" >
                   {{ config('app.name', 'TAPM') }}
               </a>
 
@@ -56,7 +56,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="{{ route('faculty/home') }}">
+        <form method="POST" action="{{ route('teacher/home') }}">
           @csrf 
           <div class="row mb-4">
             <div class="col">
