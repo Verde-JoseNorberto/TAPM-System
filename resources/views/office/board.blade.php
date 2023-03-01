@@ -35,7 +35,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="{{ route('student/board') }}">
+        <form method="POST" action="{{ route('office/board') }}">
           @csrf 
           @method("PUT")
 
@@ -104,7 +104,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="{{ route('student/board') }}">
+        <form method="POST" action="{{ route('office/board') }}">
           @csrf
           @method("DELETE")
           <h4>Are you sure you want to Delete Task: {{ $task->title }}?</h4>

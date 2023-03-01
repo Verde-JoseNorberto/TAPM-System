@@ -11,8 +11,8 @@
       <h6>{{ $project->description }}</h6>
     </div>
     <div class="card-footer">
-      @include('faculty.feedback', ['feedbacks' => $project->feedbacks, 'project_id' => $project->id])
-      <form action="{{ route('faculty/feedback') }}" method="POST" class="d-flex justify-content-between">
+      @include('office.feedback', ['feedbacks' => $project->feedbacks, 'project_id' => $project->id])
+      <form action="{{ route('office/feedback') }}" method="POST" class="d-flex justify-content-beetween">
       @csrf
         <textarea class="form-control" rows="1" id="comment" name="comment" placeholder="Add Feedback"></textarea>
         <input id="project_id" type="hidden" name="project_id" value="{{ $project->id }}">

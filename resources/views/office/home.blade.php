@@ -1,15 +1,15 @@
-@extends('layout.layDir')
+@extends('layout.layOff')
 
 @section('page-content')
 <div class="col-3">
     @if ($message = Session::get('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <div class="alert alert-success alert-dismissible fade show position-fixed" role="alert">
       <strong>{{ $message }}</strong>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     @endif
     @if($errors->any())
-      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <div class="alert alert-danger alert-dismissible fade show position-fixed" role="alert">
         @foreach($errors->all() as $error)
             <p>{{ $error }}</p>
         @endforeach
@@ -28,30 +28,30 @@
                     <h6>{{ $groupProject->section }}</h6>
                     <h6>{{ $groupProject->team }}</h6>
                     <h6>{{ $groupProject->advisor }}</h6>
-                    <div class="dropdown">
-                        <button id="dropdownMenu" class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ __('Actions') }}
-                        </button>
-                    
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+                    <div class="dropdown position-absolute top-0 end-0 my-1 mx-2">
+                      <i id="dropdownMenu" class="fa fa-ellipsis-v" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
                             <li><a class="dropdown-item" href="{{ URL::to('office/project/' . $groupProject->id) }}">
                                 {{ __('Show')}}
                             </a></li>
-                            <li>
-                                <a class="dropdown-item" href="{{ URL::to('office/project/' . $groupProject->id . '/edit') }}">
+                            <li><a href="#edit{{$groupProject->id}}" class="dropdown-item" data-bs-toggle="modal">
                                 {{ __('Edit')}}
                             </a></li>
                             <li>
-                                <form method="DELETE" action="{{ route('office/home') }}" >
+                                <form method="POST" action="{{ route('office/home') }}">
                                     @csrf
+                                    @method("DELETE")
+                                    <input type="hidden" name="id" id="id" value="{{ $groupProject->id }}">
                                     <button type="submit" class="dropdown-item">{{ __('Delete')}}</button>
                                 </form>
-                            </li>
+                            </li>  
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
+        @include('office.edit')
         @endforeach
     </div>
 </div>
