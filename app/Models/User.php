@@ -47,7 +47,22 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function type(): Attribute
     {
         return new Attribute(
-            get: fn ($value) =>  ["office", "faculty", "student"][$value],
+            get: fn ($value) =>  ["office", "teacher", "adviser", "student"][$value],
         );
     }
-}
+    /**
+     * The has Many Relationship
+     *
+     * @var array
+     */
+    
+    public function group_projects()
+    {
+        return $this->hasMany(GroupProject::class, 'user_id');
+    }
+    
+    public function members()
+    {
+        return $this->hasMany(Member::class);
+    }
+} 

@@ -22,6 +22,10 @@ return new class extends Migration
             $table->string('team');
             $table->string('advisor');
             $table->timestamps();
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 

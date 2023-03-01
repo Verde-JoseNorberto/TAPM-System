@@ -18,50 +18,45 @@ class DatabaseSeeder extends Seeder
     {
         $users = [
             [
-                'name'=>'Project Development Office',
+                'name'=>'Jayvee Cabardo',
                 'email'=>'user@office.com',
                 'type'=>0,
                 'password'=> bcrypt('admin123'),
             ],
             [
-                'name'=>'Faculty User',
-                'email'=>'user@faculty.com',
-                'type'=> 1,
+                'name'=>'Manuel Sebastian Sanchez',
+                'email'=>'user@teacher.com',
+                'type'=>1,
                 'password'=> bcrypt('admin123'),
             ],
             [
-                'name'=>'Student User',
-                'email'=>'user@student.com',
-                'type'=>2,
+                'name'=>'Juan Dela Cruz',
+                'email'=>'user@faculty.com',
+                'type'=> 2,
+                'password'=> bcrypt('admin123'),
+            ],
+            [
+                'name'=>'Jose Norberto Verde',
+                'email'=>'verde@student.com',
+                'type'=>3,
+                'password'=> bcrypt('admin123'),
+            ],
+            [
+                'name'=>'Noreen Keziah Sioco',
+                'email'=>'sioco@student.com',
+                'type'=>3,
+                'password'=> bcrypt('admin123'),
+            ],
+            [
+                'name'=>'Mark Gerald Giba',
+                'email'=>'giba@student.com',
+                'type'=>3,
                 'password'=> bcrypt('admin123'),
             ],
         ];
     
         foreach ($users as $key => $user) {
             User::create($user);
-        }
-
-        $group_projects = [
-            [
-                'user_id'=>'1',
-                'title'=>'Test Title 1',
-                'subject'=>'SNTSDEV',
-                'section'=>'SS201',
-                'team'=>'Abyss',
-                'advisor'=>'Jayvee Cabardo',
-            ],
-            [
-                'user_id'=>'1',
-                'title'=>'Test Title 2',
-                'subject'=>'SCSPROG',
-                'section'=>'SS201',
-                'team'=>'Abyss',
-                'advisor'=>'Jayvee Cabardo'
-            ],
-        ];
-
-        foreach ($group_projects as $key => $group_projects) {
-            GroupProject::create($group_projects);
         }
     }
 }
