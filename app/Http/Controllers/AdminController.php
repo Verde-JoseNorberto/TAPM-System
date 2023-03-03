@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Member;
 use App\Models\Task;
 use App\Models\Project;
 use App\Models\GroupProject;
@@ -86,17 +87,6 @@ class AdminController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -121,7 +111,65 @@ class AdminController extends Controller
         $users->type = $request->input('type');
         $users->save();
 
+        return redirect()->back()->with('success', 'Updated User Successfully');
+    }
+    public function groupUpdate(Request $request, GroupProject $group_projects)
+    {
+        $request->validate([
+            'id'=>'required',
+            'title'=>'required',
+            'subject'=>'required',
+            'section'=>'required',
+            'team'=>'required',
+            'advisor'=>'required'
+        ]);
+
+        $id = $request->input('id');
+        $group_projects = GroupProject::find($id);
+        $group_projects->title = $request->input('title');
+        $group_projects->subject = $request->input('subject');
+        $group_projects->section = $request->input('section');
+        $group_projects->team = $request->input('team');
+        $group_projects->advisor = $request->input('advisor');
+        $group_projects->save();
+
+        return redirect()->back()->with('success', 'Updated Group Project Successfully');
+    }
+    public function taskUpdate(Request $request, Task $tasks)
+    {
+        $request->validate([
+            'id'=>'required',
+            'title'=>'required',
+            'content'=>'required',
+            'due_date'=>'required',
+            'status'=>'required',
+            'group_project_id'=>'required'
+        ]);
+
+        $id = $request->input('id');
+        $tasks = Task::find($id);
+        $tasks->title = $request->input('title');
+        $tasks->content = $request->input('content');
+        $tasks->due_date = $request->input('due_date');
+        $tasks->status = $request->input('status');
+        $tasks->save();
+
         return redirect()->back()->with('success', 'Updated Task Successfully');
+    }
+    public function feedbackUpdate(Request $request, Feedback $feedbacks)
+    {
+        $request->validate([
+            'id'=>'required',
+            'comment'=>'required',
+            'project_id'=>'required'
+        ]);
+
+        $id = $request->input('id');
+        $feedbacks = Feedback::find($id);
+        $feedbacks->comment = $request->input('comment');
+        $feedbacks->save();
+
+        return redirect()->back()->with('success', 'Updated Feedback Successfully');
     }
 
     /**
@@ -130,6 +178,13 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function userDestroy(Request $request, User $users)
+    {
+        $id = $request->input('id');
+        User::find($id)->delete();
+
+        return redirect()->back()->with('success', 'Deleted Group Project Successfully');
+    }
     public function groupDestroy(Request $request, GroupProject $group_projects)
     {
         $id = $request->input('id');
