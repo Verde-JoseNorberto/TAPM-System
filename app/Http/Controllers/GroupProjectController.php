@@ -67,7 +67,7 @@ class GroupProjectController extends Controller
         $members->user_id = auth()->user()->id;
         $members->save();
         
-        return redirect()->back()->with('success', 'Created Group Project Successfully.');
+        return redirect()->back()->with('success', 'Created Group Successfully.');
     }
 
     public function projectStore(Request $request)
@@ -116,17 +116,30 @@ class GroupProjectController extends Controller
     }
 
     public function memberStore(Request $request, GroupProject $group_projects)
-    {
-        $request->validate([
+    {   
+        $members = $request->validate([
             'group_project_id' => 'required',
             'user_id' => 'required'
         ]);
 
-        $members = $request->all();
-
         Member::create($members);
 
         return redirect()->back()->with('success', 'Member Added Successfully.');
+    }
+
+    public function feedbackStore(Request $request)
+    {
+        $request->validate([
+            'comment'=>'required',
+            'project_id'=>'required' 
+
+        ]);
+
+        $input = $request->all();
+        $input['user_id'] = auth()->user()->id;
+
+        Feedback::create($input);
+        return redirect()->back()->with('success', 'Feedback Posted.');
     }
 
     /**
@@ -225,7 +238,6 @@ class GroupProjectController extends Controller
     public function teamShow(GroupProject $group_projects, User $users, Member $members, $id)
     {
         $group_projects = GroupProject::findOrFail($id);        
-        $existingUsers = $group_projects->members()->pluck('id')->toArray();
         $users = User::all();
         $members = Member::all()->where('group_project_id', $group_projects->id);
 
@@ -283,7 +295,7 @@ class GroupProjectController extends Controller
         $group_projects->advisor = $request->input('advisor');
         $group_projects->save();
 
-        return redirect()->route('faculty/home')->with('success', 'Updated Group Project Successfully');
+        return redirect()->back()->with('success', 'Updated Group Successfully');
     }
     public function taskUpdate(Request $request, Task $tasks)
     {
@@ -318,7 +330,7 @@ class GroupProjectController extends Controller
         $id = $request->input('id');
         GroupProject::find($id)->delete();
 
-        return redirect()->back()->with('success', 'Deleted Group Project Successfully');
+        return redirect()->back()->with('success', 'Deleted Group Successfully');
     }
     public function projectDestroy(Request $request, Project $projects)
     {
@@ -330,8 +342,22 @@ class GroupProjectController extends Controller
     public function taskDestroy(Request $request, Task $tasks)
     {
         $id = $request->input('id');
-        Task ::find($id)->delete();
+        Task::find($id)->delete();
 
         return redirect()->back()->with('success', 'Deleted Task Successfully');
+    }
+    public function teamDestroy(Request $request, Member $members)
+    {
+        $id = $request->input('id');
+        Member::find($id)->delete();
+
+        return redirect()->back()->with('success', 'Removed Member Successfully');
+    }
+    public function feedbackDestroy(Request $request, Feedback $feedbacks)
+    {
+        $id = $request->input('id');
+        Feedback::find($id)->delete();
+
+        return redirect()->back()->with('success', 'Deleted Feedback Successfully');
     }
 }
