@@ -75,6 +75,31 @@
           </td>
       </tr>
       
+      {{-- Delete User --}}
+      <div class="modal fade" id="delete{{$user->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">{{__('Delete User')}}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="{{ route('admin/user') }}">
+                @csrf 
+                @method("DELETE")
+
+                <h4>Are you sure you want to Delete User: {{ $user->name }}?</h4>
+                <input type="hidden" id="id" name="id" value="{{ $user->id }}">
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-danger">{{ __('Delete User') }}</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {{-- Edit User --}}
       <div class="modal fade" id="edit{{$user->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -135,31 +160,6 @@
                   <button type="submit" class="btn btn-primary">{{ __('Update Details') }}</button>
                 </div>
               </form>
-          </div>
-        </div>
-      </div>
-
-      {{-- Delete User --}}
-      <div class="modal fade" id="delete{{$user->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">{{__('Delete User')}}</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form method="POST" action="{{ route('admin/user') }}">
-                @csrf 
-                @method("DELETE")
-
-                <h4>Are you sure you want to Delete User: {{ $user->name }}?</h4>
-                <input type="hidden" id="id" name="id" value="{{ $user->id }}">
-
-                <div class="modal-footer">
-                  <button type="submit" class="btn btn-danger">{{ __('Delete User') }}</button>
-                </div>
-              </form>
-          </div>
           </div>
         </div>
       </div>

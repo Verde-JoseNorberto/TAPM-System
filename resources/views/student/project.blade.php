@@ -17,6 +17,7 @@
     </div>
   @endif
 </div>
+
 <div class="container my-2">
   <ul class="nav nav-tabs">
     <li class="nav-item">
@@ -34,7 +35,7 @@
         <h2>{{ $group_projects->title }}</h2>
         <strong>{{ __('Team:') }}</strong> {{ $group_projects->team }}<br>
         <strong>{{ __('Advisor:') }}</strong> {{ $group_projects->advisor }}
-        <button class="btn btn-outline-dark position-absolute top-0 end-0 my-3 mx-3" data-bs-toggle="modal" data-bs-target="#updateModal">
+        <button class="btn btn-dark position-absolute top-0 end-0 my-3 mx-3" data-bs-toggle="modal" data-bs-target="#updateModal">
           {{ __('Add Updates') }}</button>
       </div>
   </div>

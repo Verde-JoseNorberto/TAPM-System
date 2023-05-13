@@ -1,6 +1,23 @@
 @extends('layout.layOff')
 
 @section('page-content')
+<div >
+  @if ($message = Session::get('success'))
+  <div class="alert alert-success alert-dismissible fade show position-fixed" role="alert">
+    <strong>{{ $message }}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  @endif
+  @if($errors->any())
+    <div class="alert alert-danger alert-dismissible fade show position-fixed" role="alert">
+      @foreach($errors->all() as $error)
+          <p>{{ $error }}</p>
+      @endforeach
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  @endif
+</div>
+
 <div class="container my-2">
     <ul class="nav nav-tabs">
       <li class="nav-item">
@@ -27,14 +44,40 @@
       </div>
       <div class="card-body">
         @foreach ($members as $key => $member)
-        {{ $member->user->name }}<br>
+          {{ $member->user->name }}
+          <a type="button" class="btn btn-outline-dark position-absolute end-0 mx-3" href="#delete{{$member->id}}" data-bs-toggle="modal">
+              {{ __('Remove')}}
+          </a>
+          <br><hr>
+          <div class="modal fade" id="delete{{$member->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">{{__('Remove Members')}}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form method="POST" action="{{ route('office/team') }}">
+                    @csrf
+                    @method("DELETE")
+                    <h4>Are you sure you want to remove: {{ $member->user->name }}?</h4>
+                    <input type="hidden" name="id" id="id" value="{{ $member->id }}">
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-danger">{{ __('Remove') }}</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
         @endforeach
       </div>
-      <button class="btn btn-outline-dark position-absolute top-0 end-0 my-2 mx-3" data-bs-toggle="modal" data-bs-target="#addModal">
+      <button class="btn btn-dark position-absolute top-0 end-0 my-2 mx-3" data-bs-toggle="modal" data-bs-target="#addModal">
         {{ __('Add Members') }}</button>
     </div>
 </div>
 
+{{-- Add Members --}}
 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">

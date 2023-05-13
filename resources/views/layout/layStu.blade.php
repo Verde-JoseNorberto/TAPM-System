@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'TAPM') }}</title>
+    <title>{{ config('app.name', 'TAPM-Student') }}</title>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css','resources/sass/app.scss', 'resources/js/app.js'])

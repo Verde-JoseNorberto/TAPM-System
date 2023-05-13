@@ -19,6 +19,40 @@
         <button type="submit" class="btn btn-secondary mx-2">{{ __('Send') }}</button>
       </form>
     </div>
+    <div class="dropdown position-absolute end-0 mx-3">
+      <i id="dropdownMenu" class="fa-solid fa-ellipsis" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+  
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+          <a href="#delete{{$project->id}}" class="dropdown-item" data-bs-toggle="modal">
+            {{ __('Delete') }}
+          </a>
+      </ul>
+    </div>
+  </div>
+</div>
+
+{{-- Delete Project --}}
+<div class="modal fade" id="delete{{$project->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{__('Delete Project')}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{{ route('faculty/feedback') }}">
+          @csrf 
+          @method("DELETE")
+
+          <h4>Are you sure you want to Delete Project: {{ $project->title }}?</h4>
+          <input type="hidden" id="id" name="id" value="{{ $project->id }}">
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-danger">{{ __('Delete Project') }}</button>
+          </div>
+        </form>
+     </div>
+    </div>
   </div>
 </div>
 @endforeach

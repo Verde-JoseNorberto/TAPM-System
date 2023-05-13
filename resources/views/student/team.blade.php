@@ -27,7 +27,7 @@
       </div>
       <div class="card-body">
         @foreach ($members as $key => $member)
-        {{ $member->user->name }}<br>
+        {{ $member->user->name }}<hr>
         @endforeach
       </div>
     </div>

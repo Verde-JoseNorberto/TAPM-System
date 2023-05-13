@@ -26,9 +26,6 @@
           <a href="#delete{{$project->id}}" class="dropdown-item" data-bs-toggle="modal">
             {{ __('Delete') }}
           </a>
-          <li><a class="dropdown-item" href="#">
-              {{ __('Download Content')}}
-          </a></li>
       </ul>
     </div>
   </div>

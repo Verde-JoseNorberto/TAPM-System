@@ -85,7 +85,7 @@
                 @csrf 
                 @method("DELETE")
 
-                <h4>Are you sure you want to Delete Project: {{ $project->title }}?</h4>
+                <h4>Are you sure you want to Delete: {{ $project->title }}?</h4>
                 <input type="hidden" id="id" name="id" value="{{ $project->id }}">
 
                 <div class="modal-footer">

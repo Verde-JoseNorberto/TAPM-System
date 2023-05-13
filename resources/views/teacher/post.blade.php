@@ -7,7 +7,7 @@
         <strong>{{ $project->created_at}}</strong>
       </div><hr>
       <h3 class="card-title text-center">{{ $project->title }}</h3>
-      <iframe class="fluid" src="/files/{{ $project->file }}" height="700" width="600"></iframe><hr>
+      <iframe class="fluid" src="/files/{{ $project->file }}" height="700:auto" width="600"></iframe><hr>
       <h6>{{ $project->description }}</h6>
     </div>
     <div class="card-footer">

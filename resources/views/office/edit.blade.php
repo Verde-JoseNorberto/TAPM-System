@@ -1,8 +1,10 @@
+{{-- Edit Group --}}
+
 <div class="modal fade" id="edit{{$groupProject->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">{{__('Edit Project')}}</h5>
+        <h5 class="modal-title">{{__('Edit Group')}}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -53,9 +55,35 @@
           
       </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-secondary">{{ __('Update Project') }}</button>
+            <button type="submit" class="btn btn-secondary">{{ __('Update Group') }}</button>
           </div>
         </form>
+    </div>
+  </div>
+</div>
+
+{{-- Delete Group --}}
+
+<div class="modal fade" id="delete{{$groupProject->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{__('Delete Group')}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{{ route('office/home') }}">
+          @csrf 
+          @method("DELETE")
+
+          <h4>Are you sure you want to Delete: {{ $groupProject->title }}?</h4>
+          <input type="hidden" id="id" name="id" value="{{ $groupProject->id }}">
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-danger">{{ __('Delete') }}</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

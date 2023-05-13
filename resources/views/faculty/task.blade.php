@@ -1,6 +1,22 @@
 @extends('layout.layFac')
 
 @section('page-content')
+<div class="col-3">
+  @if ($message = Session::get('success'))
+  <div class="alert alert-success alert-dismissible fade show position-fixed" role="alert">
+    <strong>{{ $message }}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  @endif
+  @if($errors->any())
+    <div class="alert alert-danger alert-dismissible fade show position-fixed" role="alert">
+      @foreach($errors->all() as $error)
+          <p>{{ $error }}</p>
+      @endforeach
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  @endif
+</div>
 <div class="container my-2">
   <ul class="nav nav-tabs">
     <li class="nav-item">
@@ -35,7 +51,8 @@
   <div class="row row-cols-1 row-cols-md-3 g-4 my-2">
     @include('faculty.board', ['tasks' => $group_projects->tasks, 'group_project_id' => $group_projects->id])
   </div>
-
+  
+{{-- Add Task --}}
   <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">

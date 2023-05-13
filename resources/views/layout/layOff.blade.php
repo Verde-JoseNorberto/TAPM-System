@@ -71,7 +71,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">{{__('Add Project')}}</h5>
+              <h5 class="modal-title">{{__('Add Group')}}</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -118,7 +118,7 @@
               
                 </div>
                 <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Create Project') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Create Group') }}</button>
                 </div>
               </form>
           </div>

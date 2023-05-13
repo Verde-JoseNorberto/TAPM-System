@@ -16,7 +16,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     @endif
-  </div>
+</div>
 <div class="container my-4">
     <div class="row row-cols-1 row-cols-md-4 g-4">
         @foreach($group_projects as $key => $groupProject)
@@ -38,14 +38,9 @@
                             <li><a href="#edit{{$groupProject->id}}" class="dropdown-item" data-bs-toggle="modal">
                                 {{ __('Edit')}}
                             </a></li>
-                            <li>
-                                <form method="POST" action="{{ route('office/home') }}">
-                                    @csrf
-                                    @method("DELETE")
-                                    <input type="hidden" name="id" id="id" value="{{ $groupProject->id }}">
-                                    <button type="submit" class="dropdown-item">{{ __('Delete')}}</button>
-                                </form>
-                            </li>  
+                            <li><a href="#delete{{$groupProject->id}}" class="dropdown-item" data-bs-toggle="modal">
+                                {{ __('Delete')}}
+                            </a></li>  
                         </ul>
                     </div>
                 </div>

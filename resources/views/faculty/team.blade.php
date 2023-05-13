@@ -27,41 +27,10 @@
       </div>
       <div class="card-body">
         @foreach ($members as $key => $member)
-        {{ $member->user->name }}<br>
+          {{ $member->user->name }}
+          <br><hr>
         @endforeach
       </div>
-      <button class="btn btn-outline-dark position-absolute top-0 end-0 my-2 mx-3" data-bs-toggle="modal" data-bs-target="#addModal">
-        {{ __('Add Members') }}</button>
     </div>
-</div>
-
-<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{{__('Add Members')}}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form action="{{ route('faculty/team') }}" method="POST">
-          @csrf
-
-          <select class="form-select" id="user_id" name="user_id">
-            <option selected>{{ __('Select Member') }}</option>
-            @foreach ($users as $user)
-              <option value="{{ $user->id }}">{{ $user->name }}</option>
-            @endforeach
-
-          </select>
-
-          <input id="group_project_id" type="hidden" name="group_project_id" value="{{ $group_projects->id }}">
-
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">{{ __('Add Member') }}</button>
-        </form>
-      </div>
-    </div>
-  </div>
 </div>
 @endsection

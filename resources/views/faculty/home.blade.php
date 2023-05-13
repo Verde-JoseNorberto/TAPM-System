@@ -35,23 +35,11 @@
                             <li><a class="dropdown-item" href="{{ URL::to('faculty/project/' . $groupProject->id) }}">
                                 {{ __('Show')}}
                             </a></li>
-                            <li><a href="#edit{{$groupProject->id}}" class="dropdown-item" data-bs-toggle="modal">
-                                {{ __('Edit')}}
-                            </a></li>
-                            <li>
-                                <form method="POST" action="{{ route('faculty/home') }}">
-                                    @csrf
-                                    @method("DELETE")
-                                    <input type="hidden" name="id" id="id" value="{{ $groupProject->id }}">
-                                    <button type="submit" class="dropdown-item">{{ __('Delete')}}</button>
-                                </form>
-                            </li>  
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-        @include('faculty.edit')
         @endforeach
     </div>
 </div>
