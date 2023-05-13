@@ -32,7 +32,6 @@ Auth::routes(['verify' => true]);
 
 // Super Privilege View or the Office/Client View
 Route::middleware(['auth', 'user-access:office'])->group(function () {
-    Route::get('/office/home', [App\Http\Controllers\UserController::class, 'officeHome'])->name('office/home');
     Route::get('/office/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('office/home');
     Route::get('/office/project/{id}', [App\Http\Controllers\GroupProjectController::class, 'show']);
     Route::get('/office/project/{id}/task', [App\Http\Controllers\GroupProjectController::class, 'taskShow']);
@@ -40,9 +39,13 @@ Route::middleware(['auth', 'user-access:office'])->group(function () {
     Route::get('/office/project/{id}/edit', [App\Http\Controllers\GroupProjectController::class, 'edit']);
     Route::post('office/home', [App\Http\Controllers\GroupProjectController::class, 'groupStore'])->name('office/home');
     Route::post('office/project/task', [App\Http\Controllers\GroupProjectController::class, 'taskStore'])->name('office/task');
-    Route::post('office/feedback', [App\Http\Controllers\CommentController::class, 'store'])->name('office/feedback');
+    Route::post('office/feedback', [App\Http\Controllers\GroupProjectController::class, 'feedbackStore'])->name('office/feedback');
     Route::post('office/project/team', [App\Http\Controllers\GroupProjectController::class, 'memberStore'])->name('office/team');
     Route::put('office/task', [App\Http\Controllers\GroupProjectController::class, 'taskUpdate'])->name('office/board');
+    Route::delete('office/home', [App\Http\Controllers\GroupProjectController::class, 'groupDestroy']);
+    Route::delete('office/task', [App\Http\Controllers\GroupProjectController::class, 'taskDestroy']);
+    Route::delete('office/project/team', [App\Http\Controllers\GroupProjectController::class, 'teamDestroy']);
+    Route::delete('office/feedback', [App\Http\Controllers\GroupProjectController::class, 'feedbackDestroy'])->name('office/feedDel');
 
     // Admin Privilege
     Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin/index');
@@ -53,50 +56,52 @@ Route::middleware(['auth', 'user-access:office'])->group(function () {
     Route::get('/admin/feedback', [App\Http\Controllers\AdminController::class, 'feedbackShow'])->name('admin/feedback');
     Route::post('admin/user', [App\Http\Controllers\AdminController::class, 'store'])->name('admin/user');
     Route::put('admin/user', [App\Http\Controllers\AdminController::class, 'userUpdate']);
+    Route::put('admin/group', [App\Http\Controllers\AdminController::class, 'groupUpdate']);
+    Route::put('admin/task', [App\Http\Controllers\AdminController::class, 'taskUpdate']);
+    Route::put('admin/feedback', [App\Http\Controllers\AdminController::class, 'feedbackUpdate']);
+    Route::delete('admin/user', [App\Http\Controllers\AdminController::class, 'userDestroy']);
+    Route::delete('admin/group', [App\Http\Controllers\AdminController::class, 'groupDestroy']);
     Route::delete('admin/project', [App\Http\Controllers\AdminController::class, 'projectDestroy']);
+    Route::delete('admin/task', [App\Http\Controllers\AdminController::class, 'taskDestroy']);
+    Route::delete('admin/feedback', [App\Http\Controllers\AdminController::class, 'feedbackDestroy']);
 });
 
 // Special Privilege View or the Faculty View
 Route::middleware(['auth', 'user-access:adviser'])->group(function () {
-    Route::get('/faculty/home', [App\Http\Controllers\UserController::class, 'facultyHome'])->name('faculty/home');
     Route::get('/faculty/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('faculty/home');
     Route::get('/faculty/project/{id}', [App\Http\Controllers\GroupProjectController::class, 'show']);
     Route::get('/faculty/project/{id}/task', [App\Http\Controllers\GroupProjectController::class, 'taskShow']);
     Route::get('/faculty/project/{id}/team', [App\Http\Controllers\GroupProjectController::class, 'teamShow']);
-    Route::post('faculty/home', [App\Http\Controllers\GroupProjectController::class, 'groupStore'])->name('faculty/home');
     Route::post('faculty/project/task', [App\Http\Controllers\GroupProjectController::class, 'taskStore'])->name('faculty/task');
-    Route::post('faculty/project/team', [App\Http\Controllers\GroupProjectController::class, 'memberStore'])->name('faculty/team');
-    Route::post('faculty/feedback', [App\Http\Controllers\CommentController::class, 'store'])->name('faculty/feedback');
-    Route::put('faculty/home', [App\Http\Controllers\GroupProjectController::class, 'groupUpdate'])->name('faculty/edit');
+    Route::post('faculty/feedback', [App\Http\Controllers\GroupProjectController::class, 'feedbackStore'])->name('faculty/feedback');
     Route::put('faculty/task', [App\Http\Controllers\GroupProjectController::class, 'taskUpdate'])->name('faculty/board');
-    Route::delete('faculty/home', [App\Http\Controllers\GroupProjectController::class, 'groupDestroy']);
+    Route::delete('faculty/task', [App\Http\Controllers\GroupProjectController::class, 'taskDestroy']);
+    Route::delete('faculty/feedback', [App\Http\Controllers\GroupProjectController::class, 'feedbackDestroy'])->name('faculty/feedDel');
 });
 
-// Special Privilege View or the Teacher View
+// Secondary Privilege View or the Teacher View
 Route::middleware(['auth', 'user-access:teacher'])->group(function () {
-    Route::get('/teacher/home', [App\Http\Controllers\UserController::class, 'teacherHome'])->name('teacher/home');
-    Route::get('/teacher/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('teacher/home');
+    Route::get('/teacher/home', [App\Http\Controllers\GroupProjectController::class, 'index']);
     Route::get('/teacher/project/{id}', [App\Http\Controllers\GroupProjectController::class, 'show']);
     Route::get('/teacher/project/{id}/task', [App\Http\Controllers\GroupProjectController::class, 'taskShow']);
     Route::get('/teacher/project/{id}/team', [App\Http\Controllers\GroupProjectController::class, 'teamShow']);
-    Route::post('teacher/home', [App\Http\Controllers\GroupProjectController::class, 'groupStore'])->name('teacher/home');
     Route::post('teacher/project/team', [App\Http\Controllers\GroupProjectController::class, 'memberStore'])->name('teacher/team');
-    Route::post('teacher/feedback', [App\Http\Controllers\CommentController::class, 'store'])->name('teacher/feedback');
-    Route::put('teacher/home', [App\Http\Controllers\GroupProjectController::class, 'groupUpdate'])->name('teacher/edit');
-    Route::delete('teacher/home', [App\Http\Controllers\GroupProjectController::class, 'groupDestroy']);
+    Route::post('teacher/feedback', [App\Http\Controllers\GroupProjectController::class, 'feedbackStore'])->name('teacher/feedback');
+    Route::delete('teacher/project/team', [App\Http\Controllers\GroupProjectController::class, 'teamDestroy']);
+    Route::delete('teacher/feedback', [App\Http\Controllers\GroupProjectController::class, 'feedbackDestroy'])->name('teacher/feedDel');
 });
 
 // Regular Privilege View or the Student View
 Route::middleware(['auth', 'user-access:student'])->group(function () {
-    Route::get('/home', [App\Http\Controllers\UserController::class, 'studentHome'])->name('student/home');
     Route::get('/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('student/home');
     Route::get('/project/{id}', [App\Http\Controllers\GroupProjectController::class, 'show']);
     Route::get('/project/{id}/task', [App\Http\Controllers\GroupProjectController::class, 'taskShow']);
     Route::get('/project/{id}/team', [App\Http\Controllers\GroupProjectController::class, 'teamShow']);
     Route::post('/project', [App\Http\Controllers\GroupProjectController::class, 'projectStore'])->name('student/project');
     Route::post('project/task', [App\Http\Controllers\GroupProjectController::class, 'taskStore'])->name('student/task');
-    Route::post('/feedback', [App\Http\Controllers\CommentController::class, 'store'])->name('student/feedback');
+    Route::post('/feedback', [App\Http\Controllers\GroupProjectController::class, 'feedbackStore'])->name('student/feedback');
     Route::put('student/task', [App\Http\Controllers\GroupProjectController::class, 'taskUpdate'])->name('student/board');
     Route::delete('student/task', [App\Http\Controllers\GroupProjectController::class, 'taskDestroy']);
-    Route::delete('student/project', [App\Http\Controllers\GroupProjectController::class, 'projectDestroy'])->name('student/post');
+    Route::delete('student/post', [App\Http\Controllers\GroupProjectController::class, 'projectDestroy'])->name('student/post');
+    Route::delete('student/feedback', [App\Http\Controllers\GroupProjectController::class, 'feedbackDestroy'])->name('student/feedDel');
 });
