@@ -23,6 +23,7 @@ return new class extends Migration
             /* Users: 0=>Office, 1=>Teacher, 2=>Adviser 3=Student */
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

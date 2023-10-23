@@ -17,12 +17,34 @@ return new class extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('group_project_id')->unsigned();
+            $table->integer('assign_id')->unsigned();
             $table->integer('parent_id')->unsigned()->nullable();
             $table->string('title');
             $table->string('content');
             $table->string('due_date');
             $table->string('status');
+            $table->integer('updated_by')->unsigned()->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+            
+            $table->foreign('group_project_id')
+                ->references('id')
+                ->on('group_projects')
+                ->onDelete('cascade');
+
+            $table->foreign('assign_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+            
+            $table->foreign('updated_by')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 
