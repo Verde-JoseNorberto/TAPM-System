@@ -41,11 +41,13 @@ Route::middleware(['auth', 'user-access:office'])->group(function () {
     Route::post('office/project/task', [App\Http\Controllers\GroupProjectController::class, 'taskStore'])->name('office/task');
     Route::post('office/feedback', [App\Http\Controllers\GroupProjectController::class, 'feedbackStore'])->name('office/feedback');
     Route::post('office/project/team', [App\Http\Controllers\GroupProjectController::class, 'memberStore'])->name('office/team');
+    Route::put('office/home', [App\Http\Controllers\GroupProjectController::class, 'groupUpdate'])->name('office/edit');
     Route::put('office/task', [App\Http\Controllers\GroupProjectController::class, 'taskUpdate'])->name('office/board');
     Route::delete('office/home', [App\Http\Controllers\GroupProjectController::class, 'groupDestroy']);
     Route::delete('office/task', [App\Http\Controllers\GroupProjectController::class, 'taskDestroy']);
     Route::delete('office/project/team', [App\Http\Controllers\GroupProjectController::class, 'teamDestroy']);
     Route::delete('office/feedback', [App\Http\Controllers\GroupProjectController::class, 'feedbackDestroy'])->name('office/feedDel');
+    Route::get('office/project/{id}/calendar', [App\Http\Controllers\GroupProjectController::class, 'calendar'])->name('office/calendar');
 
     // Admin Privilege
     Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin/index');
@@ -81,7 +83,7 @@ Route::middleware(['auth', 'user-access:adviser'])->group(function () {
 
 // Secondary Privilege View or the Teacher View
 Route::middleware(['auth', 'user-access:teacher'])->group(function () {
-    Route::get('/teacher/home', [App\Http\Controllers\GroupProjectController::class, 'index']);
+    Route::get('/teacher/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('teacher/home');
     Route::get('/teacher/project/{id}', [App\Http\Controllers\GroupProjectController::class, 'show']);
     Route::get('/teacher/project/{id}/task', [App\Http\Controllers\GroupProjectController::class, 'taskShow']);
     Route::get('/teacher/project/{id}/team', [App\Http\Controllers\GroupProjectController::class, 'teamShow']);
