@@ -1,1 +1,9 @@
 @import "@fortawesome/fontawesome-free/css/all.css";
+
+.fixed-alert-container {
+    position: fixed;
+    right: 0;
+    width: 100%;
+    z-index: 9999; /* Adjust z-index to ensure it's on top of other content */
+    padding: 10px;
+}
