@@ -20,6 +20,7 @@ class Task extends Model
     protected $fillable = [
         'user_id', 
         'group_project_id', 
+        'assign_id',
         'parent_id',
         'title',
         'content',
@@ -35,5 +36,15 @@ class Task extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function assign()
+    {
+        return $this->belongsTo(User::class, 'assign_id');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
     }
 }

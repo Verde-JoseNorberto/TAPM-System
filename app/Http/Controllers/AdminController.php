@@ -32,19 +32,21 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'=>'required',
-            'email'=>'required',
-            'password'=>'required',
-            'type'=>'required',
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required',
+            'type' => 'required',
+        ], [
+            'email.unique' => 'The email address is already in use.',
         ]);
-
-        $input = array(
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'password'=>bcrypt($request->password),
-            'type'=>$request->type
-        );
-
+    
+        $input = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'type' => $request->type,
+        ];
+    
         User::create($input);
         return redirect()->back()->with('success', 'New User Added Successfully.');
     }

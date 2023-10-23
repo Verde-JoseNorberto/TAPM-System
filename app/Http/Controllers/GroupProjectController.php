@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\GroupProject;
 use App\Models\Feedback;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 
 class GroupProjectController extends Controller
@@ -46,7 +47,12 @@ class GroupProjectController extends Controller
     public function groupStore(Request $request, GroupProject $group_projects)
     {
         $group = $request->validate([
-            'title'=>'required',
+            'title' => [
+                'required',
+                Rule::unique('group_projects', 'title')->where(function ($query) {
+                    return $query->where('user_id', auth()->user()->id);
+                }),
+            ],
             'subject'=>'required',
             'section'=>'required',
             'team'=>'required',
@@ -73,57 +79,80 @@ class GroupProjectController extends Controller
     public function projectStore(Request $request)
     {
         $request->validate([
-            'title'=>'required',
-            'file'=>'required',
-            'description'=>'required',
-            'group_project_id'=>'required'
+            'title' => [
+                'required',
+                Rule::unique('projects', 'title')->where('group_project_id', $request->input('group_project_id')),
+            ],
+            'file' => 'required',
+            'description' => 'required',
+            'group_project_id' => 'required',
         ]);
-
+    
         $file = $request->file('file');
         $record = $file->getClientOriginalName();
         $name = pathinfo($record, PATHINFO_FILENAME);
         $extension = pathinfo($record, PATHINFO_EXTENSION);
-        $fileName = time().'-'.$name.'.'.$extension;
+        $fileName = time() . '-' . $name . '.' . $extension;
         $file->move(public_path('files'), $fileName);
-
-        $data = array(
-            'title'=>$request->title,
-            'file'=>$fileName,
-            'description'=>$request->description,
-            'group_project_id'=>$request->group_project_id
-        );
-        $data['user_id'] = auth()->user()->id;
-        
+    
+        $data = [
+            'title' => $request->title,
+            'file' => $fileName,
+            'description' => $request->description,
+            'group_project_id' => $request->group_project_id,
+            'user_id' => auth()->user()->id,
+        ];
+    
         Project::create($data);
+    
         return redirect()->back()->with('success', 'Posted Project Successfully.');
     }
 
     public function taskStore(Request $request)
     {
         $request->validate([
-            'title'=>'required',
-            'content'=>'required',
-            'due_date'=>'required',
-            'status'=>'required',
-            'group_project_id'=>'required'
+            'title' => [
+                'required',
+                Rule::unique('tasks', 'title')->where('group_project_id', $request->input('group_project_id')),
+            ],
+            'content' => 'required',
+            'due_date' => 'required|date|after_or_equal:today',
+            'status' => 'required',
+            'group_project_id' => 'required',
+            'assign_id' => 'required|exists:users,id',
         ]);
-
+    
         $input = $request->all();
         $input['user_id'] = auth()->user()->id;
-
+    
         Task::create($input);
         return redirect()->back()->with('success', 'Posted Task Successfully.');
     }
 
     public function memberStore(Request $request, GroupProject $group_projects)
     {   
-        $members = $request->validate([
+        $request->validate([
             'group_project_id' => 'required',
-            'user_id' => 'required'
+            'user_id' => 'required',
         ]);
-
-        Member::create($members);
-
+    
+        $user_id = $request->input('user_id');
+        $group_project_id = $request->input('group_project_id');
+    
+        // Check if the user is already a member of the group project
+        $existingMember = Member::where('user_id', $user_id)
+            ->where('group_project_id', $group_project_id)
+            ->first();
+    
+        if ($existingMember) {
+            return redirect()->back()->with('error', 'Member is already added to the project.');
+        }
+    
+        Member::create([
+            'group_project_id' => $group_project_id,
+            'user_id' => $user_id,
+        ]);
+    
         return redirect()->back()->with('success', 'Member Added Successfully.');
     }
 
@@ -278,45 +307,78 @@ class GroupProjectController extends Controller
     public function groupUpdate(Request $request, GroupProject $group_projects)
     {
         $request->validate([
-            'id'=>'required',
-            'title'=>'required',
-            'subject'=>'required',
-            'section'=>'required',
-            'team'=>'required',
-            'advisor'=>'required'
+            'id' => 'required',
+            'title' => [
+                'required',
+                Rule::unique('group_projects', 'title')
+                    ->where(function ($query) use ($request) {
+                        return $query->where('user_id', auth()->user()->id)
+                            ->where('id', '<>', $request->input('id'));
+                    }),
+            ],
+            'subject' => 'required',
+            'section' => 'required',
+            'team' => 'required',
+            'advisor' => 'required',
         ]);
-
+    
         $id = $request->input('id');
         $group_projects = GroupProject::find($id);
+    
         $group_projects->title = $request->input('title');
         $group_projects->subject = $request->input('subject');
         $group_projects->section = $request->input('section');
         $group_projects->team = $request->input('team');
         $group_projects->advisor = $request->input('advisor');
         $group_projects->save();
-
+    
         return redirect()->back()->with('success', 'Updated Group Successfully');
     }
     public function taskUpdate(Request $request, Task $tasks)
     {
         $request->validate([
-            'id'=>'required',
-            'title'=>'required',
-            'content'=>'required',
-            'due_date'=>'required',
-            'status'=>'required',
-            'group_project_id'=>'required'
+            'id' => 'required',
+            'title' => [
+                'required',
+                Rule::unique('tasks', 'title')->where('group_project_id', $request->input('group_project_id'))->ignore($request->input('id')),
+            ],
+            'content' => 'required',
+            'due_date' => 'required|date|after_or_equal:today',
+            'status' => 'required',
+            'group_project_id' => 'required',
+            'assign_id' => 'required|exists:users,id',
         ]);
-
+    
         $id = $request->input('id');
-        $tasks = Task::find($id);
-        $tasks->title = $request->input('title');
-        $tasks->content = $request->input('content');
-        $tasks->due_date = $request->input('due_date');
-        $tasks->status = $request->input('status');
-        $tasks->save();
+        $task = Task::find($id);
 
+        $task->title = $request->input('title');
+        $task->content = $request->input('content');
+        $task->due_date = $request->input('due_date');
+        $task->status = $request->input('status');
+        $task->assign_id = $request->input('assign_id');
+        $task->updated_by = auth()->user()->id;
+        $task->save();
+    
         return redirect()->back()->with('success', 'Updated Task Successfully');
+    }
+
+    public function calendar()
+    {
+        // Retrieve task data with due dates
+        $tasks = Task::whereNotNull('due_date')->get();
+
+        // Format the task data for FullCalendar
+        $events = [];
+        foreach ($tasks as $task) {
+            $events[] = [
+                'title' => $task->title,
+                'start' => $task->due_date,
+                'end' => $task->due_date,
+            ];
+        }
+
+        return view('office/calendar', compact('events'));
     }
 
     /**
