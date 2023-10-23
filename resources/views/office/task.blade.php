@@ -1,21 +1,21 @@
 @extends('layout.layOff')
 
 @section('page-content')
-<div >
-  @if ($message = Session::get('success'))
-  <div class="alert alert-success alert-dismissible fade show position-fixed" role="alert">
-    <strong>{{ $message }}</strong>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-  @endif
-  @if($errors->any())
-    <div class="alert alert-danger alert-dismissible fade show position-fixed" role="alert">
-      @foreach($errors->all() as $error)
-          <p>{{ $error }}</p>
-      @endforeach
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<div class="fixed-alert-container">
+    @if ($message = Session::get('success'))
+    <div class="alert alert-success alert-dismissible fade show position-fixed" role="alert">
+        <strong>{{ $message }}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-  @endif
+    @endif
+    @if($errors->any())
+    <div class="alert alert-danger alert-dismissible fade show position-fixed" role="alert">
+        @foreach($errors->all() as $error)
+        <p>{{ $error }}</p>
+        @endforeach
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
 </div>
 
 <div class="container my-2">
@@ -94,6 +94,21 @@
             <div class="row mb-4">
               <div class="col">
                 <div class="form-outline">
+                  <label class="form-label">{{ __('Assign to Member') }}</label>
+                  <select id="assign_id" class="form-select" name="assign_id">
+                      <option selected>{{ __('Select Member') }}</option>
+                      @foreach($group_projects->members as $member)
+                      <option value="{{ $member->user->id }}">{{ $member->user->name }}</option>
+                      @endforeach
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <div class="col">
+                <div class="form-outline">
+                  <label class="form-label">{{ __('Status') }}</label>
                   <select id="status" class="form-select" name="status">
                     <option selected>{{ __('Select Status') }}</option>
                     <option value="To Do">{{ __('To Do') }}</option>

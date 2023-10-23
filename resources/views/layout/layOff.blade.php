@@ -20,6 +20,24 @@
                 <a class="navbar-brand fw-bold text-white" href="{{ url('office/home') }}">
                     {{ config('app.name', 'TAPM') }}
                 </a>
+                <div class="dropdown">
+                  <button class="btn" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa-regular fa-bell" style="color: #ffffff;"></i>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="notificationDropdown">
+                      <!-- Example notification items -->
+                      <a class="dropdown-item" href="#">
+                          Created Task: Task Name 1
+                      </a>
+                      <a class="dropdown-item" href="#">
+                          Updated Task: Task Name 2
+                      </a>
+                      <a class="dropdown-item" href="#">
+                          Completed Task: Task Name 3
+                      </a>
+                      <!-- Add more notification items dynamically from your notifications data -->
+                  </div>
+                </div>
 
                 <ul class="navbar-nav ms-auto">
                   <div>
@@ -56,7 +74,7 @@
                               <h4>{{ __('Continue to Administration View?')}}</h4>
                             </div>
                             <div class="modal-footer">
-                              <a href="{{ URL::to('admin')}}" type="button" class="btn btn-warning">{{ __('Proceed') }}</a>
+                              <a href="{{ URL::to('admin/user')}}" type="button" class="btn btn-warning">{{ __('Proceed') }}</a>
                             </div>
                               </form>
                           </div>

@@ -1,20 +1,20 @@
 @extends('layout.layOff')
 
 @section('page-content')
-<div >
+<div class="fixed-alert-container">
   @if ($message = Session::get('success'))
   <div class="alert alert-success alert-dismissible fade show position-fixed" role="alert">
-    <strong>{{ $message }}</strong>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <strong>{{ $message }}</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
   @endif
   @if($errors->any())
-    <div class="alert alert-danger alert-dismissible fade show position-fixed" role="alert">
+  <div class="alert alert-danger alert-dismissible fade show position-fixed" role="alert">
       @foreach($errors->all() as $error)
-          <p>{{ $error }}</p>
+      <p>{{ $error }}</p>
       @endforeach
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+  </div>
   @endif
 </div>
 
@@ -92,7 +92,9 @@
           <select class="form-select" id="user_id" name="user_id">
             <option selected>{{ __('Select Member') }}</option>
             @foreach ($users as $user)
-                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                @if (!$group_projects->members->contains('user_id', $user->id))
+                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                @endif
             @endforeach
           </select>
 

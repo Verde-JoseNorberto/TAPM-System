@@ -13,14 +13,21 @@
     <div class="card-body">
       <p>{{ $task->content }}</p><hr>
       <div class="d-flex justify-content-between">
-        <p>{{ __('Status: '. $task->status) }}</p>
-        <p>{{ __('Deadline: '. $task->due_date) }}</p>
+        <p>{{ __('Status: ' . $task->status) }}</p>
+        <p>{{ __('Deadline: ' . $task->due_date) }}</p>
       </div>
+      @if ($task->assign)
+        <p>{{ __('Assigned to: ' . $task->assign->name) }}</p>
+      @endif
     </div>
     <div class="card-footer">
-      <strong>{{ $task->user->name }}{{ __(' made a task.') }}</strong>
+      @if ($task->updatedBy)
+        <strong>{{ $task->updatedBy->name }}{{ __(' updated the task.') }}</strong>
+      @else
+        <strong>{{ $task->user->name }}{{ __(' made the task.') }}</strong>
+      @endif
     </div>
-    <a href="#edit{{$task->id}}" class="btn btn-outline-dark position-absolute top-0 end-0 my-1 mx-1" data-bs-toggle="modal">
+    <a href="#edit{{ $task->id }}" class="btn btn-outline-dark position-absolute top-0 end-0 my-1 mx-1" data-bs-toggle="modal">
       {{ __('Edit') }}
     </a>
   </div>
@@ -71,6 +78,21 @@
           <div class="row mb-4">
             <div class="col">
               <div class="form-outline">
+                <label class="form-label">{{ __('Assign to Member') }}</label>
+                <select id="assign_id" class="form-select" name="assign_id">
+                  <option selected>{{ __('Select Member') }}</option>
+                  @foreach($group_projects->members as $member)
+                  <option value="{{ $member->user->id }}" {{ $task->assign_id == $member->user->id ? 'selected' : '' }}>{{ $member->user->name }}</option>
+                  @endforeach
+                </select>
+                </div>
+              </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col">
+              <div class="form-outline">
+                <label class="form-label">{{ __('Status') }}</label>
                 <select id="status" type="date" class="form-select" name="status">
                   <option selected>{{ $task->status }}</option>
                   <option value="To Do">{{ __('To Do') }}</option>

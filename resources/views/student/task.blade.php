@@ -49,24 +49,6 @@
     </div>
   </div>
 
-  <div class="card text-dark border-dark my-3">
-    <div class="card-body">
-      <div class="progress">
-        <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" 
-        aria-valuenow="{{ $tasks }}" style="width: {{ $tasks }}%" aria-valuemin="0" aria-valuemax="100"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card text-dark border-dark my-3">
-    <div class="card-body">
-      <div class="progress">
-        <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" 
-        aria-valuenow="{{ $tasks }}" style="width: {{ $tasks }}%" aria-valuemin="0" aria-valuemax="100"></div>
-      </div>
-    </div>
-  </div>
-
   <div class="row row-cols-1 row-cols-md-3 g-4 my-2">
     @include('student.board', ['tasks' => $group_projects->tasks, 'group_project_id' => $group_projects->id])
   </div>
