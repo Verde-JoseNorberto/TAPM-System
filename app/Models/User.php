@@ -55,6 +55,10 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array
      */
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'user_id');
+    }
     
     public function group_projects()
     {

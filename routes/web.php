@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\GroupProjectController;
-use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +46,8 @@ Route::middleware(['auth', 'user-access:office'])->group(function () {
     Route::delete('office/project/team', [App\Http\Controllers\GroupProjectController::class, 'teamDestroy']);
     Route::delete('office/feedback', [App\Http\Controllers\GroupProjectController::class, 'feedbackDestroy'])->name('office/feedDel');
     Route::get('office/project/{id}/calendar', [App\Http\Controllers\GroupProjectController::class, 'calendar'])->name('office/calendar');
+
+    Route::get('/notify', [App\Http\Controllers\NotificationController::class, 'index'])->name('layout/notify');
 
     // Admin Privilege
     Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin/index');

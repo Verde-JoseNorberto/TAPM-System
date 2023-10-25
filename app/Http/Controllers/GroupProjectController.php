@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use App\Models\User;
 use App\Models\Member;
 use App\Models\Task;
@@ -10,7 +11,6 @@ use App\Models\GroupProject;
 use App\Models\Feedback;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\DB;
 
 class GroupProjectController extends Controller
 {
