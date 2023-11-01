@@ -5,7 +5,7 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
-class TaskCompleted extends Notification
+class TaskCreated extends Notification
 {
     use Queueable;
 
@@ -14,9 +14,9 @@ class TaskCompleted extends Notification
      *
      * @return void
      */
-    public function __construct($task)
+    public function __construct($title)
     {
-        $this->task = $task;
+        $this->title = $title;
     }
 
     /**
@@ -36,11 +36,10 @@ class TaskCompleted extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toDatabase($notifiable)
+    public function toArray($notifiable)
     {
         return [
-            'title' => 'Task Completed',
-            'data' => 'The task "' . $this->task->title . '" has been completed.',
+            'data' => 'A new task ' . $this->title . ' has been created.',
         ];
     }
 }

@@ -21,7 +21,22 @@
                     {{ config('app.name', 'TAPM') }}
                 </a>
 
-                {{-- @include('layout.notify', ['notifications' => $users->notifications, 'user_id' => $users->id])  --}}
+                <div class="dropdown">
+                  <button class="btn" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa-regular fa-bell" style="color: #ffffff;"></i>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="notificationDropdown">
+                    @forelse ($user->notifications as $notification)
+                        <a class="dropdown-item">
+                            {{ $notification->data['data']}}
+                        </a>
+                    @empty
+                        <a class="dropdown-item">
+                            {{ __('No new notifications') }}
+                        </a>
+                    @endforelse
+                  </div>
+                </div>
 
                 <ul class="navbar-nav ms-auto">
                   <div>
