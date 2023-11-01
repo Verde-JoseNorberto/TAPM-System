@@ -14,9 +14,9 @@ class TaskCompleted extends Notification
      *
      * @return void
      */
-    public function __construct($task)
+    public function __construct($title)
     {
-        $this->task = $task;
+        $this->title = $title;
     }
 
     /**
@@ -39,8 +39,7 @@ class TaskCompleted extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'title' => 'Task Completed',
-            'data' => 'The task "' . $this->task->title . '" has been completed.',
+            'data' => 'The task "' . $this->title . '" has been completed.',
         ];
     }
 }

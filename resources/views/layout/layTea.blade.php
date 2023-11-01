@@ -26,9 +26,9 @@
                   <i class="fa-regular fa-bell" style="color: #ffffff;"></i>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="notificationDropdown">
-                  @forelse ($notifications as $key => $notification)
-                      <a class="dropdown-item" href="{{ $notification->link }}">
-                          {{ $notification->data['title'] }}
+                  @forelse ($user->notifications as $notification)
+                      <a class="dropdown-item">
+                          {{ $notification->data['data']}}
                       </a>
                   @empty
                       <a class="dropdown-item">

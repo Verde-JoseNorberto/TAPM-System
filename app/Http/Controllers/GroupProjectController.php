@@ -113,7 +113,7 @@ class GroupProjectController extends Controller
 
     public function taskStore(Request $request)
     {   
-        // $user = User::all();
+        $user = User::all();
         $request->validate([
             'title' => [
                 'required',
@@ -131,7 +131,7 @@ class GroupProjectController extends Controller
         
         // $task = Task::create($input);
         Task::create($input);
-        // Notification::send($user, new TaskCreated($request->title));
+        Notification::send($user, new TaskCreated($request->title));
         // $assignUser = User::find($request->assign_id);
         // $assignUser->notify(new TaskCreated($task->title));
 

@@ -15,24 +15,23 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->integer('user_id')->unsigned();
-            $table->integer('notify_id')->unsigned();
+            // $table->integer('user_id')->unsigned();
+            // $table->integer('notify_id')->unsigned();
             $table->string('type');
             $table->morphs('notifiable');
             $table->text('data');
-            $table->text('link');
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
 
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade');
+            // $table->foreign('user_id')
+            //     ->references('id')
+            //     ->on('users')
+            //     ->onDelete('cascade');
             
-            $table->foreign('notify_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade');
+            // $table->foreign('notify_id')
+            //     ->references('id')
+            //     ->on('users')
+            //     ->onDelete('cascade');
         });
     }
 
