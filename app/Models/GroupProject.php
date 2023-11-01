@@ -4,14 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GroupProject extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes, Notifiable;
 
     protected $table = 'group_projects';
     protected $primaryKay = 'id';
-
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that are mass assignable.
      *

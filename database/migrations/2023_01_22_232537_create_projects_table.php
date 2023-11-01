@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('file');
             $table->string('description');
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
 
             $table->foreign('user_id')
                 ->references('id')

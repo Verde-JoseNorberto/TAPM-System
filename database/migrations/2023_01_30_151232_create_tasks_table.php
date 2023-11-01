@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('status');
             $table->integer('updated_by')->unsigned()->nullable();
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
 
             $table->foreign('user_id')
                 ->references('id')

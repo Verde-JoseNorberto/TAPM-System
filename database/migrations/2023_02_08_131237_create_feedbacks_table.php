@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('parent_id')->unsigned()->nullable();
             $table->text('comment');
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
 
             $table->foreign('user_id')
                 ->references('id')

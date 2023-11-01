@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('team');
             $table->string('advisor');
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
             
             $table->foreign('user_id')
                 ->references('id')
