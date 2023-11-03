@@ -23,32 +23,32 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name'=>'Manuel Sebastian Sanchez',
-                'email'=>'user@teacher.com',
+                'email'=>'sanchez@faculty.com',
                 'type'=>1,
                 'password'=> bcrypt('admin123'),
             ],
             [
                 'name'=>'Juan Dela Cruz',
-                'email'=>'user@faculty.com',
-                'type'=> 2,
+                'email'=>'cruz@faculty.com',
+                'type'=> 1,
                 'password'=> bcrypt('admin123'),
             ],
             [
                 'name'=>'Jose Norberto Verde',
                 'email'=>'verde@student.com',
-                'type'=>3,
+                'type'=>2,
                 'password'=> bcrypt('admin123'),
             ],
             [
                 'name'=>'Noreen Keziah Sioco',
                 'email'=>'sioco@student.com',
-                'type'=>3,
+                'type'=>2,
                 'password'=> bcrypt('admin123'),
             ],
             [
                 'name'=>'Mark Gerald Giba',
                 'email'=>'giba@student.com',
-                'type'=>3,
+                'type'=>2,
                 'password'=> bcrypt('admin123'),
             ],
         ];
