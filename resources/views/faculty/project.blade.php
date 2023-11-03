@@ -1,23 +1,6 @@
 @extends('layout.layFac')
 
 @section('page-content')
-<div >
-  @if ($message = Session::get('success'))
-  <div class="alert alert-success alert-dismissible fade show position-fixed" role="alert">
-    <strong>{{ $message }}</strong>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-  @endif
-  @if($errors->any())
-    <div class="alert alert-danger alert-dismissible fade show position-fixed" role="alert">
-      @foreach($errors->all() as $error)
-          <p>{{ $error }}</p>
-      @endforeach
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  @endif
-</div>
-
 <div class="container my-2">
   <ul class="nav nav-tabs">
     <li class="nav-item">
@@ -51,6 +34,4 @@
     @include('faculty.post', ['projects' => $group_projects->projects, 'group_project_id' => $group_projects->id])
   </div>
 </div>
-
-
 @endsection 

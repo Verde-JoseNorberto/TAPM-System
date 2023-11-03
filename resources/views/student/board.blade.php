@@ -16,6 +16,9 @@
         <p>{{ __('Status: ' . $task->status) }}</p>
         <p>{{ __('Deadline: ' . $task->due_date) }}</p>
       </div>
+      @if ($task->assign)
+        <p>{{ __('Assigned to: ' . $task->assign->name) }}</p>
+      @endif
     </div>
     <div class="card-footer">
       @if ($task->updatedBy)
@@ -75,6 +78,21 @@
           <div class="row mb-4">
             <div class="col">
               <div class="form-outline">
+                <label class="form-label">{{ __('Assign to Member') }}</label>
+                <select id="assign_id" class="form-select" name="assign_id">
+                  <option selected>{{ __('Select Member') }}</option>
+                  @foreach($group_projects->members as $member)
+                  <option value="{{ $member->user->id }}" {{ $task->assign_id == $member->user->id ? 'selected' : '' }}>{{ $member->user->name }}</option>
+                  @endforeach
+                </select>
+                </div>
+              </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col">
+              <div class="form-outline">
+                <label class="form-label">{{ __('Status') }}</label>
                 <select id="status" type="date" class="form-select" name="status">
                   <option selected>{{ $task->status }}</option>
                   <option value="To Do">{{ __('To Do') }}</option>
@@ -108,7 +126,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="{{ route('student/board') }}">
+        <form method="POST" action="{{ route('office/board') }}">
           @csrf
           @method("DELETE")
           <h4>Are you sure you want to Delete Task: {{ $task->title }}?</h4>

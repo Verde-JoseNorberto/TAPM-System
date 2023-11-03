@@ -1,23 +1,6 @@
 @extends('layout.layOff')
 
 @section('page-content')
-<div class="fixed-alert-container">
-    @if ($message = Session::get('success'))
-    <div class="alert alert-success alert-dismissible fade show position-fixed" role="alert">
-        <strong>{{ $message }}</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
-    @if($errors->any())
-    <div class="alert alert-danger alert-dismissible fade show position-fixed" role="alert">
-        @foreach($errors->all() as $error)
-        <p>{{ $error }}</p>
-        @endforeach
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
-</div>
-
 <div class="container my-2">
   <ul class="nav nav-tabs">
     <li class="nav-item">
