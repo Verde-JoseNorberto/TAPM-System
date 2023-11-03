@@ -77,6 +77,21 @@
             <div class="row mb-4">
               <div class="col">
                 <div class="form-outline">
+                  <label class="form-label">{{ __('Assign to Member') }}</label>
+                  <select id="assign_id" class="form-select" name="assign_id">
+                      <option selected>{{ __('Select Member') }}</option>
+                      @foreach($group_projects->members as $member)
+                      <option value="{{ $member->user->id }}">{{ $member->user->name }}</option>
+                      @endforeach
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <div class="col">
+                <div class="form-outline">
+                  <label class="form-label">{{ __('Status') }}</label>
                   <select id="status" class="form-select" name="status">
                     <option selected>{{ __('Select Status') }}</option>
                     <option value="To Do">{{ __('To Do') }}</option>
