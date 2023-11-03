@@ -8,15 +8,15 @@
         </li> 
         <li class="nav-item">
             <a class="nav-link" href="{{ URL::to('admin/group') }}">{{ __('Group Projects') }}</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="{{ URL::to('admin/project') }}">{{ __('Projects') }}</a>
-          </li>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ URL::to('admin/project') }}">{{ __('Projects') }}</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ URL::to('admin/task') }}">{{ __('Tasks') }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ URL::to('admin/team') }}">{{ __('Teams') }}</a>
+          <a class="nav-link active" href="{{ URL::to('admin/team') }}">{{ __('Teams') }}</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{ URL::to('admin/feedback') }}">{{ __('Feedbacks') }}</a>
@@ -27,7 +27,7 @@
 <div class="container my-3">
   <div class="card text-dark border-dark">
     <div class="card-body d-flex justify-content-between">
-      <h3>Manage Projects Data Table</h3>
+      <h3>Manage Teams Data Table</h3>
     </div>
   </div>
 </div>
@@ -36,50 +36,45 @@
       <table class="mx-5 table table-sm table-bordered table-hover">
         <tr class="bg-info">
             <th>#</th>
-            <th>Created By</th>
+            <th>User</th>
             <th>At Group</th>
-            <th>Title</th>
-            <th>File Name</th>
-            <th>Description</th>
             <th>Created At</th>
             <th>Updated At</th>
             <th>Action</th>
         </tr>
-      @foreach ($projects as $key => $project)
+      @foreach ($members as $key => $member)
       <tr class="table-info">
-          <td>{{ $project->id }}</td>
-          <td>{{ $project->user->name }}</td>
-          <td>{{ $project->group_project->title }}</td>
-          <td>{{ $project->title }}</td>
-          <td>{{ $project->file }}</td>
-          <td>{{ $project->description }}</td>
-          <td>{{ $project->created_at }}</td>
-          <td>{{ $project->updated_at }}</td>
+          <td>{{ $member->id }}</td>
+          <td>{{ $member->user->name }}</td>
+          <td>{{ $member->group_project->title }}</td>
+          <td>{{ $member->created_at }}</td>
+          <td>{{ $member->updated_at }}</td>
           <td>
-            <a class="btn btn-danger" href="#delete{{$project->id}}" data-bs-toggle="modal"><i class="fa fa-trash"></i>{{ __(' Delete') }}</a>
+            <a type="button" class="btn btn-danger" href="#delete{{$member->id}}" data-bs-toggle="modal"><i class="fa fa-trash"></i>{{ __(' Delete') }}</a>
           </td>
       </tr>
-      {{-- Delete Project --}}
-      <div class="modal fade" id="delete{{$project->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+      {{-- Delete Member --}}
+      <div class="modal fade" id="delete{{$member->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">{{__('Delete Project')}}</h5>
+              <h5 class="modal-title">{{__('Delete Task')}}</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <form method="POST" action="{{ route('admin/project') }}">
+              <form method="POST" action="{{ route('admin/team') }}">
                 @csrf 
                 @method("DELETE")
 
-                <h4>Are you sure you want to Delete: {{ $project->title }}?</h4>
-                <input type="hidden" id="id" name="id" value="{{ $project->id }}">
+                <h4>Are you sure you want to Delete: {{ $member->user->name }}?</h4>
+                <input type="hidden" id="id" name="id" value="{{ $member->id }}">
 
                 <div class="modal-footer">
-                  <button type="submit" class="btn btn-danger">{{ __('Delete Project') }}</button>
+                  <button type="submit" class="btn btn-danger">{{ __('Delete') }}</button>
                 </div>
               </form>
-          </div>
+            </div>
           </div>
         </div>
       </div>

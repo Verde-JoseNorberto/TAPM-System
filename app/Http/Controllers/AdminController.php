@@ -9,7 +9,6 @@ use App\Models\Project;
 use App\Models\GroupProject;
 use App\Models\Feedback;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -29,7 +28,7 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function userStore(Request $request)
     {
         $request->validate([
             'name' => 'required',
@@ -81,6 +80,12 @@ class AdminController extends Controller
 
         return view('admin/task', compact(['tasks']));
     }
+    public function teamShow(Member $members)
+    {
+        $members = Member::all();
+
+        return view('admin/team', compact(['members']));
+    }
     public function feedbackShow(Feedback $feedbacks)
     {
         $feedbacks = Feedback::all();
@@ -114,64 +119,6 @@ class AdminController extends Controller
         $users->save();
 
         return redirect()->back()->with('success', 'Updated User Successfully');
-    }
-    public function groupUpdate(Request $request, GroupProject $group_projects)
-    {
-        $request->validate([
-            'id'=>'required',
-            'title'=>'required',
-            'subject'=>'required',
-            'section'=>'required',
-            'team'=>'required',
-            'advisor'=>'required'
-        ]);
-
-        $id = $request->input('id');
-        $group_projects = GroupProject::find($id);
-        $group_projects->title = $request->input('title');
-        $group_projects->subject = $request->input('subject');
-        $group_projects->section = $request->input('section');
-        $group_projects->team = $request->input('team');
-        $group_projects->advisor = $request->input('advisor');
-        $group_projects->save();
-
-        return redirect()->back()->with('success', 'Updated Group Project Successfully');
-    }
-    public function taskUpdate(Request $request, Task $tasks)
-    {
-        $request->validate([
-            'id'=>'required',
-            'title'=>'required',
-            'content'=>'required',
-            'due_date'=>'required',
-            'status'=>'required',
-            'group_project_id'=>'required'
-        ]);
-
-        $id = $request->input('id');
-        $tasks = Task::find($id);
-        $tasks->title = $request->input('title');
-        $tasks->content = $request->input('content');
-        $tasks->due_date = $request->input('due_date');
-        $tasks->status = $request->input('status');
-        $tasks->save();
-
-        return redirect()->back()->with('success', 'Updated Task Successfully');
-    }
-    public function feedbackUpdate(Request $request, Feedback $feedbacks)
-    {
-        $request->validate([
-            'id'=>'required',
-            'comment'=>'required',
-            'project_id'=>'required'
-        ]);
-
-        $id = $request->input('id');
-        $feedbacks = Feedback::find($id);
-        $feedbacks->comment = $request->input('comment');
-        $feedbacks->save();
-
-        return redirect()->back()->with('success', 'Updated Feedback Successfully');
     }
 
     /**
@@ -207,6 +154,17 @@ class AdminController extends Controller
         Task ::find($id)->delete();
 
         return redirect()->back()->with('success', 'Deleted Task Successfully');
+    }
+    public function teamDestroy(Request $request, Member $members)
+    {
+        $id = $request->input('id');
+        $members = Member::findOrFail($id);
+
+        Member::find($id)->delete();
+
+        $members->delete();
+
+        return redirect()->back()->with('success', 'Removed Member Successfully');
     }
     public function feedbackDestroy(Request $request, Feedback $feedbacks)
     {

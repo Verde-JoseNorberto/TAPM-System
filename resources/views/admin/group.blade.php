@@ -16,6 +16,9 @@
           <a class="nav-link" href="{{ URL::to('admin/task') }}">{{ __('Tasks') }}</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="{{ URL::to('admin/team') }}">{{ __('Teams') }}</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="{{ URL::to('admin/feedback') }}">{{ __('Feedbacks') }}</a>
         </li>
       </ul>
@@ -33,7 +36,7 @@
       <table class="mx-5 table table-sm table-bordered table-hover">
         <tr class="bg-info">
             <th>#</th>
-            <th>By User ID</th>
+            <th>By User</th>
             <th>Title</th>
             <th>Subject</th>
             <th>Section</th>
@@ -43,25 +46,24 @@
             <th>Updated At</th>
             <th>Action</th>
         </tr>
-      @foreach ($group_projects as $key => $groupProject)
+      @foreach ($group_projects as $key => $group_project)
       <tr class="table-info">
-          <td>{{ $groupProject->id }}</td>
-          <td>{{ $groupProject->user_id }}</td>
-          <td>{{ $groupProject->title }}</td>
-          <td>{{ $groupProject->subject }}</td>
-          <td>{{ $groupProject->section }}</td>
-          <td>{{ $groupProject->team }}</td>
-          <td>{{ $groupProject->advisor }}</td>
-          <td>{{ $groupProject->created_at }}</td>
-          <td>{{ $groupProject->updated_at }}</td>
+          <td>{{ $group_project->id }}</td>
+          <td>{{ $group_project->user->name }}</td>
+          <td>{{ $group_project->title }}</td>
+          <td>{{ $group_project->subject }}</td>
+          <td>{{ $group_project->section }}</td>
+          <td>{{ $group_project->team }}</td>
+          <td>{{ $group_project->advisor }}</td>
+          <td>{{ $group_project->created_at }}</td>
+          <td>{{ $group_project->updated_at }}</td>
           <td>
-            <a type="button" class="btn btn-primary" href="#edit{{$groupProject->id}}" data-bs-toggle="modal"><i class="fa fa-edit"></i>{{ __(' Edit') }}</a>
-            <a type="button" class="btn btn-danger" href="#delete{{$groupProject->id}}" data-bs-toggle="modal"><i class="fa fa-trash"></i>{{ __(' Delete') }}</a>
+            <a type="button" class="btn btn-danger" href="#delete{{$group_project->id}}" data-bs-toggle="modal"><i class="fa fa-trash"></i>{{ __(' Delete') }}</a>
           </td>
       </tr>
 
       {{-- Delete Group --}}
-      <div class="modal fade" id="delete{{$groupProject->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade" id="delete{{$group_project->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -73,76 +75,14 @@
                 @csrf 
                 @method("DELETE")
 
-                <h4>Are you sure you want to Delete: {{ $groupProject->title }}?</h4>
-                <input type="hidden" id="id" name="id" value="{{ $groupProject->id }}">
+                <h4>Are you sure you want to Delete: {{ $group_project->title }}?</h4>
+                <input type="hidden" id="id" name="id" value="{{ $group_project->id }}">
 
                 <div class="modal-footer">
                   <button type="submit" class="btn btn-danger">{{ __('Delete') }}</button>
                 </div>
               </form>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {{-- Edit Group --}}
-      <div class="modal fade" id="edit{{$groupProject->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">{{__('Edit Group')}}</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form method="POST" action="{{ route('admin/group') }}">
-                @csrf 
-                @method("PUT")
-
-                <input type="hidden" id="id" name="id" value="{{ $groupProject->id }}">
-                <div class="row mb-4">
-                  <div class="col">
-                    <div class="form-outline">
-                      <label class="form-label">{{ __('Project Title') }}</label>
-                      <input id="title" type="text" class="form-control" name="title" value="{{ $groupProject->title }}">
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="row mb-4">
-                  <div class="col">
-                    <div class="form-outline">
-                      <label class="form-label">{{ __('Subject') }}</label>
-                      <input id="subject" type="text" class="form-control" name="subject" value="{{ $groupProject->subject }}">
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-outline">
-                      <label class="form-label">{{ __('Section') }}</label>
-                      <input id="section" type="text" class="form-control" name="section" value="{{ $groupProject->section }}">
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="row mb-4">
-                  <div class="col">
-                    <div class="form-outline">
-                      <label class="form-label">{{ __('Team') }}</label>
-                      <input id="team" type="text" class="form-control" name="team" value="{{ $groupProject->team }}">
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-outline">
-                      <label class="form-label">{{ __('Advisor') }}</label>
-                      <input id="advisor" type="text" class="form-control" name="advisor" value="{{ $groupProject->advisor }}">
-                    </div>
-                  </div>
-                </div>
-      
-                </div>
-                <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Update Details') }}</button>
-                </div>
-              </form>
           </div>
         </div>
       </div>

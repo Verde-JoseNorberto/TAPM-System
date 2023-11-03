@@ -1,22 +1,6 @@
 @extends('layout.layAdm')
 
 @section('page-content')
-<div class="col-3">
-  @if ($message = Session::get('success'))
-  <div class="alert alert-success alert-dismissible fade show position-fixed" role="alert">
-    <strong>{{ $message }}</strong>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-  @endif
-  @if($errors->any())
-    <div class="alert alert-danger alert-dismissible fade show position-fixed" role="alert">
-      @foreach($errors->all() as $error)
-          <p>{{ $error }}</p>
-      @endforeach
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  @endif
-</div>
 <div class="container my-4">
     <ul class="nav nav-tabs">
       <li class="nav-item">
@@ -30,6 +14,9 @@
         </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ URL::to('admin/task') }}">{{ __('Tasks') }}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ URL::to('admin/team') }}">{{ __('Teams') }}</a>
       </li>
       <li class="nav-item">
           <a class="nav-link" href="{{ URL::to('admin/feedback') }}">{{ __('Feedbacks') }}</a>
@@ -148,9 +135,8 @@
                       <select id="type" class="form-select" name="type">
                           <option selected>{{ __('Select Type') }}</option>
                           <option value="0">{{ __('Office') }}</option>
-                          <option value="1">{{ __('Teacher') }}</option>
-                          <option value="2">{{ __('Adviser') }}</option>
-                          <option value="3">{{ __('Student') }}</option>
+                          <option value="1">{{ __('Faculty') }}</option>
+                          <option value="2">{{ __('Student') }}</option>
                         </select>
                     </div>
                   </div>
