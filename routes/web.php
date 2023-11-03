@@ -15,10 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 // Authenticate user, if login, proceed to home.
 Route::get('/', function () {
-    if (auth()->user()->type == 'adviser') {
+    if (auth()->user()->type == 'faculty') {
         return redirect()->route('faculty/home');
-    }else if (auth()->user()->type == 'teacher') {
-        return redirect()->route('teacher/home');
     }else if (auth()->user()->type == 'office') {
         return redirect()->route('office/home');
     }else{
@@ -33,7 +31,7 @@ Route::middleware(['auth', 'user-access:office'])->group(function () {
     Route::get('/office/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('office/home');
     Route::get('/office/project/{id}', [App\Http\Controllers\GroupProjectController::class, 'projectShow']);
     Route::get('/office/project/{id}/task', [App\Http\Controllers\GroupProjectController::class, 'taskShow']);
-    Route::get('/office/project/{id}/team', [App\Http\Controllers\GroupProjectController::class, 'memberShow']);
+    Route::get('/office/project/{id}/team', [App\Http\Controllers\GroupProjectController::class, 'teamShow']);
     Route::get('/office/project/{id}/edit', [App\Http\Controllers\GroupProjectController::class, 'edit']);
     Route::post('office/home', [App\Http\Controllers\GroupProjectController::class, 'groupStore'])->name('office/home');
     Route::post('office/project/task', [App\Http\Controllers\GroupProjectController::class, 'taskStore'])->name('office/task');
@@ -52,42 +50,31 @@ Route::middleware(['auth', 'user-access:office'])->group(function () {
     Route::get('/admin/group', [App\Http\Controllers\AdminController::class, 'groupShow'])->name('admin/group');
     Route::get('/admin/project', [App\Http\Controllers\AdminController::class, 'projectShow'])->name('admin/project');
     Route::get('/admin/task', [App\Http\Controllers\AdminController::class, 'taskShow'])->name('admin/task');
+    Route::get('/admin/team', [App\Http\Controllers\AdminController::class, 'teamShow'])->name('admin/team');
     Route::get('/admin/feedback', [App\Http\Controllers\AdminController::class, 'feedbackShow'])->name('admin/feedback');
-    Route::post('admin/user', [App\Http\Controllers\AdminController::class, 'store'])->name('admin/user');
+    Route::post('admin/user', [App\Http\Controllers\AdminController::class, 'userStore'])->name('admin/user');
     Route::put('admin/user', [App\Http\Controllers\AdminController::class, 'userUpdate']);
-    Route::put('admin/group', [App\Http\Controllers\AdminController::class, 'groupUpdate']);
-    Route::put('admin/task', [App\Http\Controllers\AdminController::class, 'taskUpdate']);
-    Route::put('admin/feedback', [App\Http\Controllers\AdminController::class, 'feedbackUpdate']);
     Route::delete('admin/user', [App\Http\Controllers\AdminController::class, 'userDestroy']);
     Route::delete('admin/group', [App\Http\Controllers\AdminController::class, 'groupDestroy']);
     Route::delete('admin/project', [App\Http\Controllers\AdminController::class, 'projectDestroy']);
     Route::delete('admin/task', [App\Http\Controllers\AdminController::class, 'taskDestroy']);
+    Route::delete('admin/team', [App\Http\Controllers\AdminController::class, 'teamDestroy']);
     Route::delete('admin/feedback', [App\Http\Controllers\AdminController::class, 'feedbackDestroy']);
 });
 
 // Special Privilege View or the Faculty View
-Route::middleware(['auth', 'user-access:adviser'])->group(function () {
+Route::middleware(['auth', 'user-access:faculty'])->group(function () {
     Route::get('/faculty/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('faculty/home');
     Route::get('/faculty/project/{id}', [App\Http\Controllers\GroupProjectController::class, 'projectShow']);
     Route::get('/faculty/project/{id}/task', [App\Http\Controllers\GroupProjectController::class, 'taskShow']);
-    Route::get('/faculty/project/{id}/team', [App\Http\Controllers\GroupProjectController::class, 'memberShow']);
+    Route::get('/faculty/project/{id}/team', [App\Http\Controllers\GroupProjectController::class, 'teamShow']);
+    Route::post('faculty/home', [App\Http\Controllers\GroupProjectController::class, 'groupStore'])->name('faculty/home');
     Route::post('faculty/project/task', [App\Http\Controllers\GroupProjectController::class, 'taskStore'])->name('faculty/task');
+    Route::post('faculty/project/team', [App\Http\Controllers\GroupProjectController::class, 'memberStore'])->name('faculty/team');
     Route::post('faculty/feedback', [App\Http\Controllers\GroupProjectController::class, 'feedbackStore'])->name('faculty/feedback');
     Route::put('faculty/task', [App\Http\Controllers\GroupProjectController::class, 'taskUpdate'])->name('faculty/board');
     Route::delete('faculty/task', [App\Http\Controllers\GroupProjectController::class, 'taskDestroy']);
     Route::delete('faculty/feedback', [App\Http\Controllers\GroupProjectController::class, 'feedbackDestroy'])->name('faculty/feedDel');
-});
-
-// Secondary Privilege View or the Teacher View
-Route::middleware(['auth', 'user-access:teacher'])->group(function () {
-    Route::get('/teacher/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('teacher/home');
-    Route::get('/teacher/project/{id}', [App\Http\Controllers\GroupProjectController::class, 'projectShow']);
-    Route::get('/teacher/project/{id}/task', [App\Http\Controllers\GroupProjectController::class, 'taskShow']);
-    Route::get('/teacher/project/{id}/team', [App\Http\Controllers\GroupProjectController::class, 'memberShow']);
-    Route::post('teacher/project/team', [App\Http\Controllers\GroupProjectController::class, 'memberStore'])->name('teacher/team');
-    Route::post('teacher/feedback', [App\Http\Controllers\GroupProjectController::class, 'feedbackStore'])->name('teacher/feedback');
-    Route::delete('teacher/project/team', [App\Http\Controllers\GroupProjectController::class, 'teamDestroy']);
-    Route::delete('teacher/feedback', [App\Http\Controllers\GroupProjectController::class, 'feedbackDestroy'])->name('teacher/feedDel');
 });
 
 // Regular Privilege View or the Student View
@@ -95,7 +82,7 @@ Route::middleware(['auth', 'user-access:student'])->group(function () {
     Route::get('/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('student/home');
     Route::get('/project/{id}', [App\Http\Controllers\GroupProjectController::class, 'projectShow']);
     Route::get('/project/{id}/task', [App\Http\Controllers\GroupProjectController::class, 'taskShow']);
-    Route::get('/project/{id}/team', [App\Http\Controllers\GroupProjectController::class, 'memberShow']);
+    Route::get('/project/{id}/team', [App\Http\Controllers\GroupProjectController::class, 'teamShow']);
     Route::post('/project', [App\Http\Controllers\GroupProjectController::class, 'projectStore'])->name('student/project');
     Route::post('project/task', [App\Http\Controllers\GroupProjectController::class, 'taskStore'])->name('student/task');
     Route::post('/feedback', [App\Http\Controllers\GroupProjectController::class, 'feedbackStore'])->name('student/feedback');
