@@ -5,7 +5,7 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
-class TaskCompleted extends Notification
+class MemberAdded extends Notification
 {
     use Queueable;
 
@@ -14,13 +14,13 @@ class TaskCompleted extends Notification
      *
      * @return void
      */
-    public function __construct($group_id, $title, $name, $type)
-    {
+    public function __construct($group_id, $title, $type)
+    {   
         $this->group_id = $group_id;
         $this->title = $title;
-        $this->name = $name;
         $this->type = $type;
     }
+
     /**
      * Get the notification's delivery channels.
      *
@@ -33,7 +33,7 @@ class TaskCompleted extends Notification
     }
 
     /**
-     * Get the database representation of the notification.
+     * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
      * @return array
@@ -43,8 +43,8 @@ class TaskCompleted extends Notification
         $routePrefix = $this->getRoutePrefix();
 
         return [
-            'link' => url($routePrefix . '/project/' . $this->group_id . '/task'),
-            'data' => 'The task ' . $this->title . ' has been completed by ' . $this->name . '.',
+            'link' => url($routePrefix . '/project/' . $this->group_id),
+            'data' => 'You are added to group ' . $this->title,
         ];
     }
 

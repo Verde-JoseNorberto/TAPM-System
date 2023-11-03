@@ -14,9 +14,12 @@ class TaskCreated extends Notification
      *
      * @return void
      */
-    public function __construct($title)
+    public function __construct($group_id, $title, $name, $type)
     {
+        $this->group_id = $group_id;
         $this->title = $title;
+        $this->name = $name;
+        $this->type = $type;
     }
 
     /**
@@ -33,13 +36,29 @@ class TaskCreated extends Notification
     /**
      * Get the database representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param  mixed  $notifiable 
      * @return array
      */
-    public function toArray($notifiable)
+    public function toDatabase($notifiable)
     {
+        $routePrefix = $this->getRoutePrefix();
+
         return [
-            'data' => 'A new task ' . $this->title . ' has been created.',
+            'link' => url($routePrefix . '/project/' . $this->group_id . '/task'),
+            'data' => "You're Assign by " . $this->name . " to the Task ". $this->title . ".",
         ];
+    }
+
+    private function getRoutePrefix() 
+    {
+        if ($this->type == 'office') {
+            $routePrefix = 'office';
+        } elseif ($this->type == 'faculty') {
+            $routePrefix = 'faculty';
+        } else{
+            $routePrefix = '';
+        }
+
+        return $routePrefix;
     }
 }
