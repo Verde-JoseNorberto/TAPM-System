@@ -2,8 +2,9 @@
 
 .fixed-alert-container {
     position: fixed;
-    right: 0;
+    top: 850px;
+    left: 1600px;
     width: 100%;
-    z-index: 9999; /* Adjust z-index to ensure it's on top of other content */
+    z-index: 9999;
     padding: 10px;
 }
