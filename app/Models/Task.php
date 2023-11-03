@@ -30,6 +30,7 @@ class Task extends Model
         'content',
         'due_date',
         'status',
+        'updated_by',
     ];
 
     /**
@@ -50,5 +51,9 @@ class Task extends Model
     public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+    public function group_project()
+    {
+        return $this->belongsTo(GroupProject::class);
     }
 }

@@ -4,12 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GroupProject extends Model
 {
-    use HasFactory, SoftDeletes, Notifiable;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'group_projects';
     protected $primaryKay = 'id';
@@ -49,9 +48,12 @@ class GroupProject extends Model
      */
     public function user()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class);
     }
-
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'members', 'group_project_id', 'user_id');
+    }
     public function members()
     {
         return $this->hasMany(Member::class);

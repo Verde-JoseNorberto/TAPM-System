@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('group_project_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         
             $table->foreign('group_project_id')
                 ->references('id')

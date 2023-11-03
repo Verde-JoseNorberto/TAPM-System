@@ -49,7 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function type(): Attribute
     {
         return new Attribute(
-            get: fn ($value) =>  ["office", "teacher", "adviser", "student"][$value],
+            get: fn ($value) =>  ["office", "faculty", "student"][$value],
         );
     }
     /**
@@ -57,10 +57,6 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array
      */
-    // public function notifications()
-    // {
-    //     return $this->hasMany(Notification::class, 'user_id');
-    // }
     
     public function group_projects()
     {
@@ -70,5 +66,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function members()
     {
         return $this->hasMany(Member::class);
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'assign_id');
     }
 } 
