@@ -10,6 +10,9 @@
       <a class="nav-link active">{{ __('Taskboard') }}</a>
     </li>
     <li class="nav-item">
+      <a class="nav-link" href="{{ URL::to('office/project/' . $group_projects->id . '/event') }}">{{ __('Events') }}</a>
+    </li>
+    <li class="nav-item">
       <a class="nav-link" href="{{ URL::to('office/project/' . $group_projects->id . '/team') }}">{{ __('Team') }}</a>
     </li>
   </ul>
@@ -31,9 +34,31 @@
       </div>
     </div>
   </div>
-  
-  <div class="row row-cols-1 row-cols-md-3 g-4 my-2">
-    @include('office.board', ['tasks' => $group_projects->tasks, 'group_project_id' => $group_projects->id])
+
+  {{-- Status Tabs --}}
+  <ul class="nav nav-tabs row-cols-1 row-cols-md-3 g-4 my-2" id="taskStatusTabs">
+    <li class="nav-item">
+      <a class="nav-link active" id="todo-tab" data-bs-toggle="tab" href="#todo">{{ __('To Do') }}</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="inProgress-tab" data-bs-toggle="tab" href="#inProgress">{{ __('In Progress') }}</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="finished-tab" data-bs-toggle="tab" href="#finished">{{ __('Finished') }}</a>
+    </li>
+  </ul>
+
+  {{-- Status Tab Content --}}
+  <div class="tab-content">
+    <div class="tab-pane fade show active" id="todo">
+      @include('office.board', ['tasks' => $group_projects->tasks->where('status', 'To Do'), 'group_project_id' => $group_projects->id])
+    </div>
+    <div class="tab-pane fade" id="inProgress">
+      @include('office.board', ['tasks' => $group_projects->tasks->where('status', 'In Progress'), 'group_project_id' => $group_projects->id])
+    </div>
+    <div class="tab-pane fade" id="finished">
+      @include('office.board', ['tasks' => $group_projects->tasks->where('status', 'Finished'), 'group_project_id' => $group_projects->id])
+    </div>
   </div>
 
   {{-- Add Task --}}
@@ -68,6 +93,13 @@
             <div class="row mb-4">
               <div class="col">
                 <div class="form-outline">
+                  <label class="form-label">{{ __('Start Date') }}</label>
+                  <input id="start_date" type="date" class="form-control" name="start_date">
+                </div>
+              </div>
+ 
+              <div class="col">
+                <div class="form-outline">
                   <label class="form-label">{{ __('Due Date') }}</label>
                   <input id="due_date" type="date" class="form-control" name="due_date">
                 </div>
@@ -89,6 +121,18 @@
             </div>
 
             <div class="row mb-4">
+              <div class="col">
+                <div class="form-outline">
+                  <label class="form-label">{{ __('Priority') }}</label>
+                  <select id="priority" class="form-select" name="priority">
+                    <option selected>{{ __('Select Status') }}</option>
+                    <option value="Low">{{ __('Low') }}</option>
+                    <option value="Moderate">{{ __('Moderate') }}</option>
+                    <option value="High">{{ __('High') }}</option>
+                  </select>
+                </div>
+              </div>
+
               <div class="col">
                 <div class="form-outline">
                   <label class="form-label">{{ __('Status') }}</label>
