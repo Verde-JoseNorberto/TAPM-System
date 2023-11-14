@@ -45,7 +45,7 @@ class FeedbackSent extends Notification
 
         return [
             'link' => url($routePrefix . '/project/' . $this->group_id),
-            'data' => $this->name . ' commented ' . $this->title, 
+            'data' => $this->name . ' commented in post ' . $this->title, 
         ];
     }
 

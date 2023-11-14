@@ -10,8 +10,12 @@
       <a class="nav-link" href="{{ URL::to('office/project/' . $group_projects->id . '/task') }}">{{ __('Taskboard') }}</a>
     </li>
     <li class="nav-item">
+      <a class="nav-link" href="{{ URL::to('office/project/' . $group_projects->id . '/event') }}">{{ __('Events') }}</a>
+    </li>
+    <li class="nav-item">
       <a class="nav-link" href="{{ URL::to('office/project/' . $group_projects->id . '/team') }}">{{ __('Team') }}</a>
     </li>
+    
   </ul>
   <div class="card text-dark border-dark my-3">
       <div class="card-body">

@@ -30,10 +30,10 @@
     @endif
 </div>
 <div class="bg-image" style="background-image: url('/storage/test.png'); height: 100vh">
-    <div id='app'>    
+    <div id='app'>
         <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color: #043877;">
             <div class="container-fluid">
-                <a class="navbar-brand fw-bold text-white" href="{{ url('admin') }}">
+                <a class="navbar-brand fw-bold text-white" href="{{ url('admin\user') }}">
                     {{ config('app.name', 'TAPM') }}
                 </a>
 
