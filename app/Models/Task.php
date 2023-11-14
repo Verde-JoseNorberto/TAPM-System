@@ -28,8 +28,10 @@ class Task extends Model
         'parent_id',
         'title',
         'content',
+        'start_date',
         'due_date',
         'status',
+        'priority',
         'updated_by',
     ];
 
@@ -55,5 +57,14 @@ class Task extends Model
     public function group_project()
     {
         return $this->belongsTo(GroupProject::class);
+    }
+
+    public function toCalendarEvent()
+    {
+        return [
+            'title' => $this->title,
+            'start' => $this->start_date,
+            'end' => $this->due_date,
+        ];
     }
 }

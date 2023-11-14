@@ -21,8 +21,10 @@ return new class extends Migration
             $table->integer('parent_id')->unsigned()->nullable();
             $table->string('title');
             $table->string('content');
-            $table->string('due_date');
+            $table->date('start_date');
+            $table->date('due_date');
             $table->string('status');
+            $table->string('priority');
             $table->integer('updated_by')->unsigned()->nullable();
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();

@@ -16,6 +16,7 @@ use App\Notifications\TaskCompleted;
 use App\Notifications\TaskCreated;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Http\JsonResponse;
 
 class GroupProjectController extends Controller
 {
@@ -151,8 +152,10 @@ class GroupProjectController extends Controller
                 Rule::unique('tasks', 'title')->where('group_project_id', $request->input('group_project_id'))->whereNull('deleted_at'),
             ],
             'content' => 'required',
+            'start_date' => 'required|date',
             'due_date' => 'required|date|after_or_equal:today',
             'status' => 'required',
+            'priority' => 'required',
             'group_project_id' => 'required',
             'assign_id' => 'required|exists:users,id',
         ]);
@@ -164,7 +167,9 @@ class GroupProjectController extends Controller
         $taskCreate = User::find($request->assign_id);
         $taskCreate->notify(new TaskCreated($task->group_project_id, $task->title, auth()->user()->name, $taskCreate->type));
 
-        return redirect()->back()->with('success', 'Posted Task Successfully.');
+        $calendarEvent = $task->toCalendarEvent();
+
+        return redirect()->back()->with('success', 'Posted Task Successfully.')->with('calendarEvent', $calendarEvent);
     }
 
     public function memberStore(Request $request)
@@ -389,8 +394,10 @@ class GroupProjectController extends Controller
                 Rule::unique('tasks', 'title')->where('group_project_id', $request->input('group_project_id'))->ignore($request->input('id'))->whereNull('deleted_at'),
             ],
             'content' => 'required',
+            'start_date' => 'required|date',
             'due_date' => 'required|date|after_or_equal:today',
             'status' => 'required',
+            'priority' => 'required',
             'group_project_id' => 'required',
             'assign_id' => 'required|exists:users,id',
         ]);
@@ -400,8 +407,10 @@ class GroupProjectController extends Controller
 
         $task->title = $request->input('title');
         $task->content = $request->input('content');
+        $task->start_date = $request->input('start_date');
         $task->due_date = $request->input('due_date');
         $task->status = $request->input('status');
+        $task->priority = $request->input('priority');
         $task->assign_id = $request->input('assign_id');
         $task->updated_by = auth()->user()->id;
         $task->save();
@@ -413,23 +422,54 @@ class GroupProjectController extends Controller
     
         return redirect()->back()->with('success', 'Updated Task Successfully');
     }
-
-    public function calendar()
+    public function calendar($id, Request $request)
     {
-        // Retrieve task data with due dates
-        $tasks = Task::whereNotNull('due_date')->get();
-
-        // Format the task data for FullCalendar
+        $group_projects = GroupProject::find($id);
+    
+        if (!$group_projects) {
+            abort(403, 'Unauthorized');
+        }
+    
+        if ($request->ajax()) {
+            return $this->getCalendarData($request);
+        }
+    
+        $tasks = Task::where('group_project_id', $id)
+            ->whereNotNull('due_date')
+            ->get();
+    
         $events = [];
         foreach ($tasks as $task) {
-            $events[] = [
-                'title' => $task->title,
-                'start' => $task->due_date,
-                'end' => $task->due_date,
-            ];
+            $events[] = $task->toCalendarEvent();
         }
+    
+        return view('office/calendar', compact('events', 'group_projects'));
+    }
+    
+    private function getCalendarData(Request $request): JsonResponse
+    {
+        $data = Task::whereDate('start_date', '>=', $request->start_date)
+            ->whereDate('due_date', '<=', $request->due_date)
+            ->get(['id', 'title', 'start_date', 'due_date']);
+    
+        return response()->json($data);
+    }
 
-        return view('office/calendar', compact('events'));
+    public function action(Request $request)
+    {
+    	if ($request->ajax()) {
+            if ($request->type == 'add') {
+                return $this->taskStore($request);
+            }
+    
+            if ($request->type == 'update') {
+                return $this->taskUpdate($request, $request->id);
+            }
+    
+            if ($request->type == 'delete') {
+                return $this->taskDestroy($request, $request->id);
+            }
+        }
     }
 
     /**
