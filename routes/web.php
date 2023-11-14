@@ -31,12 +31,14 @@ Route::middleware(['auth', 'user-access:office'])->group(function () {
     Route::get('/office/home', [App\Http\Controllers\GroupProjectController::class, 'index'])->name('office/home');
     Route::get('/office/project/{id}', [App\Http\Controllers\GroupProjectController::class, 'projectShow']);
     Route::get('/office/project/{id}/task', [App\Http\Controllers\GroupProjectController::class, 'taskShow']);
+    Route::get('/office/project/{id}/event', [App\Http\Controllers\GroupProjectController::class, 'calendar']);
     Route::get('/office/project/{id}/team', [App\Http\Controllers\GroupProjectController::class, 'teamShow']);
     Route::get('/office/project/{id}/edit', [App\Http\Controllers\GroupProjectController::class, 'edit']);
     Route::post('office/home', [App\Http\Controllers\GroupProjectController::class, 'groupStore'])->name('office/home');
     Route::post('office/project/task', [App\Http\Controllers\GroupProjectController::class, 'taskStore'])->name('office/task');
     Route::post('office/feedback', [App\Http\Controllers\GroupProjectController::class, 'feedbackStore'])->name('office/feedback');
     Route::post('office/project/team', [App\Http\Controllers\GroupProjectController::class, 'memberStore'])->name('office/team');
+    Route::post('office/project/event',[App\Http\Controllers\GroupProjectController::class, 'action'])->name('office/calendar');
     Route::put('office/home', [App\Http\Controllers\GroupProjectController::class, 'groupUpdate'])->name('office/edit');
     Route::put('office/task', [App\Http\Controllers\GroupProjectController::class, 'taskUpdate'])->name('office/board');
     Route::delete('office/home', [App\Http\Controllers\GroupProjectController::class, 'groupDestroy']);
@@ -45,7 +47,7 @@ Route::middleware(['auth', 'user-access:office'])->group(function () {
     Route::delete('office/feedback', [App\Http\Controllers\GroupProjectController::class, 'feedbackDestroy'])->name('office/feedDel');
 
     // Admin Privilege
-    Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin/index');
+    Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin/user');
     Route::get('/admin/user', [App\Http\Controllers\AdminController::class, 'userShow'])->name('admin/user');
     Route::get('/admin/group', [App\Http\Controllers\AdminController::class, 'groupShow'])->name('admin/group');
     Route::get('/admin/project', [App\Http\Controllers\AdminController::class, 'projectShow'])->name('admin/project');
