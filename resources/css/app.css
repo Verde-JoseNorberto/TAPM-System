@@ -3,7 +3,6 @@
 .fixed-alert-container {
     position: fixed;
     top: 50px;
-    /* left: 1600px; */
     width: 100%;
     z-index: 9999;
     padding: 10px;
