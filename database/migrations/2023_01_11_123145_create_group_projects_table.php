@@ -17,7 +17,6 @@ return new class extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('title');
-            $table->string('subject');
             $table->string('section');
             $table->string('team');
             $table->string('advisor');

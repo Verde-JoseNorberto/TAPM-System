@@ -13,22 +13,26 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('members', function (Blueprint $table) {
-            $table->id();
-            $table->integer('group_project_id')->unsigned();
+        Schema::create('events', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->string('role')->default('admin');
+            $table->integer('group_project_id')->unsigned();
+            $table->integer('parent_id')->unsigned()->nullable();
+            $table->string('title');
+            $table->string('description');
+            $table->date('start');
+            $table->date('end');
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
-        
-            $table->foreign('group_project_id')
-                ->references('id')
-                ->on('group_projects')
-                ->onDelete('cascade');
-        
+
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
+                ->onDelete('cascade');
+            
+            $table->foreign('group_project_id')
+                ->references('id')
+                ->on('group_projects')
                 ->onDelete('cascade');
         });
     }
@@ -40,6 +44,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('members');
+        Schema::dropIfExists('events');
     }
 };

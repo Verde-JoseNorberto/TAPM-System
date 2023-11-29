@@ -13,14 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('subtasks', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->integer('group_project_id')->unsigned();
+            $table->integer('task_id')->unsigned();
+            $table->integer('assign_id')->unsigned();
             $table->integer('parent_id')->unsigned()->nullable();
             $table->string('title');
-            $table->string('file')->nullable();
-            $table->string('description');
+            $table->string('content');
+            $table->date('start_date');
+            $table->date('due_date');
+            $table->string('status');
+            $table->string('priority');
+            $table->integer('updated_by')->unsigned()->nullable();
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
 
@@ -28,10 +33,20 @@ return new class extends Migration
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
-            
-            $table->foreign('group_project_id')
+
+            $table->foreign('task_id')
                 ->references('id')
-                ->on('group_projects')
+                ->on('tasks')
+                ->onDelete('cascade');
+
+            $table->foreign('assign_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+                
+            $table->foreign('updated_by')
+                ->references('id')
+                ->on('users')
                 ->onDelete('cascade');
         });
     }
@@ -43,6 +58,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('subtasks');
     }
 };
