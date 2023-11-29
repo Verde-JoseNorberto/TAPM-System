@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Task extends Model
+class Subtask extends Model
 {
     use HasFactory, SoftDeletes, Notifiable;
 
-    protected $table = 'tasks';
+    protected $table = 'subtasks';
     protected $primaryKay = 'id';
     protected $dates = ['deleted_at'];
 
@@ -23,7 +23,7 @@ class Task extends Model
      */
     protected $fillable = [
         'user_id', 
-        'group_project_id', 
+        'task_id',
         'assign_id',
         'parent_id',
         'title',
@@ -55,29 +55,9 @@ class Task extends Model
         return $this->belongsTo(User::class, 'updated_by');
     }
 
-    public function group_project()
+    public function maintask()
     {
-        return $this->belongsTo(GroupProject::class, 'group_project_id');
+        return $this->belongsTo(Task::class, 'task_id');
     }
 
-    public function subtasks()
-    {
-        return $this->hasMany(Subtask::class, 'task_id', 'id');
-    }
-
-    /**
-     * Calendar Method
-     *
-     * @var array
-     */
-    public function toCalendarEvent()
-    {   
-        return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'start' => $this->start_date,
-            'end' => $this->due_date,
-            'allDay' => true,
-    ];
-    }
 }

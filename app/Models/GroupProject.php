@@ -21,7 +21,6 @@ class GroupProject extends Model
     protected $fillable = [
         'user_id',
         'title',
-        'subject',
         'section',
         'team',
         'advisor'
@@ -40,6 +39,10 @@ class GroupProject extends Model
     {
         return $this->hasMany(Task::class)->whereNull('parent_id');
     }
+    public function events()
+    {
+        return $this->hasMany(Event::class)->whereNull('parent_id');
+    }
 
     /**
      * The has Many Relationship with permission
@@ -56,6 +59,6 @@ class GroupProject extends Model
     }
     public function members()
     {
-        return $this->hasMany(Member::class);
+        return $this->hasMany(Member::class, 'group_project_id', 'id');
     }
 }
