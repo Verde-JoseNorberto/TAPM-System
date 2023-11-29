@@ -7,13 +7,11 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'TAPM-Office') }}</title>
+    <title>TAPM-Office</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
     <!-- Scripts -->
     @vite(['resources/css/app.css','resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -50,13 +48,16 @@
                   </button>
                   <div class="dropdown-menu" aria-labelledby="notificationDropdown">
                     @forelse (auth()->user()->notifications as $notification)
+                    <ul class="list-group">
                         <a class="dropdown-item" href = "{{ $notification->data['link']}}">
-                            {{ $notification->data['data']}}
+                          <li class="list-group-item">{{ $notification->data['data']}}</li>
                         </a>
+                    </ul>
                     @empty
                         <a class="dropdown-item">
                             {{ __('No new notifications') }}
                         </a>
+                    </ul>
                     @endforelse
                   </div>
                 </div>
@@ -129,25 +130,19 @@
                 <div class="row mb-4">
                   <div class="col">
                     <div class="form-outline">
-                      <label class="form-label">{{ __('Subject') }}</label>
-                      <input id="subject" type="text" class="form-control" name="subject">
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-outline">
                       <label class="form-label">{{ __('Section') }}</label>
                       <input id="section" type="text" class="form-control" name="section">
                     </div>
                   </div>
-                </div>
-                
-                <div class="row mb-4">
                   <div class="col">
                     <div class="form-outline">
                       <label class="form-label">{{ __('Team') }}</label>
                       <input id="team" type="text" class="form-control" name="team">
                     </div>
                   </div>
+                </div>
+
+                <div class="row mb-4">
                   <div class="col">
                     <div class="form-outline">
                       <label class="form-label">{{ __('Advisor') }}</label>
@@ -170,21 +165,3 @@
 </div>
 </body>
 </html>
-
-<script>
-  // Automatically close success alert after 5 seconds (5000 milliseconds)
-  const successAlert = document.getElementById('success-alert');
-  if (successAlert) {
-      setTimeout(function() {
-          successAlert.style.display = 'none';
-      }, 5000); // Adjust the duration as needed
-  }
-
-  // Automatically close error alert after 5 seconds (5000 milliseconds)
-  const errorAlert = document.getElementById('error-alert');
-  if (errorAlert) {
-      setTimeout(function() {
-          errorAlert.style.display = 'none';
-      }, 5000); // Adjust the duration as needed
-  }
-</script>

@@ -7,7 +7,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'TAPM-Faculty') }}</title>
+    <title>TAPM-Faculty</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 
     <!-- Scripts -->
     @vite(['resources/css/app.css','resources/sass/app.scss', 'resources/js/app.js'])
@@ -145,21 +148,3 @@
 </div>
 </body>
 </html>
-
-<script>
-  // Automatically close success alert after 5 seconds (5000 milliseconds)
-  const successAlert = document.getElementById('success-alert');
-  if (successAlert) {
-      setTimeout(function() {
-          successAlert.style.display = 'none';
-      }, 5000); // Adjust the duration as needed
-  }
-
-  // Automatically close error alert after 5 seconds (5000 milliseconds)
-  const errorAlert = document.getElementById('error-alert');
-  if (errorAlert) {
-      setTimeout(function() {
-          errorAlert.style.display = 'none';
-      }, 5000); // Adjust the duration as needed
-  }
-</script>

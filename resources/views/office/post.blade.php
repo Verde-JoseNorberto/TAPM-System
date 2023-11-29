@@ -7,8 +7,12 @@
         <strong>{{ $project->created_at}}</strong>
       </div><hr>
       <h3 class="card-title text-center">{{ $project->title }}</h3>
-      <iframe class="fluid" src="/files/{{ $project->file }}" height="700" width="600"></iframe><hr>
       <h6>{{ $project->description }}</h6>
+      @if ($project->file)
+        <a href="/files/{{ $project->file }}" download="{{ $project->file }}">
+          {{ $project->file }} ({{ strtoupper(pathinfo($project->file, PATHINFO_EXTENSION)) }})
+        </a>
+      @endif
     </div>
     <div class="card-footer">
       @include('office.feedback', ['feedbacks' => $project->feedbacks, 'project_id' => $project->id])

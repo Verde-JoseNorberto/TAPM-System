@@ -56,7 +56,15 @@
           <td>{{ $project->created_at }}</td>
           <td>{{ $project->updated_at }}</td>
           <td>
-            <a class="btn btn-danger" href="#delete{{$project->id}}" data-bs-toggle="modal"><i class="fa fa-trash"></i>{{ __(' Delete') }}</a>
+            @if ($project->trashed())
+                <a type="button" class="btn btn-warning" href="#restore{{$project->id}}" data-bs-toggle="modal">
+                    <i class="fa fa-undo"></i>{{ __(' Restore') }}
+                </a>
+            @else
+                <a href="#delete{{$project->id}}" type="button" class="btn btn-danger" data-bs-toggle="modal">
+                    {{ __('Delete') }}
+                </a>
+            @endif
           </td>
       </tr>
       {{-- Delete Project --}}
@@ -77,6 +85,31 @@
 
                 <div class="modal-footer">
                   <button type="submit" class="btn btn-danger">{{ __('Delete Project') }}</button>
+                </div>
+              </form>
+          </div>
+          </div>
+        </div>
+      </div>
+
+      {{-- Restore Project --}}
+      <div class="modal fade" id="restore{{$project->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">{{__('Restore Project')}}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="{{ route('admin.project.restore', ['id' => $project->id]) }}">
+                @csrf 
+                @method("POST")
+
+                <h4>Are you sure you want to Restore: {{ $project->title }}?</h4>
+                <input type="hidden" id="id" name="id" value="{{ $project->id }}">
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-danger">{{ __('Restore Project') }}</button>
                 </div>
               </form>
           </div>

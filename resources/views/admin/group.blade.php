@@ -58,7 +58,15 @@
           <td>{{ $group_project->created_at }}</td>
           <td>{{ $group_project->updated_at }}</td>
           <td>
-            <a type="button" class="btn btn-danger" href="#delete{{$group_project->id}}" data-bs-toggle="modal"><i class="fa fa-trash"></i>{{ __(' Delete') }}</a>
+            @if ($group_project->trashed())
+                <a type="button" class="btn btn-warning" href="#restore{{$group_project->id}}" data-bs-toggle="modal">
+                    <i class="fa fa-undo"></i>{{ __(' Restore') }}
+                </a>
+            @else
+                <a href="#delete{{$group_project->id}}" type="button" class="btn btn-danger" data-bs-toggle="modal">
+                    {{ __('Delete') }}
+                </a>
+            @endif
           </td>
       </tr>
 
@@ -86,6 +94,32 @@
           </div>
         </div>
       </div>
+
+      {{-- Restore Group --}}
+      <div class="modal fade" id="restore{{$group_project->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">{{__('Restore Group')}}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="{{ route('admin.group.restore', ['id' => $group_project->id]) }}">
+                @csrf 
+                @method("POST")
+
+                <h4>Are you sure you want to Restore: {{ $group_project->title }}?</h4>
+                <input type="hidden" id="id" name="id" value="{{ $group_project->id }}">
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-danger">{{ __('Restore') }}</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
       @endforeach
     </table>
 </div>

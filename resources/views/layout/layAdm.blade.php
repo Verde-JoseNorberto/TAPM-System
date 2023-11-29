@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'TAPM-Admin') }}</title>
+    <title>TAPM-Admin</title>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css','resources/sass/app.scss', 'resources/js/app.js'])
@@ -84,21 +84,3 @@
 </div>
 </body>
 </html>
-
-<script>
-  // Automatically close success alert after 5 seconds (5000 milliseconds)
-  const successAlert = document.getElementById('success-alert');
-  if (successAlert) {
-      setTimeout(function() {
-          successAlert.style.display = 'none';
-      }, 5000); // Adjust the duration as needed
-  }
-
-  // Automatically close error alert after 5 seconds (5000 milliseconds)
-  const errorAlert = document.getElementById('error-alert');
-  if (errorAlert) {
-      setTimeout(function() {
-          errorAlert.style.display = 'none';
-      }, 5000); // Adjust the duration as needed
-  }
-</script>

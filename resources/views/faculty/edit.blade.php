@@ -26,25 +26,19 @@
           <div class="row mb-4">
             <div class="col">
               <div class="form-outline">
-                <label class="form-label">{{ __('Subject') }}</label>
-                <input id="subject" type="text" class="form-control" name="subject" value="{{ $groupProject->subject }}">
-              </div>
-            </div>
-            <div class="col">
-              <div class="form-outline">
                 <label class="form-label">{{ __('Section') }}</label>
                 <input id="section" type="text" class="form-control" name="section" value="{{ $groupProject->section }}">
               </div>
             </div>
-          </div>
-          
-          <div class="row mb-4">
             <div class="col">
               <div class="form-outline">
                 <label class="form-label">{{ __('Team') }}</label>
                 <input id="team" type="text" class="form-control" name="team" value="{{ $groupProject->team }}">
               </div>
             </div>
+          </div>
+
+          <div class="row mb-4">
             <div class="col">
               <div class="form-outline">
                 <label class="form-label">{{ __('Advisor') }}</label>
@@ -72,11 +66,11 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="{{ route('office/home') }}">
+        <form method="POST" action="{{ route('faculty/home') }}">
           @csrf 
           @method("DELETE")
 
-          <h4>Are you sure you want to Delete: {{ $groupProject->title }}?</h4>
+          <h4 class="text-truncate">Are you sure you want to Delete: {{ $groupProject->title }}?</h4>
           <input type="hidden" id="id" name="id" value="{{ $groupProject->id }}">
 
           <div class="modal-footer">

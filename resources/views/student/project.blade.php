@@ -1,7 +1,6 @@
 @extends('layout.layStu')
 
 @section('page-content')
-
 <div class="container my-2">
   <ul class="nav nav-tabs">
     <li class="nav-item">
@@ -9,6 +8,12 @@
     </li>
     <li class="nav-item">
       <a class="nav-link" href="{{ URL::to('project/' . $group_projects->id . '/task') }}">{{ __('Taskboard') }}</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ URL::to('project/' . $group_projects->id . '/event') }}">{{ __('Events') }}</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ URL::to('project/' . $group_projects->id . '/progress') }}">{{ __('Progress') }}</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="{{ URL::to('project/' . $group_projects->id . '/team') }}">{{ __('Team') }}</a>
@@ -32,11 +37,12 @@
       </div>
     </div>
   </div>
-
+  
   <div class="row row-cols-1 row-cols-md-2 g-4 my-2">
     @include('student.post', ['projects' => $group_projects->projects, 'group_project_id' => $group_projects->id])
   </div>
-    
+
+  {{-- Add Project --}}
   <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -55,12 +61,12 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="row mb-4">
               <div class="col">
                 <div class="form-outline">
-                  <label class="form-label">{{ __('File') }}</label>
-                  <input id="file" type="file" class="form-control" name="file">
+                  <label class="form-label">{{ __('Description') }}</label>
+                  <textarea id="description" class="form-control" rows="4" name="description"></textarea>
                 </div>
               </div>
             </div>
@@ -68,8 +74,8 @@
             <div class="row mb-4">
               <div class="col">
                 <div class="form-outline">
-                  <label class="form-label">{{ __('Description') }}</label>
-                  <textarea id="description" class="form-control" rows="4" name="description"></textarea>
+                  <label class="form-label">{{ __('File (Optional)') }}</label>
+                  <input id="file" type="file" class="form-control" name="file">
                 </div>
               </div>
             </div>

@@ -7,7 +7,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form method="POST" action="{{ route('faculty/feedback') }}">
+          <form method="POST" action="{{ route('faculty/feedDel') }}">
             @csrf
             @method("DELETE")
             <h4>Are you sure you want to Delete this Feedback?</h4>

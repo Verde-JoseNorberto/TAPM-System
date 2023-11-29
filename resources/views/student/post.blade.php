@@ -6,9 +6,13 @@
         <strong>{{ $project->user->name }}</strong>
         <strong>{{ $project->created_at}}</strong>
       </div><hr>
-      <h3 class="card-title text-center">{{ $project->title }}</h3><hr>
-      <iframe class="fluid" src="/files/{{ $project->file }}" style="width:100%;min-height:640px;"></iframe><hr>
+      <h3 class="card-title text-center">{{ $project->title }}</h3>
       <h6>{{ $project->description }}</h6>
+      @if ($project->file)
+        <a href="/files/{{ $project->file }}" download="{{ $project->file }}">
+          {{ $project->file }} ({{ strtoupper(pathinfo($project->file, PATHINFO_EXTENSION)) }})
+        </a>
+      @endif
     </div>
     <div class="card-footer">
       @include('student.feedback', ['feedbacks' => $project->feedbacks, 'project_id' => $project->id])
@@ -40,7 +44,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="{{ route('student/post') }}">
+        <form method="POST" action="{{ route('student/feedback') }}">
           @csrf 
           @method("DELETE")
 

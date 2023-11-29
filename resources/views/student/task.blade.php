@@ -1,7 +1,6 @@
 @extends('layout.layStu')
 
 @section('page-content')
-
 <div class="container my-2">
   <ul class="nav nav-tabs">
     <li class="nav-item">
@@ -11,6 +10,12 @@
       <a class="nav-link active">{{ __('Taskboard') }}</a>
     </li>
     <li class="nav-item">
+      <a class="nav-link" href="{{ URL::to('project/' . $group_projects->id . '/event') }}">{{ __('Events') }}</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ URL::to('project/' . $group_projects->id . '/progress') }}">{{ __('Progress') }}</a>
+    </li>
+    <li class="nav-item">
       <a class="nav-link" href="{{ URL::to('project/' . $group_projects->id . '/team') }}">{{ __('Team') }}</a>
     </li>
   </ul>
@@ -18,9 +23,11 @@
     <div class="card-body">
       <h2>{{ $group_projects->title }}</h2>
       <strong>{{ __('Team:') }}</strong> {{ $group_projects->team }}<br>
-      <strong>{{ __('Advisor:') }}</strong> {{ $group_projects->advisor }}<br>
+      <strong>{{ __('Advisor:') }}</strong> {{ $group_projects->advisor }}
+      @if($group_projects->members->where('user_id', auth()->user()->id)->first()->role == 'admin' || $group_projects->members->where('user_id', auth()->user()->id)->first()->role == 'project_manager')
       <button class="btn btn-dark position-absolute top-0 end-0 my-3 mx-3" data-bs-toggle="modal" data-bs-target="#taskModal">
         {{ __('Add Task') }}</button>
+      @endif
     </div>
   </div>
 
@@ -33,8 +40,30 @@
     </div>
   </div>
 
-  <div class="row row-cols-1 row-cols-md-3 g-4 my-2">
-    @include('student.board', ['tasks' => $group_projects->tasks, 'group_project_id' => $group_projects->id])
+  {{-- Status Tabs --}}
+  <ul class="nav nav-tabs row-cols-1 row-cols-md-3 g-4 my-2" id="taskStatusTabs">
+    <li class="nav-item">
+      <a class="nav-link active" id="todo-tab" data-bs-toggle="tab" href="#todo">{{ __('To Do') }}</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="inProgress-tab" data-bs-toggle="tab" href="#inProgress">{{ __('In Progress') }}</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="finished-tab" data-bs-toggle="tab" href="#finished">{{ __('Finished') }}</a>
+    </li>
+  </ul>
+
+  {{-- Status Tab Content --}}
+  <div class="tab-content">
+    <div class="tab-pane fade show active" id="todo">
+      @include('student.board', ['tasks' => $group_projects->tasks->where('status', 'To Do'), 'group_project_id' => $group_projects->id])
+    </div>
+    <div class="tab-pane fade" id="inProgress">
+      @include('student.board', ['tasks' => $group_projects->tasks->where('status', 'In Progress'), 'group_project_id' => $group_projects->id])
+    </div>
+    <div class="tab-pane fade" id="finished">
+      @include('student.board', ['tasks' => $group_projects->tasks->where('status', 'Finished'), 'group_project_id' => $group_projects->id])
+    </div>
   </div>
 
   {{-- Add Task --}}
@@ -69,6 +98,13 @@
             <div class="row mb-4">
               <div class="col">
                 <div class="form-outline">
+                  <label class="form-label">{{ __('Start Date') }}</label>
+                  <input id="start_date" type="date" class="form-control" name="start_date">
+                </div>
+              </div>
+ 
+              <div class="col">
+                <div class="form-outline">
                   <label class="form-label">{{ __('Due Date') }}</label>
                   <input id="due_date" type="date" class="form-control" name="due_date">
                 </div>
@@ -92,6 +128,18 @@
             <div class="row mb-4">
               <div class="col">
                 <div class="form-outline">
+                  <label class="form-label">{{ __('Priority') }}</label>
+                  <select id="priority" class="form-select" name="priority">
+                    <option selected>{{ __('Select Status') }}</option>
+                    <option value="Low">{{ __('Low') }}</option>
+                    <option value="Moderate">{{ __('Moderate') }}</option>
+                    <option value="High">{{ __('High') }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="form-outline">
                   <label class="form-label">{{ __('Status') }}</label>
                   <select id="status" class="form-select" name="status">
                     <option selected>{{ __('Select Status') }}</option>
@@ -104,6 +152,7 @@
             </div>
 
             <input id="group_project_id" type="hidden" name="group_project_id" value="{{ $group_projects->id }}">
+            <input type="hidden" name="sub_task" value="0">
 
             <div class="modal-footer">
               <button type="submit" class="btn btn-primary">{{ __('Create Task') }}</button>
@@ -113,4 +162,4 @@
     </div>
   </div>
 </div>
-@endsection
+@endsection 

@@ -50,7 +50,15 @@
           <td>{{ $member->created_at }}</td>
           <td>{{ $member->updated_at }}</td>
           <td>
-            <a type="button" class="btn btn-danger" href="#delete{{$member->id}}" data-bs-toggle="modal"><i class="fa fa-trash"></i>{{ __(' Delete') }}</a>
+            @if ($member->trashed())
+                <a type="button" class="btn btn-warning" href="#restore{{$member->id}}" data-bs-toggle="modal">
+                    <i class="fa fa-undo"></i>{{ __(' Restore') }}
+                </a>
+            @else
+                <a href="#delete{{$member->id}}" type="button" class="btn btn-danger" data-bs-toggle="modal">
+                    {{ __('Delete') }}
+                </a>
+            @endif
           </td>
       </tr>
 
@@ -59,7 +67,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">{{__('Delete Task')}}</h5>
+              <h5 class="modal-title">{{__('Delete Member')}}</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -72,6 +80,31 @@
 
                 <div class="modal-footer">
                   <button type="submit" class="btn btn-danger">{{ __('Delete') }}</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{-- Restore Member --}}
+      <div class="modal fade" id="delete{{$member->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">{{__('Restore Member')}}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="{{ route('admin.team.restore', ['id' => $member->id]) }}">
+                @csrf 
+                @method("POST")
+
+                <h4>Are you sure you want to Restore: {{ $member->user->name }}?</h4>
+                <input type="hidden" id="id" name="id" value="{{ $member->id }}">
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-danger">{{ __('Restore') }}</button>
                 </div>
               </form>
             </div>

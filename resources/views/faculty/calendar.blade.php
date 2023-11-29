@@ -1,22 +1,22 @@
-@extends('layout.layOff')
+@extends('layout.layFac')
 
 @section('page-content')
 <div class="container my-2">
   <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link" href="{{ URL::to('office/project/' . $group_projects->id) }}">{{ __('Project') }}</a>
+      <a class="nav-link" href="{{ URL::to('faculty/project/' . $group_projects->id) }}">{{ __('Project') }}</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{{ URL::to('office/project/' . $group_projects->id . '/task') }}">{{ __('Taskboard') }}</a>
+      <a class="nav-link" href="{{ URL::to('faculty/project/' . $group_projects->id . '/task') }}">{{ __('Taskboard') }}</a>
     </li>
     <li class="nav-item">
       <a class="nav-link active">{{ __('Events') }}</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{{ URL::to('office/project/' . $group_projects->id . '/progress') }}">{{ __('Progress') }}</a>
+      <a class="nav-link" href="{{ URL::to('faculty/project/' . $group_projects->id . '/progress') }}">{{ __('Progress') }}</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{{ URL::to('office/project/' . $group_projects->id . '/team') }}">{{ __('Team') }}</a>
+      <a class="nav-link" href="{{ URL::to('faculty/project/' . $group_projects->id . '/team') }}">{{ __('Team') }}</a>
     </li>
   </ul>
   <div class="card text-dark border-dark my-3">
@@ -32,26 +32,7 @@
   </div>
   <div id='calendar'></div>
 
-  <!-- View Event Modal -->
-  <div class="modal fade" id="viewEventModal" tabindex="-1" aria-labelledby="viewEventModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">{{ __('Event Details') }}</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <h5>Title: <span id="viewEventModalTitle"></span></h5>
-          <p>Description: <span id="viewEventModalDescription"></span></p>
-          <p>Start Date: <span id="viewEventModalStart"></span></p>
-          <p>End Date: <span id="viewEventModalEnd"></span></p>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-danger">{{ __('Delete Event') }}</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  @include('faculty.edCal')
 
   <!-- Add Event -->
   <div class="modal fade" id="createEvent" tabindex="-1" aria-labelledby="createEventModalLabel" aria-hidden="true">
@@ -62,7 +43,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form method="POST" action="{{ route('office/event') }}">
+          <form method="POST" action="{{ route('faculty/event') }}">
             @csrf
 
             <div class="row mb-4">
@@ -125,7 +106,7 @@
         var calendar = $('#calendar').fullCalendar({
             editable: true,
             editable: true,
-            events: SITEURL + "/office/project/{id}/event",
+            events: SITEURL + "/faculty/project/{id}/event",
             displayEventTime: true,
             eventRender: function (event, element, view) {
                 if (event.allDay === 'true') {
@@ -138,7 +119,7 @@
                 var event_start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
                 var event_end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");
                 $.ajax({
-                    url: SITEURL + '/office/project/{id}/event',
+                    url: SITEURL + '/faculty/project/{id}/event',
                     data: {
                         title: event.event_name,
                         start: event_start,
@@ -152,7 +133,7 @@
             eventClick: function (event) {
               $('#viewEventModal').modal('show');
               $.ajax({
-                  url: SITEURL + '/office/project/{id}/event',
+                  url: SITEURL + '/faculty/project/{id}/event',
                   data: {
                       id: event.id,
                       type: 'fetch',
@@ -161,11 +142,11 @@
                   success: function (response) {
                       var eventData = response.data;
 
-                      $('#viewEventModalId').html(eventData.id);
-                      $('#viewEventModalTitle').html(eventData.title);
-                      $('#viewEventModalDescription').html(eventData.description);
-                      $('#viewEventModalStart').html(eventData.start);
-                      $('#viewEventModalEnd').html(eventData.end);
+                      $('.viewEventModalId').val(eventData.id);
+                      $('.viewEventModalTitle').val(eventData.title);
+                      $('.viewEventModalDescription').val(eventData.description);
+                      $('.viewEventModalStart').val(eventData.start);
+                      $('.viewEventModalEnd').val(eventData.end);
                   }
               });
           },

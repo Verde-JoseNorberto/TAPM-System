@@ -13,6 +13,9 @@
       <a class="nav-link" href="{{ URL::to('office/project/' . $group_projects->id . '/event') }}">{{ __('Events') }}</a>
     </li>
     <li class="nav-item">
+      <a class="nav-link" href="{{ URL::to('office/project/' . $group_projects->id . '/progress') }}">{{ __('Progress') }}</a>
+    </li>
+    <li class="nav-item">
       <a class="nav-link" href="{{ URL::to('office/project/' . $group_projects->id . '/team') }}">{{ __('Team') }}</a>
     </li>
   </ul>
@@ -21,8 +24,10 @@
       <h2>{{ $group_projects->title }}</h2>
       <strong>{{ __('Team:') }}</strong> {{ $group_projects->team }}<br>
       <strong>{{ __('Advisor:') }}</strong> {{ $group_projects->advisor }}
+      @if($group_projects->members->where('user_id', auth()->user()->id)->first()->role == 'admin' || $group_projects->members->where('user_id', auth()->user()->id)->first()->role == 'project_manager')
       <button class="btn btn-dark position-absolute top-0 end-0 my-3 mx-3" data-bs-toggle="modal" data-bs-target="#taskModal">
         {{ __('Add Task') }}</button>
+      @endif
     </div>
   </div>
 
@@ -147,6 +152,7 @@
             </div>
 
             <input id="group_project_id" type="hidden" name="group_project_id" value="{{ $group_projects->id }}">
+            <input type="hidden" name="sub_task" value="0">
 
             <div class="modal-footer">
               <button type="submit" class="btn btn-primary">{{ __('Create Task') }}</button>

@@ -60,7 +60,15 @@
           <td>{{ $task->created_at }}</td>
           <td>{{ $task->updated_at }}</td>
           <td>
-            <a type="button" class="btn btn-danger" href="#delete{{$task->id}}" data-bs-toggle="modal"><i class="fa fa-trash"></i>{{ __(' Delete') }}</a>
+            @if ($task->trashed())
+                <a type="button" class="btn btn-warning" href="#restore{{$task->id}}" data-bs-toggle="modal">
+                    <i class="fa fa-undo"></i>{{ __(' Restore') }}
+                </a>
+            @else
+                <a href="#delete{{$task->id}}" type="button" class="btn btn-danger" data-bs-toggle="modal">
+                    {{ __('Delete') }}
+                </a>
+            @endif
           </td>
       </tr>
 
@@ -82,6 +90,31 @@
 
                 <div class="modal-footer">
                   <button type="submit" class="btn btn-danger">{{ __('Delete') }}</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{-- Restore Task --}}
+      <div class="modal fade" id="restore{{$task->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">{{__('Restore Task')}}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="{{ route('admin.task.restore', ['id' => $task->id]) }}">
+                @csrf 
+                @method("POST")
+
+                <h4>Are you sure you want to Restore: {{ $task->title }}?</h4>
+                <input type="hidden" id="id" name="id" value="{{ $task->id }}">
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-danger">{{ __('Restore') }}</button>
                 </div>
               </form>
             </div>

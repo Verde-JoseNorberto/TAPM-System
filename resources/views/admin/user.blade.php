@@ -57,8 +57,20 @@
           <td>{{ $user->created_at }}</td>
           <td>{{ $user->updated_at }}</td>
           <td>
-            <a type="button" class="btn btn-primary" href="#edit{{$user->id}}" data-bs-toggle="modal"><i class="fa fa-edit"></i>{{ __(' Edit') }}</a>
-            <a href="#delete{{$user->id}}" type="button" class="btn btn-danger" data-bs-toggle="modal">{{ __('Delete') }}</a>
+            @if ($user->trashed())
+                <!-- Restore button for soft-deleted user -->
+                <a type="button" class="btn btn-warning" href="#restore{{$user->id}}" data-bs-toggle="modal">
+                    <i class="fa fa-undo"></i>{{ __(' Restore') }}
+                </a>
+            @else
+                <!-- Edit and Delete buttons for active user -->
+                <a type="button" class="btn btn-primary" href="#edit{{$user->id}}" data-bs-toggle="modal">
+                    <i class="fa fa-edit"></i>{{ __(' Edit') }}
+                </a>
+                <a href="#delete{{$user->id}}" type="button" class="btn btn-danger" data-bs-toggle="modal">
+                    {{ __('Delete') }}
+                </a>
+            @endif
           </td>
       </tr>
       
@@ -86,6 +98,32 @@
           </div>
         </div>
       </div>
+
+      {{-- Restore User --}}
+      <div class="modal fade" id="restore{{$user->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">{{__('Restore User')}}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="{{ route('admin.user.restore', ['id' => $user->id]) }}">
+                @csrf 
+                @method("POST")
+
+                <h4>Are you sure you want to Restore User: {{ $user->name }}?</h4>
+                <input type="hidden" id="id" name="id" value="{{ $user->id }}">
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-danger">{{ __('Restore User') }}</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
       {{-- Edit User --}}
       <div class="modal fade" id="edit{{$user->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
