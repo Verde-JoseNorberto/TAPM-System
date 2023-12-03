@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->integer('group_project_id')->unsigned();
+            $table->integer('task_id')->unsigned();
+            $table->integer('subtask_id')->unsigned()->nullable();
             $table->integer('parent_id')->unsigned()->nullable();
-            $table->string('title');
-            $table->string('file')->nullable();
             $table->string('description');
+            $table->string('file')->nullable();
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
 
@@ -29,9 +29,14 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('cascade');
             
-            $table->foreign('group_project_id')
+            $table->foreign('task_id')
                 ->references('id')
-                ->on('group_projects')
+                ->on('tasks')
+                ->onDelete('cascade');
+            
+            $table->foreign('subtask_id')
+                ->references('id')
+                ->on('subtasks')
                 ->onDelete('cascade');
         });
     }

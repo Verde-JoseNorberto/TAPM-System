@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('group_projects', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->string('title');
-            $table->string('section');
             $table->string('team');
+            $table->string('section');
             $table->string('advisor');
+            $table->string('title')->nullable();
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
             
