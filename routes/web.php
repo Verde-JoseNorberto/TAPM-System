@@ -47,11 +47,11 @@ Route::middleware(['auth', 'user-access:office'])->group(function () {
     Route::put('office/home', [App\Http\Controllers\GroupProjectController::class, 'groupUpdate'])->name('office/edit');
     Route::put('office/task', [App\Http\Controllers\GroupProjectController::class, 'taskUpdate'])->name('office/detail');
     Route::put('office/subtask', [App\Http\Controllers\GroupProjectController::class, 'subUpdate'])->name('office/update');
-    Route::put('office/event', [App\Http\Controllers\GroupProjectController::class, 'eventUpdate'])->name('office/eveUp');
     Route::put('office/team', [App\Http\Controllers\GroupProjectController::class, 'teamUpdate'])->name('office/editTeam');
 
     Route::delete('office/home', [App\Http\Controllers\GroupProjectController::class, 'groupDestroy']);
     Route::delete('office/task', [App\Http\Controllers\GroupProjectController::class, 'taskDestroy']);
+    Route::delete('office/post', [App\Http\Controllers\GroupProjectController::class, 'projectDestroy'])->name('office/post');
     Route::delete('office/subtask', [App\Http\Controllers\GroupProjectController::class, 'subDestroy']);
     Route::delete('office/project/team', [App\Http\Controllers\GroupProjectController::class, 'teamDestroy']);
     Route::delete('office/feedback', [App\Http\Controllers\GroupProjectController::class, 'feedbackDestroy'])->name('office/feedDel');
@@ -60,24 +60,24 @@ Route::middleware(['auth', 'user-access:office'])->group(function () {
     Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin/user');
     Route::get('/admin/user', [App\Http\Controllers\AdminController::class, 'userShow'])->name('admin/user');
     Route::get('/admin/group', [App\Http\Controllers\AdminController::class, 'groupShow'])->name('admin/group');
-    Route::get('/admin/project', [App\Http\Controllers\AdminController::class, 'projectShow'])->name('admin/project');
     Route::get('/admin/task', [App\Http\Controllers\AdminController::class, 'taskShow'])->name('admin/task');
-    Route::get('/admin/team', [App\Http\Controllers\AdminController::class, 'teamShow'])->name('admin/team');
-    Route::get('/admin/feedback', [App\Http\Controllers\AdminController::class, 'feedbackShow'])->name('admin/feedback');
+    Route::get('/admin/chart', [App\Http\Controllers\AdminController::class, 'chartShow'])->name('admin/chart');
+
     Route::post('admin/user', [App\Http\Controllers\AdminController::class, 'userStore'])->name('admin/user');
+
     Route::put('admin/user', [App\Http\Controllers\AdminController::class, 'userUpdate']);
+
     Route::delete('admin/user', [App\Http\Controllers\AdminController::class, 'userDestroy']);
     Route::delete('admin/group', [App\Http\Controllers\AdminController::class, 'groupDestroy']);
-    Route::delete('admin/project', [App\Http\Controllers\AdminController::class, 'projectDestroy']);
     Route::delete('admin/task', [App\Http\Controllers\AdminController::class, 'taskDestroy']);
+    Route::delete('admin/chart', [App\Http\Controllers\AdminController::class, 'subtaskDestroy']);
     Route::delete('admin/team', [App\Http\Controllers\AdminController::class, 'teamDestroy']);
-    Route::delete('admin/feedback', [App\Http\Controllers\AdminController::class, 'feedbackDestroy']);
+
     Route::post('/admin/user/restore/{id}', [App\Http\Controllers\AdminController::class, 'userRestore'])->name('admin.user.restore');
     Route::post('/admin/group/restore/{id}', [App\Http\Controllers\AdminController::class, 'groupRestore'])->name('admin.group.restore');
-    Route::post('/admin/project/restore/{id}', [App\Http\Controllers\AdminController::class, 'projectRestore'])->name('admin.project.restore');
     Route::post('/admin/task/restore/{id}', [App\Http\Controllers\AdminController::class, 'taskRestore'])->name('admin.task.restore');
+    Route::post('/admin/subtask/restore/{id}', [App\Http\Controllers\AdminController::class, 'subtaskRestore'])->name('admin.subtask.restore');
     Route::post('/admin/team/restore/{id}', [App\Http\Controllers\AdminController::class, 'teamRestore'])->name('admin.team.restore');
-    Route::post('/admin/feedback/restore/{id}', [App\Http\Controllers\AdminController::class, 'feedbackRestore'])->name('admin.feedback.restore');
 });
 
 // Special Privilege View or the Faculty View
