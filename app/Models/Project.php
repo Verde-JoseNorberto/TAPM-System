@@ -22,11 +22,11 @@ class Project extends Model
      */
     protected $fillable = [
         'user_id', 
-        'group_project_id', 
+        'task_id', 
+        'subtask_id', 
         'parent_id',
-        'title',
+        'description',
         'file',
-        'description'
     ];
 
     /**
@@ -39,9 +39,13 @@ class Project extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function group_project()
+    public function tasks()
     {
-        return $this->belongsTo(GroupProject::class);
+        return $this->belongsTo(Task::class, 'task_id', 'id');
+    }
+    public function subtasks()
+    {
+        return $this->belongsTo(Subtask::class, 'subtask_id', 'id');
     }
     
     /**

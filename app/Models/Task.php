@@ -59,25 +59,12 @@ class Task extends Model
     {
         return $this->belongsTo(GroupProject::class, 'group_project_id');
     }
-
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
     public function subtasks()
     {
-        return $this->hasMany(Subtask::class, 'task_id', 'id');
-    }
-
-    /**
-     * Calendar Method
-     *
-     * @var array
-     */
-    public function toCalendarEvent()
-    {   
-        return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'start' => $this->start_date,
-            'end' => $this->due_date,
-            'allDay' => true,
-    ];
+        return $this->hasMany(Subtask::class)->whereNull('parent_id');
     }
 }

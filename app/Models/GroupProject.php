@@ -31,10 +31,6 @@ class GroupProject extends Model
      *
      * @var array
      */
-    public function projects()
-    {
-        return $this->hasMany(Project::class)->whereNull('parent_id');
-    }
     public function tasks()
     {
         return $this->hasMany(Task::class)->whereNull('parent_id');
