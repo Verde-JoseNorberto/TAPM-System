@@ -45,7 +45,8 @@ class TaskCreated extends Notification
 
         return [
             'link' => url($routePrefix . '/project/' . $this->group_id . '/task'),
-            'data' => "You're Assign by " . $this->name . " to the Task ". $this->title . ".",
+            'name' => $this->name,
+            'data' => "You're Assign to the Task: ". $this->title . ".",
         ];
     }
 

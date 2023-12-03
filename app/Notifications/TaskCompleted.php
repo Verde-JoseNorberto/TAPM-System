@@ -44,7 +44,8 @@ class TaskCompleted extends Notification
 
         return [
             'link' => url($routePrefix . '/project/' . $this->group_id . '/task'),
-            'data' => 'The task ' . $this->title . ' has been completed by ' . $this->name . '.',
+            'name' => $this->name,
+            'data' => 'Marked a Task Finished: ' . $this->title .'.',
         ];
     }
 

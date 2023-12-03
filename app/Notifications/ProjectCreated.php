@@ -45,7 +45,8 @@ class ProjectCreated extends Notification
 
         return [
             'link' => url($routePrefix . '/project/' . $this->group_id),
-            'data' => $this->name . ' posted in group ' . $this->title, 
+            'name' => $this->name,
+            'data' => 'Posted in group ' . $this->team, 
         ];
     }
 

@@ -45,7 +45,8 @@ class GroupCreated extends Notification
 
         return [
             'link' => url($routePrefix . '/project/' . $this->group_id),
-            'data' => $this->name . ' created a new group ' . $this->title,
+            'name' => $this->name,
+            'data' =>  'A new Group has been Added:'  . $this->title,
         ];
     }
 
