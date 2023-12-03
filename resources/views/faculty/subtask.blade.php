@@ -1,5 +1,8 @@
 <div class="row row-cols-1 row-cols-md-3 g-4 my-2"> 
-    @foreach($tasks->subtasks as $subtask)
+  @foreach($subtasks->sort(function($a, $b) {
+    $order = ['High', 'Moderate', 'Low'];
+    return array_search($a->priority, $order) <=> array_search($b->priority, $order);
+  }) as $key => $subtask)
     <div class="col flex my-2">
       <div class="card border-primary text-primary">
         <a href="#modify{{ $subtask->id }}" class="btn" data-bs-toggle="modal">

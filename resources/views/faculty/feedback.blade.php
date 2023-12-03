@@ -10,5 +10,5 @@
         </ul>
     </div>
 </div><hr>
-@include('faculty.feedDel')
+@include('faculty/feedDel')
 @endforeach

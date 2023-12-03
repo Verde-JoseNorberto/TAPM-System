@@ -2,15 +2,16 @@
 
 @section('page-content')
 <div class="container my-4">
+    <h2>{{ __('Groups')}}</h2>
     <div class="row row-cols-1 row-cols-md-4 g-4">
         @foreach($group_projects as $key => $groupProject)
             <div class="col flex">
                 <div class="card h-100">
                     <a href="{{ URL::to('project/' . $groupProject->id) }}" class="btn h-100">
                         <div class="card-body" style="max-height: 150px; overflow: hidden;">
-                            <h3 class="card-title text-truncate">{{ $groupProject->title }}</h3>
+                            <h3 class="card-title text-truncate">{{ $groupProject->team }}</h3>
                             <h6 class="text-truncate">{{ $groupProject->section }}</h6>
-                            <h6 class="text-truncate">{{ $groupProject->team }}</h6>
+                            <h6 class="text-truncate">{{ $groupProject->title }}</h6>
                             <h6 class="text-truncate">{{ $groupProject->advisor }}</h6>
                         </div>
                     </a>

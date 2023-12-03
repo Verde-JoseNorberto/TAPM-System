@@ -2,32 +2,26 @@
 
 @section('page-content')
 <div class="container my-4">
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-pills">
         <li class="nav-item">
           <a class="nav-link" href="{{ URL::to('admin/user') }}">{{ __('Users') }}</a>
         </li> 
         <li class="nav-item">
-            <a class="nav-link" href="{{ URL::to('admin/group') }}">{{ __('Group Projects') }}</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ URL::to('admin/project') }}">{{ __('Projects') }}</a>
+            <a class="nav-link" href="{{ URL::to('admin/group') }}">{{ __('Groups') }}</a>
         </li>
         <li class="nav-item">
           <a class="nav-link active" href="{{ URL::to('admin/task') }}">{{ __('Tasks') }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ URL::to('admin/team') }}">{{ __('Teams') }}</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ URL::to('admin/feedback') }}">{{ __('Feedbacks') }}</a>
-        </li>
+            <a class="nav-link" href="{{ URL::to('admin/chart') }}">{{ __('Progress') }}</a>
+         </li>
       </ul>
 </div>
 
 <div class="container my-3">
   <div class="card text-dark border-dark">
     <div class="card-body d-flex justify-content-between">
-      <h3>Manage Tasks Data Table</h3>
+      <h3>Manage Tasks Data</h3>
     </div>
   </div>
 </div>

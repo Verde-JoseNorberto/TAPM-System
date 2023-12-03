@@ -4,7 +4,7 @@
 <div class="container my-2">
   <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link" href="{{ URL::to('faculty/project/' . $group_projects->id) }}">{{ __('Project') }}</a>
+      <a class="nav-link" href="{{ URL::to('faculty/project/' . $group_projects->id) }}">{{ __('Updates') }}</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="{{ URL::to('faculty/project/' . $group_projects->id . '/task') }}">{{ __('Taskboard') }}</a>
@@ -21,8 +21,8 @@
   </ul>
   <div class="card text-dark border-dark my-3">
     <div class="card-body">
-      <h2>{{ $group_projects->title }}</h2>
-      <strong>{{ __('Team:') }}</strong> {{ $group_projects->team }}<br>
+      <h2>{{ $group_projects->team }}</h2>
+      <strong>{{ __('Project Title:') }}</strong> {{ $group_projects->title }}<br>
       <strong>{{ __('Advisor:') }}</strong> {{ $group_projects->advisor }}
       @if($group_projects->members->where('user_id', auth()->user()->id)->first()->role == 'admin' || $group_projects->members->where('user_id', auth()->user()->id)->first()->role == 'project_manager')
       <button class="btn btn-dark position-absolute top-0 end-0 my-3 mx-3" data-bs-toggle="modal" data-bs-target="#createEvent">
@@ -32,7 +32,50 @@
   </div>
   <div id='calendar'></div>
 
-  @include('faculty.edCal')
+  <!-- View Event Modal -->
+  <div class="modal fade" id="viewEventModal" tabindex="-1" aria-labelledby="viewEventModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ __('Event Details') }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h5>Title: <span id="viewEventModalTitle"></span></h5>
+          <p>Description: <span id="viewEventModalDescription"></span></p>
+          <p>Start Date: <span id="viewEventModalStart"></span></p>
+          <p>End Date: <span id="viewEventModalEnd"></span></p>
+        </div>
+        <div class="modal-footer">
+          <button id="deleteEventBtn" type="button" class="btn btn-danger">{{ __('Delete Event') }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{-- Delete Event --}}
+  <div class="modal fade" id="deleteEvent" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">{{__('Delete Task')}}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form method="POST" action="{{ route('faculty/event') }}">
+            @csrf
+            @method("DELETE")
+            <h4>Are you sure you want to Delete Event?</h4>
+            <input type="hidden" name="id" id="deleteEventId">
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-danger">{{ __('Delete Task') }}</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+            </form>
+          </div>
+          </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Add Event -->
   <div class="modal fade" id="createEvent" tabindex="-1" aria-labelledby="createEventModalLabel" aria-hidden="true">
@@ -103,10 +146,19 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
         var calendar = $('#calendar').fullCalendar({
             editable: true,
-            editable: true,
-            events: SITEURL + "/faculty/project/{id}/event",
+            events: {
+                url: SITEURL + "/faculty/project/{{ $group_projects->id }}/event",
+                type: 'GET',
+                data: {
+                    group_project_id: {{ $group_projects->id }}
+                },
+                error: function () {
+                    alert('Error fetching events');
+                }
+            },
             displayEventTime: true,
             eventRender: function (event, element, view) {
                 if (event.allDay === 'true') {
@@ -119,38 +171,61 @@
                 var event_start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
                 var event_end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");
                 $.ajax({
-                    url: SITEURL + '/faculty/project/{id}/event',
+                    url: SITEURL + '/faculty/project/{{ $group_projects->id }}/event',
                     data: {
-                        title: event.event_name,
+                        title: event.title,
+                        description: event.description,
                         start: event_start,
                         end: event_end,
                         id: event.id,
-                        type: 'edit'
+                        group_project_id: {{ $group_projects->id }},
+                        type: 'update'
                     },
-                    type: "POST",
+                    type: "PUT",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (response) {
+                        var eventData = response.data;
+                        $('#viewEventModalId').html(eventData.id);
+                        $('#viewEventModalTitle').html(eventData.title);
+                        $('#viewEventModalDescription').html(eventData.description);
+                        $('#viewEventModalStart').html(eventData.start);
+                        $('#viewEventModalEnd').html(eventData.end);
+                    }
                 });
             },
             eventClick: function (event) {
-              $('#viewEventModal').modal('show');
-              $.ajax({
-                  url: SITEURL + '/faculty/project/{id}/event',
-                  data: {
-                      id: event.id,
-                      type: 'fetch',
-                  },
-                  type: "GET",
-                  success: function (response) {
-                      var eventData = response.data;
+                $('#viewEventModal').modal('show');
+                var eventIdToDelete = event.id; // Store the event ID in a variable
 
-                      $('.viewEventModalId').val(eventData.id);
-                      $('.viewEventModalTitle').val(eventData.title);
-                      $('.viewEventModalDescription').val(eventData.description);
-                      $('.viewEventModalStart').val(eventData.start);
-                      $('.viewEventModalEnd').val(eventData.end);
-                  }
-              });
-          },
-      });
-  });
+                $.ajax({
+                    url: SITEURL + '/faculty/project/{{ $group_projects->id }}/event',
+                    data: {
+                        id: event.id,
+                        group_project_id: {{ $group_projects->id }},
+                        type: 'fetch',
+                    },
+                    type: "GET",
+                    success: function (response) {
+                        var eventData = response.data;
+
+                        $('#viewEventModalId').html(eventData.id);
+                        $('#viewEventModalTitle').html(eventData.title);
+                        $('#viewEventModalDescription').html(eventData.description);
+                        $('#viewEventModalStart').html(eventData.start);
+                        $('#viewEventModalEnd').html(eventData.end);
+                    }
+                });
+
+                // Use eventIdToDelete when the "Delete Event" button is clicked
+                $('#deleteEventBtn').off('click').on('click', function () {
+                    console.log('Event ID to delete:', eventIdToDelete);
+                    $('#deleteEventId').val(eventIdToDelete);
+                    $('#deleteEventModal').modal('show');
+                });
+            },
+        });
+    });
 </script>
 @endsection

@@ -4,7 +4,7 @@
 <div class="container my-2">
     <ul class="nav nav-tabs">
       <li class="nav-item">
-        <a class="nav-link" href="{{ URL::to('faculty/project/' . $group_projects->id) }}">{{ __('Project') }}</a>
+        <a class="nav-link" href="{{ URL::to('faculty/project/' . $group_projects->id) }}">{{ __('Updates') }}</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ URL::to('faculty/project/' . $group_projects->id . '/task') }}">{{ __('Taskboard') }}</a>
@@ -21,8 +21,8 @@
     </ul>
     <div class="card text-dark border-dark my-3">
         <div class="card-body">
-          <h2>{{ $group_projects->title }}</h2>
-          <strong>{{ __('Team:') }}</strong> {{ $group_projects->team }}<br>
+          <h2>{{ $group_projects->team }}</h2>
+          <strong>{{ __('Project Title:') }}</strong> {{ $group_projects->title }}<br>
           <strong>{{ __('Advisor:') }}</strong> {{ $group_projects->advisor }}
         </div>
     </div>
@@ -304,6 +304,12 @@
                 </div>
 
           <input id="group_project_id" type="hidden" name="group_project_id" value="{{ $group_projects->id }}">
+          <input id="group_project_id" type="hidden" name="group_project_id" value="{{ $group_projects->id }}">
+          <input id="group_project_id" type="hidden" name="group_project_id" value="{{ $group_projects->id }}">
+
+                  <input id="group_project_id" type="hidden" name="group_project_id" value="{{ $group_projects->id }}">
+
+                  <input id="group_project_id" type="hidden" name="group_project_id" value="{{ $group_projects->id }}">
           <input id="group_project_id" type="hidden" name="group_project_id" value="{{ $group_projects->id }}">
 
                   <input id="group_project_id" type="hidden" name="group_project_id" value="{{ $group_projects->id }}">

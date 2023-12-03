@@ -4,7 +4,7 @@
 <div class="container my-2">
   <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link" href="{{ URL::to('office/project/' . $group_projects->id) }}">{{ __('Project') }}</a>
+      <a class="nav-link" href="{{ URL::to('office/project/' . $group_projects->id) }}">{{ __('Updates') }}</a>
     </li>
     <li class="nav-item">
       <a class="nav-link active">{{ __('Taskboard') }}</a>
@@ -21,8 +21,8 @@
   </ul>
   <div class="card text-dark border-dark my-3">
     <div class="card-body">
-      <h2>{{ $group_projects->title }}</h2>
-      <strong>{{ __('Team:') }}</strong> {{ $group_projects->team }}<br>
+      <h2>{{ $group_projects->team }}</h2>
+      <strong>{{ __('Project Title:') }}</strong> {{ $group_projects->title }}<br>
       <strong>{{ __('Advisor:') }}</strong> {{ $group_projects->advisor }}
       @if($group_projects->members->where('user_id', auth()->user()->id)->first()->role == 'admin' || $group_projects->members->where('user_id', auth()->user()->id)->first()->role == 'project_manager')
       <button class="btn btn-dark position-absolute top-0 end-0 my-3 mx-3" data-bs-toggle="modal" data-bs-target="#taskModal">
@@ -41,7 +41,7 @@
   </div>
 
   {{-- Status Tabs --}}
-  <ul class="nav nav-tabs row-cols-1 row-cols-md-3 g-4 my-2" id="taskStatusTabs">
+  <ul class="nav nav-pills row-cols-1 row-cols-md-3 g-4 my-2" id="taskStatusTabs">
     <li class="nav-item">
       <a class="nav-link active" id="todo-tab" data-bs-toggle="tab" href="#todo">{{ __('To Do') }}</a>
     </li>
@@ -99,7 +99,7 @@
               <div class="col">
                 <div class="form-outline">
                   <label class="form-label">{{ __('Start Date') }}</label>
-                  <input id="start_date" type="date" class="form-control" name="start_date">
+                  <input id="start_date" type="date" class="form-control" name="start_date" value="{{ now()->toDateString() }}">
                 </div>
               </div>
  
@@ -130,7 +130,7 @@
                 <div class="form-outline">
                   <label class="form-label">{{ __('Priority') }}</label>
                   <select id="priority" class="form-select" name="priority">
-                    <option selected>{{ __('Select Status') }}</option>
+                    <option selected disabled>{{ __('Select Status') }}</option>
                     <option value="Low">{{ __('Low') }}</option>
                     <option value="Moderate">{{ __('Moderate') }}</option>
                     <option value="High">{{ __('High') }}</option>
@@ -142,8 +142,8 @@
                 <div class="form-outline">
                   <label class="form-label">{{ __('Status') }}</label>
                   <select id="status" class="form-select" name="status">
-                    <option selected>{{ __('Select Status') }}</option>
-                    <option value="To Do">{{ __('To Do') }}</option>
+                    {{-- <option selected>{{ __('Select Status') }}</option> --}}
+                    <option selected value="To Do">{{ __('To Do') }}</option>
                     <option value="In Progress">{{ __('In Progress') }}</option>
                     <option value="Finished">{{ __('Finished') }}</option>
                   </select>

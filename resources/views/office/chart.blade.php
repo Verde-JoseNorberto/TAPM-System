@@ -4,7 +4,7 @@
   <div class="container my-2">
     <ul class="nav nav-tabs">
       <li class="nav-item">
-        <a class="nav-link" href="{{ URL::to('office/project/' . $group_projects->id) }}">{{ __('Project') }}</a>
+        <a class="nav-link" href="{{ URL::to('office/project/' . $group_projects->id) }}">{{ __('Updates') }}</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ URL::to('office/project/' . $group_projects->id . '/task') }}">{{ __('Taskboard') }}</a>
@@ -22,8 +22,8 @@
 
     <div class="card text-dark border-dark my-3">
         <div class="card-body">
-          <h2>{{ $group_projects->title }}</h2>
-          <strong>{{ __('Team:') }}</strong> {{ $group_projects->team }}<br>
+          <h2>{{ $group_projects->team }}</h2>
+          <strong>{{ __('Project Title:') }}</strong> {{ $group_projects->title }}<br>
           <strong>{{ __('Advisor:') }}</strong> {{ $group_projects->advisor }}
         </div>
     </div>
@@ -54,7 +54,7 @@
     </div>
 
     <div class="row my-3">
-      <div class="col-md-6">
+      <div class="col">
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Task Status</h3>
@@ -65,42 +65,51 @@
                 <tr>
                   <th>{{ __('Tasks') }}</th>
                   <th>{{ __('Status') }}</th>
+                  <th>{{ __('Actions') }}</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach($group_projects->tasks as $task)
                   <tr>
-                    <td class="text-truncate" style="max-width: 150px;">{{ $task->title }}</td>
+                    <td class="text-truncate" style="max-width: 200px;">{{ $task->title }}</td>
                     <td>{{ $task->status }}</td>
-                  </tr>
-                @endforeach
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+                    <td>
+                      @foreach($task->subtasks as $subtask)
+                        <a href="#view{{$subtask->id}}" type="button" class="btn btn-secondary" data-bs-toggle="modal">
+                        {{ __('View Subtasks') }}</a>
 
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Subtask Status</h3>
-          </div>
-          <div class="card-body">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>{{ __('Subtasks') }}</th>
-                  <th>{{ __('Status') }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach($group_projects->tasks as $task)
-                  @foreach($task->subtasks as $subtask)
-                    <tr>
-                      <td class="text-truncate" style="max-width: 150px;">{{ $subtask->title }}</td>
-                      <td>{{ $subtask->status }}</td>
-                    </tr>
-                  @endforeach
+                        <div class="modal fade" id="view{{$subtask->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title">List of Subtasks of Task: {{ $task->title }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <table class="table">
+                                  <thead>
+                                    <tr>
+                                      <th>{{ __('Tasks') }}</th>
+                                      <th>{{ __('Status') }}</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr>
+                                        <td class="text-truncate" style="max-width: 200px;">{{ $subtask->title }}</td>
+                                        <td>{{ $subtask->status }}</td>
+                                      </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                              <div class="modal-footer">
+                                <button id="deleteEventBtn" type="button" class="btn btn-danger">{{ __('Delete Event') }}</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      @endforeach
+                    </td>
+                  </tr>
                 @endforeach
               </tbody>
             </table>

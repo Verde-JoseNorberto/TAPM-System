@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>TAPM-Faculty</title>
+    <title>{{ __('TAPM-Faculty') }}</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
@@ -40,21 +40,31 @@
                   {{ config('app.name', 'TAPM') }}
               </a>
 
-            <div class="dropdown">
+              <div class="dropdown">
                 <button class="btn" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="fa-regular fa-bell" style="color: #ffffff;"></i>
-                  <span class="badge badge-light">{{ auth()->user()->notifications->count() }}</span>
+                    <i class="fa-regular fa-bell" style="color: #ffffff;"></i>
+                    <span class="badge badge-light">{{ auth()->user()->notifications->count() }}</span>
                 </button>
-                <div class="dropdown-menu" aria-labelledby="notificationDropdown">
-                  @forelse (auth()->user()->notifications as $notification)
-                      <a class="dropdown-item" href = "{{ $notification->data['link']}}">
-                          {{ $notification->data['data']}}
-                      </a>
-                  @empty
-                      <a class="dropdown-item">
-                          {{ __('No new notifications') }}
-                      </a>
-                  @endforelse
+                <div class="dropdown-menu notification-dropdown" aria-labelledby="notificationDropdown" style="max-height: 300px; overflow-y: auto;">
+                    <h5 class="dropdown-header">{{ __('Notifications' )}}</h5>
+                    @forelse (auth()->user()->notifications->take(10) as $notification)
+                        <a class="dropdown-item" href="{{ $notification->data['link'] }}" style="width: 500px;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div style="max-width: 70%;">
+                                    <h6 class="mb-1 text-truncate">{{ $notification->data['name'] }}</h6>
+                                    <p class="mb-1 text-truncate">{{ $notification->data['data'] }}</p>
+                                </div>
+                                <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                            </div>
+                        </a>
+                    @empty
+                        <a class="dropdown-item">
+                            {{ __('No new notifications') }}
+                        </a>
+                    @endforelse
+                    @if(auth()->user()->notifications->count() > 10)
+                        <a class="dropdown-item text-center" href="#">{{ __('See All Notifications') }}</a>
+                    @endif
                 </div>
             </div>
               
@@ -95,50 +105,43 @@
                 <div class="modal-body">
                 <form method="POST" action="{{ route('faculty/home') }}">
                     @csrf 
-                    <div class="row mb-4">
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label">{{ __('Project Title') }}</label>
-                                <input id="title" type="text" class="form-control" name="title">
-                            </div>
-                        </div>
+                <div class="row mb-4">
+                  <div class="col">
+                    <div class="form-outline">
+                      <label class="form-label">{{ __('Group Name') }}</label>
+                      <input id="team" type="text" class="form-control" name="team">
                     </div>
-                    
-                    <div class="row mb-4">
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label">{{ __('Subject') }}</label>
-                                <input id="subject" type="text" class="form-control" name="subject">
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label">{{ __('Section') }}</label>
-                                <input id="section" type="text" class="form-control" name="section">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row mb-4">
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label">{{ __('Team') }}</label>
-                                <input id="team" type="text" class="form-control" name="team">
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label">{{ __('Advisor') }}</label>
-                                <input id="advisor" type="text" class="form-control" name="advisor">
-                            </div>
-                        </div>
-                    </div>
-                
+                  </div>
                 </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">{{ __('Create Group') }}</button>
+                
+                <div class="row mb-4">
+                  <div class="col">
+                    <div class="form-outline">
+                      <label class="form-label">{{ __('Section') }}</label>
+                      <input id="section" type="text" class="form-control" name="section">
                     </div>
-                </form>
+                  </div>
+                  <div class="col">
+                    <div class="form-outline">
+                      <label class="form-label">{{ __('Advisor') }}</label>
+                      <input id="advisor" type="text" class="form-control" name="advisor">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mb-4">
+                  <div class="col">
+                    <div class="form-outline">
+                      <label class="form-label">{{ __('Project Title') }}</label>
+                      <input id="title" type="text" class="form-control" name="title">
+                    </div>
+                  </div>
+                </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">{{ __('Create Group') }}</button>
+                </div>
+              </form>
             </div>
         </div>
     </div>

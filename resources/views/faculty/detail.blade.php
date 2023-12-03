@@ -59,133 +59,133 @@
         </div>
       </div>
       {{-- Edit Task --}}
-<div class="modal fade" id="edit{{$tasks->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title">{{__('Edit Task')}}</h5>
+      <div class="modal fade" id="edit{{$tasks->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{__('Edit Task')}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ route('faculty/detail') }}">
+                    @csrf 
+                    @method("PUT")
+
+                    <input type="hidden" id="id" name="id" value="{{ $tasks->id }}">
+
+                    <div class="row mb-4">
+                        <div class="col">
+                        <div class="form-outline">
+                            <label class="form-label">{{ __('Title') }}</label>
+                            <input id="title" type="text" class="form-control" name="title" value="{{ $tasks->title }}">
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col">
+                        <div class="form-outline">
+                            <label class="form-label">{{ __('Content') }}</label>
+                            <textarea id="content" class="form-control" rows="4" name="content">{{ $tasks->content }}</textarea>
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col">
+                        <div class="form-outline">
+                            <label class="form-label">{{ __('Start Date') }}</label>
+                            <input id="start_date" type="date" class="form-control" name="start_date" value="{{ $tasks->start_date }}">
+                        </div>
+                        </div>
+
+                        <div class="col">
+                        <div class="form-outline">
+                            <label class="form-label">{{ __('Due Date') }}</label>
+                            <input id="due_date" type="date" class="form-control" name="due_date" value="{{ $tasks->due_date }}">
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col">
+                        <div class="form-outline">
+                            <label class="form-label">{{ __('Assign to Member') }}</label>
+                            <select id="assign_id" class="form-select" name="assign_id">
+                                <option selected>{{ __('Select Member') }}</option>
+                                @foreach($group_projects->members as $member)
+                                <option value="{{ $member->user->id }}" {{ $tasks->assign_id == $member->user->id ? 'selected' : '' }}>{{ $member->user->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col">
+                        <div class="form-outline">
+                            <label class="form-label">{{ __('Priority') }}</label>
+                            <select id="priority" class="form-select" name="priority">
+                            <option selected>{{ $tasks->priority }}</option>
+                            <option value="Low">{{ __('Low') }}</option>
+                            <option value="Moderate">{{ __('Moderate') }}</option>
+                            <option value="High">{{ __('High') }}</option>
+                            </select>
+                        </div>
+                        </div>
+
+                        <div class="col">
+                        <div class="form-outline">
+                            <label class="form-label">{{ __('Status') }}</label>
+                            <select id="status" class="form-select" name="status">
+                            <option selected>{{ $tasks->status }}</option>
+                            <option value="To Do">{{ __('To Do') }}</option>
+                            <option value="In Progress">{{ __('In Progress') }}</option>
+                            <option value="Finished">{{ __('Finished') }}</option>
+                            </select>
+                        </div>
+                        </div>
+                    </div>
+                    
+                    <input id="group_project_id" type="hidden" name="group_project_id" value="{{ $group_projects->id }}">
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">{{ __('Update Task') }}</button>
+                        <a href="#delete{{$tasks->id}}" class="btn btn-danger" data-bs-toggle="modal">
+                        {{ __('Delete') }}
+                        </a>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      {{-- Delete Task --}}
+      <div class="modal fade" id="delete{{$tasks->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">{{__('Delete Task')}}</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
+            </div>
+            <div class="modal-body">
               <form method="POST" action="{{ route('faculty/detail') }}">
-              @csrf 
-              @method("PUT")
-
-              <input type="hidden" id="id" name="id" value="{{ $tasks->id }}">
-
-              <div class="row mb-4">
-                  <div class="col">
-                  <div class="form-outline">
-                      <label class="form-label">{{ __('Title') }}</label>
-                      <input id="title" type="text" class="form-control" name="title" value="{{ $tasks->title }}">
-                  </div>
-                  </div>
-              </div>
-
-              <div class="row mb-4">
-                  <div class="col">
-                  <div class="form-outline">
-                      <label class="form-label">{{ __('Content') }}</label>
-                      <textarea id="content" class="form-control" rows="4" name="content">{{ $tasks->content }}</textarea>
-                  </div>
-                  </div>
-              </div>
-
-              <div class="row mb-4">
-                  <div class="col">
-                  <div class="form-outline">
-                      <label class="form-label">{{ __('Start Date') }}</label>
-                      <input id="start_date" type="date" class="form-control" name="start_date" value="{{ $tasks->start_date }}">
-                  </div>
-                  </div>
-
-                  <div class="col">
-                  <div class="form-outline">
-                      <label class="form-label">{{ __('Due Date') }}</label>
-                      <input id="due_date" type="date" class="form-control" name="due_date" value="{{ $tasks->due_date }}">
-                  </div>
-                  </div>
-              </div>
-
-              <div class="row mb-4">
-                  <div class="col">
-                  <div class="form-outline">
-                      <label class="form-label">{{ __('Assign to Member') }}</label>
-                      <select id="assign_id" class="form-select" name="assign_id">
-                          <option selected>{{ __('Select Member') }}</option>
-                          @foreach($group_projects->members as $member)
-                          <option value="{{ $member->user->id }}" {{ $tasks->assign_id == $member->user->id ? 'selected' : '' }}>{{ $member->user->name }}</option>
-                          @endforeach
-                      </select>
-                  </div>
-                  </div>
-              </div>
-
-              <div class="row mb-4">
-                  <div class="col">
-                  <div class="form-outline">
-                      <label class="form-label">{{ __('Priority') }}</label>
-                      <select id="priority" class="form-select" name="priority">
-                      <option selected>{{ $tasks->priority }}</option>
-                      <option value="Low">{{ __('Low') }}</option>
-                      <option value="Moderate">{{ __('Moderate') }}</option>
-                      <option value="High">{{ __('High') }}</option>
-                      </select>
-                  </div>
-                  </div>
-
-                  <div class="col">
-                  <div class="form-outline">
-                      <label class="form-label">{{ __('Status') }}</label>
-                      <select id="status" class="form-select" name="status">
-                      <option selected>{{ $tasks->status }}</option>
-                      <option value="To Do">{{ __('To Do') }}</option>
-                      <option value="In Progress">{{ __('In Progress') }}</option>
-                      <option value="Finished">{{ __('Finished') }}</option>
-                      </select>
-                  </div>
-                  </div>
-              </div>
-              
-              <input id="group_project_id" type="hidden" name="group_project_id" value="{{ $group_projects->id }}">
-
-              <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Update Task') }}</button>
-                  <a href="#delete{{$tasks->id}}" class="btn btn-danger" data-bs-toggle="modal">
-                  {{ __('Delete') }}
-                  </a>
-              </div>
+              @csrf
+              @method("DELETE")
+              <h4>Are you sure you want to Delete Task: {{ $tasks->title }}?</h4>
+              <input type="hidden" name="id" id="id" value="{{ $tasks->id }}">
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-danger">{{ __('Delete Task') }}</button>
+              <a href="#edit{{$tasks->id}}" class="btn btn-secondary" data-bs-toggle="modal">
+              {{ __('Cancel') }}
+              </a>
               </form>
-          </div>
-      </div>
-  </div>
-</div>
-
-{{-- Delete Task --}}
-<div class="modal fade" id="delete{{$tasks->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog">
-  <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{{__('Delete Task')}}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form method="POST" action="{{ route('faculty/detail') }}">
-        @csrf
-        @method("DELETE")
-        <h4>Are you sure you want to Delete Task: {{ $tasks->title }}?</h4>
-        <input type="hidden" name="id" id="id" value="{{ $tasks->id }}">
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-danger">{{ __('Delete Task') }}</button>
-        <a href="#edit{{$tasks->id}}" class="btn btn-secondary" data-bs-toggle="modal">
-        {{ __('Cancel') }}
-        </a>
-        </form>
+            </div>
+            </div>
+        </div>
       </div>
       </div>
-  </div>
-</div>
-</div>
     </div>
 
     {{-- Status Tabs --}}
