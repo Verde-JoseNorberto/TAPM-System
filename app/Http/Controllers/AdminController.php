@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Subtask;
 use App\Models\User;
 use App\Models\Member;
 use App\Models\Task;
@@ -76,16 +77,6 @@ class AdminController extends Controller
     
         return view('admin/group', compact(['group_projects']));
     }
-    public function projectShow(Project $projects, GroupProject $group_projects, Request $request)
-    {   
-        if ($request->get('status') == 'archived') {
-            $projects = Project::onlyTrashed()->get();
-        } else {
-            $projects = Project::withTrashed()->get();
-        }
-
-        return view('admin/project', compact(['group_projects', 'projects']));
-    }
     public function taskShow(Task $tasks, Request $request)
     {
         if ($request->get('status') == 'archived') {
@@ -96,27 +87,52 @@ class AdminController extends Controller
     
         return view('admin/task', compact(['tasks']));
     }
-    public function teamShow(Member $members, Request $request)
+    public function chartShow(Subtask $subtasks, Task $tasks, Request $request)
     {
+        $group_projects = GroupProject::all();
+        $taskData = [];
+        $subtaskData = [];
+    
         if ($request->get('status') == 'archived') {
-            $members = Member::onlyTrashed()->get();
+            $tasks = Task::onlyTrashed()->get();
+            $subtasks = Subtask::onlyTrashed()->get();
         } else {
-            $members = Member::withTrashed()->get();
+            $tasks = Task::withTrashed()->get();
+            $subtasks = Subtask::withTrashed()->get();
         }
     
-        return view('admin/team', compact(['members']));
-    }
-    public function feedbackShow(Feedback $feedbacks, Request $request)
-    {
-        if ($request->get('status') == 'archived') {
-            $feedbacks = Feedback::onlyTrashed()->get();
-        } else {
-            $feedbacks = Feedback::withTrashed()->get();
+        foreach ($group_projects as $group_project) {
+            $tasksInProject = $tasks->where('group_project_id', $group_project->id);
+    
+            $totalTasks = $tasksInProject->count();
+            $tasksToDo = $tasksInProject->where('status', 'To Do')->count();
+            $tasksInProgress = $tasksInProject->where('status', 'In Progress')->count();
+            $tasksFinished = $tasksInProject->where('status', 'Finished')->count();
+    
+            $taskData[$group_project->id] = [
+                $totalTasks > 0 ? ($tasksToDo / $totalTasks * 100) : 0,
+                $totalTasks > 0 ? ($tasksInProgress / $totalTasks * 100) : 0,
+                $totalTasks > 0 ? ($tasksFinished / $totalTasks * 100) : 0,
+            ];
+    
+            $subtasksInProject = $subtasks->whereIn('task_id', $tasksInProject->pluck('id'));
+    
+            $totalSubTasks = $subtasksInProject->count();
+            $subTasksToDo = $subtasksInProject->where('status', 'To Do')->count();
+            $subTasksInProgress = $subtasksInProject->where('status', 'In Progress')->count();
+            $subTasksFinished = $subtasksInProject->where('status', 'Finished')->count();
+    
+            $subtaskData[$group_project->id] = [
+                $totalSubTasks > 0 ? ($subTasksToDo / $totalSubTasks * 100) : 0,
+                $totalSubTasks > 0 ? ($subTasksInProgress / $totalSubTasks * 100) : 0,
+                $totalSubTasks > 0 ? ($subTasksFinished / $totalSubTasks * 100) : 0,
+            ];
         }
     
-        return view('admin/feedback', compact(['feedbacks']));
+        return view('admin/chart', compact(['group_projects', 'tasks', 'subtasks', 'taskData', 'subtaskData']));
     }
-
+    
+    
     /**
      * Update the specified resource in storage.
      *
@@ -175,26 +191,6 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Group Project not found.');
         }
     }
-
-    /**
-     * Remove the specified project from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function projectDestroy(Request $request, Project $projects)
-    {
-        $id = $request->input('id');
-        $projects = Project::withTrashed()->find($id);
-
-        if ($projects) {
-            $projects->delete();
-            return redirect()->back()->with('success', 'Deleted Project Successfully');
-        } else {
-            return redirect()->back()->with('error', 'Project not found.');
-        }
-    }
-
     /**
      * Remove the specified task from storage.
      *
@@ -213,7 +209,18 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Task not found.');
         }
     }
+    public function subtaskDestroy(Request $request, Subtask $subtask)
+    {
+        $id = $request->input('id');
+        $subtask = Subtask::withTrashed()->find($id);
 
+        if ($subtask) {
+            $subtask->delete();
+            return redirect()->back()->with('success', 'Deleted Subtask Successfully');
+        } else {
+            return redirect()->back()->with('error', 'Subtask not found.');
+        }
+    }
     /**
      * Remove the specified team member from storage.
      *
@@ -230,25 +237,6 @@ class AdminController extends Controller
             return redirect()->back()->with('success', 'Removed Member Successfully');
         } else {
             return redirect()->back()->with('error', 'Member not found.');
-        }
-    }
-
-    /**
-     * Remove the specified feedback from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function feedbackDestroy(Request $request, Feedback $feedbacks)
-    {
-        $id = $request->input('id');
-        $feedbacks = Feedback::withTrashed()->find($id);
-
-        if ($feedbacks) {
-            $feedbacks->delete();
-            return redirect()->back()->with('success', 'Deleted Feedback Successfully');
-        } else {
-            return redirect()->back()->with('error', 'Feedback not found.');
         }
     }
     /**
@@ -281,17 +269,6 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Group Project not found.');
         }
     }
-    public function projectRestore(Request $request, $id)
-    {
-        $project = Project::withTrashed()->find($id);
-
-        if ($project) {
-            $project->restore(); // Restore the soft-deleted project
-            return redirect()->back()->with('success', 'Project restored successfully.');
-        } else {
-            return redirect()->back()->with('error', 'Project not found.');
-        }
-    }
     public function taskRestore(Request $request, $id)
     {
         $task = Task::withTrashed()->find($id);
@@ -301,6 +278,17 @@ class AdminController extends Controller
             return redirect()->back()->with('success', 'Task restored successfully.');
         } else {
             return redirect()->back()->with('error', 'Task not found.');
+        }
+    }
+    public function subtaskRestore(Request $request, $id)
+    {
+        $subtask = Subtask::withTrashed()->find($id);
+
+        if ($subtask) {
+            $subtask->restore(); // Restore the soft-deleted subtask
+            return redirect()->back()->with('success', 'Subtask restored successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Subtask not found.');
         }
     }
     public function teamRestore(Request $request, $id)
@@ -314,16 +302,4 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Member not found.');
         }
     }
-    public function feedbackRestore(Request $request, $id)
-    {
-        $feedback = Feedback::withTrashed()->find($id);
-
-        if ($feedback) {
-            $feedback->restore(); // Restore the soft-deleted feedback
-            return redirect()->back()->with('success', 'Feedback restored successfully.');
-        } else {
-            return redirect()->back()->with('error', 'Feedback not found.');
-        }
-    }
-
 }

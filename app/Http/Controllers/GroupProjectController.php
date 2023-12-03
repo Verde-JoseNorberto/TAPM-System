@@ -16,6 +16,7 @@ use App\Notifications\MemberAdded;
 use App\Notifications\ProjectCreated;
 use App\Notifications\TaskCompleted;
 use App\Notifications\TaskCreated;
+use App\Notifications\SubtaskCreated;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -54,13 +55,10 @@ class GroupProjectController extends Controller
     public function groupStore(Request $request)
     {   
         $group = $request->validate([
-            'title' => [
-                'required',
-                Rule::unique('group_projects', 'title')->whereNull('deleted_at'),
-            ],
-            'section'=>'required',
-            'team'=>'required',
-            'advisor'=>'required',
+            'team' => 'required',
+            'section' => 'required',
+            'title' => 'sometimes',
+            'advisor' => 'required',
         ]);
 
         $group_projects = new GroupProject;
@@ -101,45 +99,47 @@ class GroupProjectController extends Controller
     public function projectStore(Request $request)
     {
         $request->validate([
-            'title' => [
-                'required',
-                Rule::unique('projects', 'title')->where('group_project_id', $request->input('group_project_id'))->whereNull('deleted_at'),
-            ],
+            'task_id' => 'required',
+            'subtask_id' => 'sometimes',
             'file' => 'sometimes|file',
             'description' => 'required',
-            'group_project_id' => 'required',
         ]);
     
+        $fileName = null;
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-            $record = $file->getClientOriginalName();
-            $name = pathinfo($record, PATHINFO_FILENAME);
-            $extension = pathinfo($record, PATHINFO_EXTENSION);
-            $fileName = time() . '-' . $name . '.' . $extension;
+            $fileName = time() . '-' . $file->getClientOriginalName();
             $file->move(public_path('files'), $fileName);
         }
     
         $data = [
-            'title' => $request->title,
-            'file' => isset($fileName) ? $fileName : null,
-            'description' => $request->description,
-            'group_project_id' => $request->group_project_id,
+            'task_id' => $request->input('task_id'),
+            'subtask_id' => $request->input('subtask_id', null),
+            'file' => $fileName,
+            'description' => $request->input('description'),
             'user_id' => auth()->user()->id,
         ];
-
-        $project = Project::create($data);
-
-        $projectPost = GroupProject::find($request->group_project_id);
-        $members = $projectPost->users;
-
-        $membersToNotify = $members->filter(function ($member) use ($request) {
-            return $member->id !== auth()->user()->id;
-        });
+    
+        Project::create($data);
+    
+        $projectPost = $request->has('task_id')
+            ? Task::find($request->task_id)
+            : Subtask::find($request->subtask_id);
+    
+        $members = $projectPost->group_project ?? $projectPost->maintask->group_project;
+    
+        $membersToNotify = $members->where('id', '!=', auth()->user()->id);
 
         foreach ($membersToNotify as $member) {
-            $member->notify(new ProjectCreated($project->group_project_id, auth()->user()->name, $projectPost->title, $member->type));
+            $member->notify(new ProjectCreated(
+                $projectPost->group_project->id,
+                auth()->user()->name,
+                $projectPost->title,
+                $member->type
+            ));
         }
-
+        
+    
         return redirect()->back()->with('success', 'Posted Project Successfully.');
     }
 
@@ -166,13 +166,11 @@ class GroupProjectController extends Controller
         $taskCreate = User::find($request->assign_id);
         $taskCreate->notify(new TaskCreated($task->group_project_id, $task->title, auth()->user()->name, $taskCreate->type));
 
-        $calendarEvent = $task->toCalendarEvent();
-
-        return redirect()->back()->with('success', 'Posted Task Successfully.')->with('calendarEvent', $calendarEvent);
+        return redirect()->back()->with('success', 'Posted Task Successfully.');
     }
 
     public function subStore(Request $request)
-    {   
+    {
         $request->validate([
             'title' => [
                 'required',
@@ -186,15 +184,16 @@ class GroupProjectController extends Controller
             'task_id' => 'required',
             'assign_id' => 'required|exists:users,id',
         ]);
-    
+
         $input = $request->all();
         $input['user_id'] = auth()->user()->id;
-        
+
         $subtask = Subtask::create($input);
+        
+        $task = Task::find($request->task_id);
         $taskCreate = User::find($request->assign_id);
-        $taskCreate->notify(new TaskCreated($subtask->group_project_id, $subtask->title, auth()->user()->name, $taskCreate->type));
-
-
+        $taskCreate->notify(new SubtaskCreated($task->group_project_id, $subtask->task_id, $subtask->title, auth()->user()->name, $taskCreate->type));
+    
         return redirect()->back()->with('success', 'Posted Subtask Successfully.');
     }
 
@@ -227,7 +226,7 @@ class GroupProjectController extends Controller
         $group_projects = GroupProject::find($group_project_id);
     
         $memberAdd = User::find($request->user_id);
-        $memberAdd->notify(new MemberAdded($group_project_id, $group_projects->title, $memberAdd->type));
+        $memberAdd->notify(new MemberAdded($group_project_id, $group_projects->title, $memberAdd->type, auth()->user()->name));
     
         return redirect()->back()->with('success', 'Member Added Successfully.');
     }
@@ -265,39 +264,32 @@ class GroupProjectController extends Controller
      * @param  \App\Models\GroupProject  $groupProject
      * @return \Illuminate\Http\Response
      */
-    public function projectShow(Request $request, GroupProject $group_projects, Project $projects, Task $tasks, Feedback $feedbacks, $id)
+    public function projectShow(Request $request, GroupProject $group_projects, Project $projects, Task $tasks, Subtask $subtasks, Feedback $feedbacks, $id)
     {
         $user = auth()->user();
         $notifications = $user->notifications;
         $group_projects = GroupProject::find($id);
-        $projects = Project::all();
-        $feedbacks = Feedback::all();
-
-        if (Task::all()->where('group_project_id', $group_projects->id)->count() == 0){
-            $tasks = Task::all();
-        }else{
-            $tasks = Task::all()->where('group_project_id', $group_projects->id)
-            ->where('status','Finished')->count() / 
-            Task::all()->where('group_project_id', $group_projects->id)->count() * 100;
-        }
+        $tasks = Task::all();
+        $subtasks = Subtask::all();
+        $projects = Project::with(['tasks', 'subtasks'])->get();
         
         if ($group_projects->user_id === auth()->user()->id) {  
             if ($user->type == 'faculty') {
-                return view('faculty/project', compact(['group_projects', 'tasks', 'notifications', 'user']));
+                return view('faculty/project', compact(['group_projects', 'projects', 'tasks', 'subtasks', 'notifications', 'user']));
             }else if ($user->type == 'office') {
-                return view('office/project', compact(['group_projects', 'tasks', 'notifications', 'user']));
+                return view('office/project', compact(['group_projects', 'projects', 'tasks', 'subtasks', 'notifications', 'user']));
             }else{
-                return view('student/project', compact(['group_projects', 'tasks', 'notifications', 'user']));
+                return view('student/project', compact(['group_projects', 'projects', 'tasks', 'subtasks', 'notifications', 'user']));
             }
         }else{
             $members = $group_projects->members()->where('user_id', $user->id)->first();
             if ($members) {
                 if ($user->type == 'faculty') {
-                    return view('faculty/project', compact(['group_projects', 'tasks', 'notifications', 'user']));
+                    return view('faculty/project', compact(['group_projects', 'projects', 'tasks', 'subtasks', 'notifications', 'user']));
                 }else if ($user->type == 'office') {
-                    return view('office/project', compact(['group_projects', 'tasks', 'notifications', 'user']));
+                    return view('office/project', compact(['group_projects', 'projects', 'tasks', 'subtasks', 'notifications', 'user']));
                 }else{
-                    return view('student/project', compact(['group_projects', 'tasks', 'notifications', 'user']));
+                    return view('student/project', compact(['group_projects', 'projects', 'tasks', 'subtasks', 'notifications', 'user']));
                 }
             } else {
                 abort(403, 'Unauthorized');
@@ -617,27 +609,41 @@ class GroupProjectController extends Controller
         return redirect()->back()->with('success', 'Updated Member Successfully');
     }
     
-    public function eventShow(GroupProject $group_projects, $id, Request $request)
+    public function eventShow(Event $events, GroupProject $group_projects, $id, Request $request)
     {
         $user = auth()->user();
         $notifications = $user->notifications;
         $group_projects = GroupProject::find($id);
         
         if ($request->ajax()) {
-            if ($request->type == 'fetch') {
-                $event = Event::find($request->id);
+            switch ($request->type) {
+                case 'fetch':
+                    $event = Event::find($request->id);
+                    return response()->json(['data' => $event]);
+                    break;
     
-                return response()->json(['data' => $event]);
+                case 'update':
+                    $event = Event::find($request->id);
+                    $event->update([
+                        'title' => $request->title,
+                        'description' => $request->description,
+                        'start' => $request->start,
+                        'end' => $request->end,
+                    ]);
+                    return response()->json($event);
+                    break;
+    
+                default:
+                    $data = Event::where('group_project_id', $request->group_project_id)
+                        ->whereDate('start', '>=', $request->start)
+                        ->whereDate('end', '<=', $request->end)
+                        ->get(['id', 'title', 'start', 'end', 'group_project_id']);
+                    return response()->json($data);
+                    break;
             }
-    
-            $data = Event::whereDate('start', '>=', $request->start)
-                ->whereDate('end', '<=', $request->end)
-                ->get(['id', 'title', 'start', 'end']);
-    
-            return response()->json($data);
         }
 
-        if ($group_projects->user_id === auth()->user()->id) {
+        if ($group_projects && $group_projects->user_id === auth()->user()->id) {
             if ($user->type == 'faculty') {
                 return view('faculty/calendar', compact(['group_projects', 'notifications', 'user']));
             } elseif ($user->type == 'office') {
@@ -646,7 +652,7 @@ class GroupProjectController extends Controller
                 return view('student/calendar', compact(['group_projects', 'notifications', 'user'])); 
             }
         } else {
-            $members = $group_projects->members()->where('user_id', $user->id)->first();
+            $members = $group_projects ? $group_projects->members()->where('user_id', $user->id)->first() : null;
             if ($members) {
                 if ($user->type == 'faculty') {
                     return view('faculty/calendar', compact(['group_projects', 'notifications', 'user']));
